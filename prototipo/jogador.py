@@ -9,7 +9,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         jogador_img = pg.image.load("./sprites/jogador.png").convert_alpha()
 
-        self.image = pg.transform.scale(jogador_img, (30, 60))
+        self.image = pg.transform.scale(jogador_img, (25, 50))
         self.rect = self.image.get_rect(midbottom = pos)
 
         self.__pos = pg.math.Vector2(self.rect.center)
@@ -36,12 +36,12 @@ class Jogador(Entidade, pg.sprite.Sprite):
         '''Atualizar a posição do sprite do jogador.'''
 
         self.__pos.x += self.__sentido * self.veloc_mov * dt
-        self.__pos.y += 1.5*self.__aceleracao_vert
+        self.__pos.y += self.__aceleracao_vert
 
         self.rect.center = self.__pos
 
         if self.__aceleracao_vert != 0:
-            self.__aceleracao_vert += 3*dt
+            self.__aceleracao_vert += 4*dt
 
         if self.rect.bottom > self.CHAO:
             self.rect.bottom = self.CHAO

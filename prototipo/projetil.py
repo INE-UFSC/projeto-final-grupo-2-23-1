@@ -9,6 +9,28 @@ class Projetil(ABC):
         self.__perfuracao = perfuracao
 
     @abstractmethod
+    @property
+    def dano(self):
+        return self.__dano
+    
+    @abstractmethod
+    @property
+    def veloc_proj(self):
+        return self.__veloc_proj
+    
+    @abstractmethod
+    @property
+    def tamanho(self):
+        return self.__tamanho
+    
+    @abstractmethod
+    @property
+    def perfuracao(self):
+        return self.__perfuracao
+    
+    
+
+    @abstractmethod
     def atualizar_trajetoria(self):
         pass
 

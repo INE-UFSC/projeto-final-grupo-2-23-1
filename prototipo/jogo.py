@@ -1,4 +1,5 @@
 import pygame as pg
+from cajado import Cajado
 from jogador import Jogador
 
 
@@ -7,9 +8,14 @@ class Jogo:
         self.__tela = pg.display.get_surface()
         self.__grupo_sprites = pg.sprite.Group()
 
+        # TODO: o menu inicial deverá selecionar a arma.
+        cajado = Cajado('Pistola longa', 0, '', None)
+
         # TODO: definir a posição inicial do jogador através do mapa.
-        self.__jogador = Jogador(pos = (400, 450))
+        self.__jogador = Jogador(cajado, (400, 450))
+
         self.__grupo_sprites.add(self.__jogador)
+        self.__grupo_sprites.add(cajado)
 
         self.__numero_rodada = 1
         self.__rodada_encerrada = False
@@ -27,10 +33,10 @@ class Jogo:
         self.__grupo_sprites.draw(self.__tela)
 
         if not self.__rodada_encerrada:
-            self.ler_teclas()
+            self.ler_entrada()
             self.__grupo_sprites.update(dt)
 
-    def ler_teclas(self):
+    def ler_entrada(self):
         teclas = pg.key.get_pressed()
 
         if teclas[pg.K_a]:
@@ -42,6 +48,9 @@ class Jogo:
 
         if teclas[pg.K_SPACE]:
             self.__jogador.pular()
+
+        (mouse_x, mouse_y) = pg.mouse.get_pos()
+        self.__jogador.mover_mira(mouse_x, mouse_y)
 
     def iniciar_proxima_rodada(self):
         self.__numero_rodada += 1

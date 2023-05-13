@@ -1,11 +1,18 @@
+from math import atan2, pi
+
 import pygame as pg
 from entidade import Entidade
 
 
 class Jogador(Entidade, pg.sprite.Sprite):
-    def __init__(self, pos):
+    # Offset do sprite da arma em relação ao sprite do jogador.
+    ARMA_OFFSET = (1, 6)
+
+    def __init__(self, cajado, pos):
         Entidade.__init__(self, 30, 150, 1)
         pg.sprite.Sprite.__init__(self)
+
+        self.__cajado = cajado
 
         jogador_img = pg.image.load("./sprites/jogador.png").convert_alpha()
 
@@ -29,16 +36,34 @@ class Jogador(Entidade, pg.sprite.Sprite):
         if self.rect.bottom >= self.CHAO:
             self.__aceleracao_vert = -1
 
+    def mover_mira(self, mira_x, mira_y):
+        '''Move a mira e o ângulo da arma'''
+
+        angulo = pi - atan2(
+            self.__pos.y + self.ARMA_OFFSET[1] - mira_y,
+            self.__pos.x + self.ARMA_OFFSET[0] - mira_x
+        )
+
+        # Para economizar recursos, somente rotacione se o ângulo diferir.
+        if angulo != self.__mira_angulo:
+            self.__mira_angulo = angulo
+
+            self.__cajado.rotacionar(
+                self.__mira_angulo*180/pi,
+                self.__pos + self.ARMA_OFFSET
+            )
+
     def morrer(self):
         self.kill()
 
     def update(self, dt):
-        '''Atualizar a posição do sprite do jogador.'''
+        '''Atualiza a posição do sprite do jogador.'''
 
         self.__pos.x += self.__sentido * self.veloc_mov * dt
         self.__pos.y += self.__aceleracao_vert
 
         self.rect.center = self.__pos
+        self.__cajado.rect.center = self.__pos + self.ARMA_OFFSET
 
         if self.__aceleracao_vert != 0:
             self.__aceleracao_vert += 4*dt

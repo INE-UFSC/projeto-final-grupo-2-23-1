@@ -60,7 +60,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
             self.__cajado.rotacionar(
                 self.__mira_angulo*180/pi,
-                self.__pos + self.ARMA_OFFSET
+                round(self.__pos) + self.ARMA_OFFSET
             )
 
     def morrer(self):
@@ -73,7 +73,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         # Método de Verlet assumindo aceleração constante para o cálculo da posição.
         self.__pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
 
-        self.rect.center = self.__pos
+        self.rect.center = round(self.__pos)
 
         if self.__veloc_vert != 0:
             self.__veloc_vert += self.__GRAVIDADE*dt

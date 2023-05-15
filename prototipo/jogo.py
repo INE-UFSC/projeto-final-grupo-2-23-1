@@ -1,4 +1,5 @@
 import pygame as pg
+
 from cajado import Cajado
 from jogador import Jogador
 
@@ -30,11 +31,12 @@ class Jogo:
 
     def rodar(self, dt):
         self.__tela.fill('black')
-        self.__grupo_sprites.draw(self.__tela)
 
         if not self.__rodada_encerrada:
-            self.ler_entrada()
             self.__grupo_sprites.update(dt)
+            self.ler_entrada()
+
+        self.__grupo_sprites.draw(self.__tela)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()

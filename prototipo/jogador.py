@@ -15,14 +15,16 @@ class Jogador(Entidade, pg.sprite.Sprite):
     # Usado como a aceleração vertical durante o pulo.
     __GRAVIDADE = (2*__ALTURA_PULO)/(__TEMPO_PULO**2)
 
-    # Offset do sprite da arma em relação ao sprite do jogador.
+    # Offset do sprite da arma e do capacete em relação ao sprite do jogador.
     ARMA_OFFSET = (1, 6)
+    CAPACETE_OFFSET = (0, -22)
 
-    def __init__(self, cajado, pos):
+    def __init__(self, cajado, capacete, pos):
         Entidade.__init__(self, 30, 150, 1)
         pg.sprite.Sprite.__init__(self)
 
         self.__cajado = cajado
+        self.__capacete = capacete
 
         jogador_img = pg.image.load("./sprites/jogador.png").convert_alpha()
 
@@ -70,15 +72,18 @@ class Jogador(Entidade, pg.sprite.Sprite):
         '''Atualiza a posição do sprite do jogador.'''
 
         self.__pos.x += self.__sentido * self.veloc_mov * dt
-        # Método de Verlet assumindo aceleração constante para o cálculo da posição.
-        self.__pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
-
-        self.rect.center = round(self.__pos)
 
         if self.__veloc_vert != 0:
+            # Método de Verlet assumindo aceleração constante para o cálculo da posição.
+            self.__pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
             self.__veloc_vert += self.__GRAVIDADE*dt
+
+        self.rect.center = round(self.__pos)
 
         if self.rect.bottom > self.CHAO:
             self.rect.bottom = self.CHAO
             self.__pos.y = self.rect.centery
             self.__veloc_vert = 0
+
+        self.__cajado.rect.center = round(self.__pos) + self.ARMA_OFFSET
+        self.__capacete.rect.center = round(self.__pos) + self.CAPACETE_OFFSET

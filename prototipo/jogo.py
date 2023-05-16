@@ -1,6 +1,7 @@
 import pygame as pg
 
 from cajado import Cajado
+from capacete import Capacete
 from jogador import Jogador
 
 
@@ -9,13 +10,15 @@ class Jogo:
         self.__tela = pg.display.get_surface()
         self.__grupo_sprites = pg.sprite.Group()
 
-        # TODO: o menu inicial deverá selecionar a arma.
+        # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         cajado = Cajado('Pistola longa', 0, '', None)
+        capacete = Capacete('Capacete militar', 0, '')
 
         # TODO: definir a posição inicial do jogador através do mapa.
-        self.__jogador = Jogador(cajado, (400, 450))
+        self.__jogador = Jogador(cajado, capacete, (400, 450))
 
         self.__grupo_sprites.add(self.__jogador)
+        self.__grupo_sprites.add(capacete)
         self.__grupo_sprites.add(cajado)
 
         self.__numero_rodada = 1
@@ -33,8 +36,8 @@ class Jogo:
         self.__tela.fill('black')
 
         if not self.__rodada_encerrada:
-            self.__grupo_sprites.update(dt)
             self.ler_entrada()
+            self.__grupo_sprites.update(dt)
 
         self.__grupo_sprites.draw(self.__tela)
 

@@ -23,15 +23,3 @@ class Projetil(ABC):
     @property
     def perfuracao(self):
         return self.__perfuracao
-
-    @abstractmethod
-    def atualizar_trajetoria(self):
-        pass
-
-    @abstractmethod
-    def sofrer_impacto(self):
-        pass
-
-
-    
-

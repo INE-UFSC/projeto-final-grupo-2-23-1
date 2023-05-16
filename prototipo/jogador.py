@@ -65,6 +65,11 @@ class Jogador(Entidade, pg.sprite.Sprite):
                 round(self.__pos) + self.ARMA_OFFSET
             )
 
+    def atirar(self):
+        proj = self.__cajado.atirar_projetil(self.__mira_angulo)
+
+        return proj
+
     def morrer(self):
         self.kill()
 

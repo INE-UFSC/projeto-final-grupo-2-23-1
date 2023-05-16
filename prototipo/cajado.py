@@ -18,8 +18,18 @@ class Cajado(Acessorio, pg.sprite.Sprite):
 
         self.imagem_original = self.image
 
+        self.tiro_temporizador = 0
+        self.cooldown = True
+
     def atirar_projetil(self, angulo: float):
-        pass
+        if self.cooldown:
+            proj = self.__tipo_projetil.criar_projetil(self.rect.topleft, angulo)
+            self.cooldown = False
+            self.tiro_temporizador = 0
+
+            return proj
+        else:
+            return None
 
     def rotacionar(self, angulo, pivo):
         '''Rotaciona a arma por um `angulo` ao longo de um `pivo`.'''
@@ -31,3 +41,9 @@ class Cajado(Acessorio, pg.sprite.Sprite):
             self.image = pg.transform.rotozoom(self.imagem_original, angulo, 1)
 
         self.rect = self.image.get_rect(center = pivo)
+
+    def update(self, dt):
+        self.tiro_temporizador += dt
+
+        if self.tiro_temporizador >= 1:
+            self.cooldown = True

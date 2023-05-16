@@ -3,6 +3,7 @@ import pygame as pg
 from cajado import Cajado
 from capacete import Capacete
 from jogador import Jogador
+from projetil_linear import ProjetilLinear
 
 
 class Jogo:
@@ -11,8 +12,10 @@ class Jogo:
         self.__grupo_sprites = pg.sprite.Group()
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
-        cajado = Cajado('Pistola longa', 0, '', None)
+        proj_tipo = ProjetilLinear(5, 250, 3, 1)
+        cajado = Cajado('Pistola longa', 0, '', proj_tipo)
         capacete = Capacete('Capacete militar', 0, '')
+        proj_tipo = ProjetilLinear(1, 250, 1, 1)
 
         # TODO: definir a posição inicial do jogador através do mapa.
         self.__jogador = Jogador(cajado, capacete, (400, 450))
@@ -53,6 +56,12 @@ class Jogo:
 
         if teclas[pg.K_SPACE]:
             self.__jogador.pular()
+
+        if teclas[pg.K_q]:
+            proj = self.__jogador.atirar()
+
+            if proj is not None:
+                self.__grupo_sprites.add(proj)
 
         (mouse_x, mouse_y) = pg.mouse.get_pos()
         self.__jogador.mover_mira(mouse_x, mouse_y)

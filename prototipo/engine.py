@@ -11,7 +11,7 @@ TELA_COMPRIMENTO = 576
 class Engine:
     def __init__(self):
         pg.init()
-        pg.display.set_caption('Zéfini')
+        pg.display.set_caption('Éter Mortal')
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
 

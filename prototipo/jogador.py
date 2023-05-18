@@ -33,7 +33,6 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         self.__pos = pg.math.Vector2(self.rect.center)
 
-        self.__mira_angulo = 0
         self.__veloc_vert = 0
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
@@ -56,17 +55,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
             self.__pos.x + self.ARMA_OFFSET[0] - mira_x
         )
 
-        # Para economizar recursos, somente rotacione se o ângulo diferir.
-        if angulo != self.__mira_angulo:
-            self.__mira_angulo = angulo
-
-            self.__cajado.rotacionar(
-                self.__mira_angulo*180/pi,
-                round(self.__pos) + self.ARMA_OFFSET
-            )
+        self.__cajado.rotacionar(
+            angulo,
+            round(self.__pos) + self.ARMA_OFFSET
+        )
 
     def atirar(self):
-        proj = self.__cajado.atirar_projetil(self.__mira_angulo)
+        proj = self.__cajado.atirar_projetil()
 
         return proj
 

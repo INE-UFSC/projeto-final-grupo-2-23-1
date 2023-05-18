@@ -1,6 +1,10 @@
-import pygame as pg
-from projetil import Projetil
 from math import cos, sin
+
+import pygame as pg
+from pygame import gfxdraw
+
+from projetil import Projetil
+
 
 class ProjetilLinear(Projetil):
     def __init__(self, dano: int, veloc_proj: float, tamanho: float, perfuracao: int):
@@ -11,9 +15,6 @@ class ProjetilLinear(Projetil):
 
         return proj
 
-    def sofrer_impacto(self):
-        self.kill()
-
 class ProjetilLinearConcreto(ProjetilLinear, pg.sprite.Sprite):
     def __init__(self, dano, veloc_proj, tamanho, perfuracao, pos, angulo):
         ProjetilLinear.__init__(self, dano, veloc_proj, tamanho, perfuracao)
@@ -21,8 +22,18 @@ class ProjetilLinearConcreto(ProjetilLinear, pg.sprite.Sprite):
 
         self.__angulo = angulo
 
-        self.image = pg.Surface((10, 10))
-        pg.draw.circle(self.image, 'aqua', (self.tamanho, self.tamanho), self.tamanho)
+        self.image = pg.Surface((2*self.tamanho + 1, 2*self.tamanho + 1), pg.SRCALPHA)
+        gfxdraw.aacircle(
+            self.image,
+            self.tamanho, self.tamanho, self.tamanho,
+            (0, 255, 255)
+        )
+        gfxdraw.filled_circle(
+            self.image,
+            self.tamanho, self.tamanho, self.tamanho,
+            (0, 255, 255)
+        )
+
         self.rect = self.image.get_rect(center = pos)
         self.pos = pg.math.Vector2(self.rect.center)
 

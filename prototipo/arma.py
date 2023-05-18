@@ -6,8 +6,7 @@ from acessorio import Acessorio
 from projetil import Projetil
 
 
-# TODO: trocar nome da classe para Arma.
-class Cajado(Acessorio, pg.sprite.Sprite):
+class Arma(Acessorio, pg.sprite.Sprite):
     def __init__(self, nome, custo, descricao, tipo_projetil: Projetil):
         Acessorio.__init__(self, nome, custo, descricao)
         pg.sprite.Sprite.__init__(self)

@@ -19,11 +19,11 @@ class Jogador(Entidade, pg.sprite.Sprite):
     ARMA_OFFSET = (1, 6)
     CAPACETE_OFFSET = (0, -22)
 
-    def __init__(self, cajado, capacete, pos):
+    def __init__(self, arma, capacete, pos):
         Entidade.__init__(self, 30, 150, 1)
         pg.sprite.Sprite.__init__(self)
 
-        self.__cajado = cajado
+        self.__arma = arma
         self.__capacete = capacete
 
         jogador_img = pg.image.load("./sprites/jogador.png").convert_alpha()
@@ -55,13 +55,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
             self.__pos.x + self.ARMA_OFFSET[0] - mira_x
         )
 
-        self.__cajado.rotacionar(
+        self.__arma.rotacionar(
             angulo,
             round(self.__pos) + self.ARMA_OFFSET
         )
 
     def atirar(self):
-        proj = self.__cajado.atirar_projetil()
+        proj = self.__arma.atirar_projetil()
 
         return proj
 
@@ -85,5 +85,5 @@ class Jogador(Entidade, pg.sprite.Sprite):
             self.__pos.y = self.rect.centery
             self.__veloc_vert = 0
 
-        self.__cajado.rect.center = round(self.__pos) + self.ARMA_OFFSET
+        self.__arma.rect.center = round(self.__pos) + self.ARMA_OFFSET
         self.__capacete.rect.center = round(self.__pos) + self.CAPACETE_OFFSET

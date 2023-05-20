@@ -11,7 +11,9 @@ class ProjetilLinear(Projetil):
         Projetil.__init__(self, dano, veloc_proj, tamanho, perfuracao)
 
     def criar_projetil(self, pos, angulo):
-        proj = ProjetilLinearConcreto(self.dano, self.veloc_proj, self.tamanho, self.perfuracao, pos, angulo)
+        proj = ProjetilLinearConcreto(
+            self.dano, self.veloc_proj, self.tamanho, self.perfuracao, pos, angulo
+        )
 
         return proj
 
@@ -43,5 +45,16 @@ class ProjetilLinearConcreto(ProjetilLinear, pg.sprite.Sprite):
 
         self.rect.center = self.pos
 
+    def esta_fora_tela(self):
+        (largura_tela, altura_tela) = pg.display.get_window_size()
+
+        fora_largura = self.rect.midright[0] < 0 or self.rect.midleft[0] > largura_tela
+        fora_altura = self.rect.midbottom[1] < 0 or self.rect.midtop[1] > altura_tela
+
+        return fora_largura or fora_altura
+
     def update(self, dt):
         self.atualizar_trajetoria(dt)
+
+        if self.esta_fora_tela():
+            self.kill()

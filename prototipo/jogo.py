@@ -60,14 +60,14 @@ class Jogo:
         if teclas[pg.K_SPACE]:
             self.__jogador.pular()
 
-        if teclas[pg.K_q]:
+        clique_esquerdo = pg.mouse.get_pressed()[0]
+        if clique_esquerdo:
             proj = self.__jogador.atirar()
 
             if proj is not None:
                 self.__grupo_sprites.add(proj)
 
-        (mouse_x, mouse_y) = pg.mouse.get_pos()
-        self.__jogador.mover_mira(mouse_x, mouse_y)
+        self.__jogador.mover_mira(*pg.mouse.get_pos())
 
     def iniciar_proxima_rodada(self):
         self.__numero_rodada += 1

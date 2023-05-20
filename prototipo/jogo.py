@@ -1,6 +1,7 @@
 import pygame as pg
 
 from arma import Arma
+from barra_status import BarraStatus
 from capacete import Capacete
 from jogador import Jogador
 from projetil_linear import ProjetilLinear
@@ -15,6 +16,8 @@ class Jogo:
         proj_tipo = ProjetilLinear(5, 300, 3, 1)
         arma = Arma('Pistola longa', 0, '', proj_tipo)
         capacete = Capacete('Capacete militar', 0, '')
+
+        self.hud = BarraStatus()
 
         # TODO: definir a posição inicial do jogador através do mapa.
         self.__jogador = Jogador(arma, capacete, (400, 500))
@@ -42,6 +45,7 @@ class Jogo:
             self.__grupo_sprites.update(dt)
 
         self.__grupo_sprites.draw(self.__tela)
+        self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()

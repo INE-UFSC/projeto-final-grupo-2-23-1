@@ -40,6 +40,10 @@ class Jogador(Entidade, pg.sprite.Sprite):
         # TODO: definir colisão com o chão ao invés de usar valor.
         self.CHAO = pos[1]
 
+    @property
+    def pos(self):
+        return self.__pos
+
     def mover(self, sentido):
         self.__sentido = sentido
 

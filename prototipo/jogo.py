@@ -1,5 +1,6 @@
 import pygame as pg
 
+from aerethor import Aerethor
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
@@ -10,7 +11,6 @@ from projetil_linear import ProjetilLinear
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__grupo_sprites = pg.sprite.Group()
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)
@@ -22,9 +22,11 @@ class Jogo:
         # TODO: definir a posição inicial do jogador através do mapa.
         self.__jogador = Jogador(arma, capacete, (400, 500))
 
-        self.__grupo_sprites.add(self.__jogador)
-        self.__grupo_sprites.add(capacete)
-        self.__grupo_sprites.add(arma)
+        self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
+        self.__grupo_projeteis_jogador = pg.sprite.Group()
+
+        # TODO: melhorar geração de inimigos.
+        self.__grupo_inimigos = pg.sprite.Group(Aerethor())
 
         self.__numero_rodada = 1
         self.__rodada_encerrada = False
@@ -42,9 +44,25 @@ class Jogo:
 
         if not self.__rodada_encerrada:
             self.ler_entrada()
-            self.__grupo_sprites.update(dt)
+            self.__grupo_jogador.update(dt)
+            self.__grupo_projeteis_jogador.update(dt)
+            self.__grupo_inimigos.update(self.__jogador.pos, dt)
 
-        self.__grupo_sprites.draw(self.__tela)
+        self.__grupo_jogador.draw(self.__tela)
+        self.__grupo_projeteis_jogador.draw(self.__tela)
+        self.__grupo_inimigos.draw(self.__tela)
+
+        # TODO: realocar verificação de colisão para outro lugar.
+        proj_colide_inimigo = pg.sprite.groupcollide(
+            self.__grupo_inimigos,
+            self.__grupo_projeteis_jogador,
+            False, True
+        )
+        if proj_colide_inimigo is not None:
+            for inimigo, projs in proj_colide_inimigo.items():
+                for proj in projs:
+                    inimigo.sofrer_dano(proj.dano)
+
         self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
 
     def ler_entrada(self):
@@ -65,7 +83,7 @@ class Jogo:
             proj = self.__jogador.atirar()
 
             if proj is not None:
-                self.__grupo_sprites.add(proj)
+                self.__grupo_projeteis_jogador.add(proj)
 
         self.__jogador.mover_mira(*pg.mouse.get_pos())
 

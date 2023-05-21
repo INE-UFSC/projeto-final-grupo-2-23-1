@@ -2,4 +2,4 @@ from engine import Engine
 
 engine = Engine()
 
-engine.iniciar()
+#tirei o iniciar daqui para colocar no menu

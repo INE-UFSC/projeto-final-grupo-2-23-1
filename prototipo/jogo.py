@@ -1,5 +1,6 @@
 import pygame as pg
-
+from inimigo_vorathrax import Vorathrax
+from inimigo_zylox import Zylox
 from inimigo_aerethor import Aerethor
 from arma import Arma
 from barra_status import BarraStatus
@@ -27,7 +28,7 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group(Aerethor())
+        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Zylox(), Vorathrax())
 
         self.__numero_rodada = 1
         self.__rodada_encerrada = False

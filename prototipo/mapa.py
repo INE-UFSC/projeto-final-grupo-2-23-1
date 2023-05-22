@@ -1,6 +1,7 @@
 import pygame
 import random
-  
+#TODO: getters e setters e deixar modificavel
+
 # GLOBAL VARIABLES
 COLOR = (255, 100, 98)
 SURFACE_COLOR = (20, 23, 26)
@@ -19,24 +20,24 @@ clock = pygame.time.Clock()
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, color, height, width):
         super().__init__()
-  
+        
         self.image = pygame.Surface([width, height])
         self.image.fill(SURFACE_COLOR)
         self.image.set_colorkey(COLOR)
-  
         pygame.draw.rect(self.image,color,pygame.Rect(0, 0, width, height))
   
         self.rect = self.image.get_rect()
 
+class Objects:
     def draw():
         objects = []
 
-        objects.append(Sprite(RED, 900, 15)) #Limite da esquerda
+        objects.append(Sprite(RED, 1000, 15)) #Limite da esquerda
         objects[len(objects)-1].rect.x = 0
         objects[len(objects)-1].rect.y = 0
 
         objects.append(Sprite(WHITE, 1000, 3000)) #Chao
-        objects[len(objects)-1].rect.x = 0
+        objects[len(objects)-1].rect.x = 15
         objects[len(objects)-1].rect.y = 560
 
         objects.append(Sprite(RED, 900, 15)) #Limite da direita
@@ -62,9 +63,9 @@ class Sprite(pygame.sprite.Sprite):
         return objects
     
   
-
+''''
 pygame.init() 
-all_sprites_list.add(Sprite.draw())
+all_sprites_list.add(Objects.draw())
 all_sprites_list.update()
 screen.fill(SURFACE_COLOR)
 all_sprites_list.draw(screen)
@@ -78,3 +79,4 @@ while exit:
     clock.tick(60)
   
 pygame.quit()
+'''

@@ -1,4 +1,5 @@
 import pygame
+
 class Button:
     def __init__(self, color, x,y,width,height, text='', function = None):
         self.color = color
@@ -32,4 +33,8 @@ class Button:
         click = pygame.mouse.get_pressed()
         if (self.x + self.width > mouse[0] > self.x) and (self.y + self.height > mouse[1] > self.y):
             if (click[0] == True) and (self.function != None):
-                self.function()
+                if self.text == 'Start':
+                    self.function(False)
+                else:
+                    self.function()
+        

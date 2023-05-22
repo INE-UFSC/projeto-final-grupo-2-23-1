@@ -1,6 +1,11 @@
 import pygame as pg
+<<<<<<< HEAD
 import random
 from aerethor import Aerethor
+=======
+
+from inimigo_aerethor import Aerethor
+>>>>>>> refs/remotes/origin/main
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete

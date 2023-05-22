@@ -1,6 +1,6 @@
 import pygame as pg
 
-from aerethor import Aerethor
+from inimigo_aerethor import Aerethor
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete

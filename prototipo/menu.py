@@ -33,8 +33,7 @@ MN = Menu()
 while True:
     for ev in pygame.event.get():
         if ev.type == pygame.QUIT:
-	        pygame.quit()
-                
+            pygame.quit()
     MN.draw()
 
 

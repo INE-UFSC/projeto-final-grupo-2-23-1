@@ -1,16 +1,17 @@
 import pygame as pg
-
+import random
 from aerethor import Aerethor
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
 from jogador import Jogador
 from projetil_linear import ProjetilLinear
-
+from mapa import Objects
 
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
+        self.__background = pg.image.load('C:/Users/Pichau/Desktop/TyskaPOO/Jogo/projeto-final-grupo-2-23-1/prototipo/sprites/background.png')
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)
@@ -19,8 +20,8 @@ class Jogo:
 
         self.hud = BarraStatus()
 
-        # TODO: definir a posição inicial do jogador através do mapa.
-        self.__jogador = Jogador(arma, capacete, (400, 500))
+        self.__objects = Objects.draw()
+        self.__jogador = Jogador(arma, capacete, (400, (self.__objects[1].rect.y)-2))
 
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
         self.__grupo_projeteis_jogador = pg.sprite.Group()
@@ -40,8 +41,8 @@ class Jogo:
         return self.__rodada_encerrada
 
     def rodar(self, dt):
-        self.__tela.fill('black')
-
+        objects = Objects.draw()
+        self.__tela.blit((self.__background), (0,0))
         if not self.__rodada_encerrada:
             self.ler_entrada()
             self.__grupo_jogador.update(dt)

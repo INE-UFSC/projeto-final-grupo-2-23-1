@@ -1,5 +1,6 @@
 from engine import Engine
 
-engine = Engine()
+engines = Engine()
+engines.iniciar()
 
-#tirei o iniciar daqui para colocar no menu
+

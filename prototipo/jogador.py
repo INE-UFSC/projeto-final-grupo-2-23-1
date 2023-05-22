@@ -3,7 +3,7 @@ from math import atan2, pi
 import pygame as pg
 
 from entidade import Entidade
-
+from mapa import Objects
 
 class Jogador(Entidade, pg.sprite.Sprite):
     # TODO: deixar configurável.
@@ -26,19 +26,18 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__arma = arma
         self.__capacete = capacete
 
-        jogador_img = pg.image.load("./sprites/jogador.png").convert_alpha()
+        jogador_img = pg.image.load("C:/Users/Pichau/Desktop/TyskaPOO/Jogo/projeto-final-grupo-2-23-1/prototipo/sprites/jogador.png").convert_alpha()
 
         self.image = pg.transform.scale(jogador_img, (25, 50))
         self.rect = self.image.get_rect(midbottom = pos)
 
         self.__pos = pg.math.Vector2(self.rect.center)
 
-        self.__veloc_vert = 0
+        self.__veloc_vert = 2
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
 
-        # TODO: definir colisão com o chão ao invés de usar valor.
-        self.CHAO = pos[1]
+        self.__objects = Objects.draw()
 
     @property
     def pos(self):
@@ -48,9 +47,10 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__sentido = sentido
 
     def pular(self):
-        if self.rect.bottom >= self.CHAO:
-            self.__veloc_vert = -2*self.__ALTURA_PULO/self.__TEMPO_PULO
-
+        for objects in self.__objects:
+            if self.rect.colliderect(objects):
+                self.__veloc_vert = -2*self.__ALTURA_PULO/self.__TEMPO_PULO
+                
     def mover_mira(self, mira_x, mira_y):
         '''Move a mira e o ângulo da arma'''
 
@@ -83,11 +83,14 @@ class Jogador(Entidade, pg.sprite.Sprite):
             self.__veloc_vert += self.__GRAVIDADE*dt
 
         self.rect.center = round(self.__pos)
-
-        if self.rect.bottom > self.CHAO:
-            self.rect.bottom = self.CHAO
-            self.__pos.y = self.rect.centery
-            self.__veloc_vert = 0
+       
+        for objects in self.__objects:
+            if self.rect.colliderect(objects):                   
+                if self.rect.bottom >= (objects.rect.y)+1: 
+                    if not(self.rect.x <= (objects.rect.left)-5) or not(self.rect.x >= (objects.rect.right)+5) :
+                        self.rect.bottom = (objects.rect.y)+1
+                        self.__pos.y = self.rect.centery
+                        self.__veloc_vert = 1
 
         self.__arma.rect.center = round(self.__pos) + self.ARMA_OFFSET
         self.__capacete.rect.center = round(self.__pos) + self.CAPACETE_OFFSET

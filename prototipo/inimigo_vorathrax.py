@@ -13,7 +13,7 @@ class Vorathrax(Entidade, pg.sprite.Sprite):
 
         self.__angulo = 0
 
-        vorathrax_img = pg.image.load("./sprites/vorathrax.png").convert_alpha()
+        vorathrax_img = pg.image.load("./sprites/Vorathrax.png").convert_alpha()
 
         self.image = pg.transform.scale(vorathrax_img, (40, 60))
         self.image_original = self.image

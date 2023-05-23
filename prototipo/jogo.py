@@ -28,7 +28,7 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Zylox(), Vorathrax())
+        self.__grupo_inimigos = pg.sprite.Group(Aerethor())
 
         self.__numero_rodada = 1
         self.__rodada_encerrada = False

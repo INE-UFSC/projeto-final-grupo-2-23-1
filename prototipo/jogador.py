@@ -1,3 +1,4 @@
+import os
 from math import atan2, pi
 
 import pygame as pg
@@ -27,7 +28,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__arma = arma
         self.__capacete = capacete
 
-        jogador_img = pg.image.load('./sprites/jogador.png').convert_alpha()
+        jogador_img = pg.image.load(os.path.join('sprites', 'jogador.png')).convert_alpha()
 
         self.image = pg.transform.scale(jogador_img, (25, 50))
         self.rect = self.image.get_rect(midbottom = pos)
@@ -39,6 +40,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__sentido = 0
         self.mascara = pg.mask.from_surface(self.image)
 
+        # TODO: tirar os objetos do mapa daqui.
         self.__objects = Objects().objects
 
     @property
@@ -50,7 +52,11 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
     def pular(self):
         for objeto in self.__objects:
-            if self.rect.bottom == objeto.rect.top:
+            encima_horizontal = \
+                objeto.rect.left <= self.rect.left <= objeto.rect.right or \
+                objeto.rect.left <= self.rect.right <= objeto.rect.right
+
+            if self.rect.bottom == objeto.rect.top and encima_horizontal:
                 self.__veloc_vert = -2*self.__ALTURA_PULO/self.__TEMPO_PULO
                 
     def mover_mira(self, mira_x, mira_y):

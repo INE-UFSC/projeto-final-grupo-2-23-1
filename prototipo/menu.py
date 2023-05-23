@@ -2,13 +2,9 @@ import pygame
 
 from button import Button
 
-#bg_img = pygame.image.load()
-#bg_img = pygame.transform.scale(bg_img,(width,height))
-
 
 class Menu:
     def __init__(self):
-        self.__x = False
         self.__tela = pygame.display.get_surface()
         self.__background_color = (0, 0, 0)
         self.__width = self.__tela.get_width()

@@ -1,11 +1,11 @@
+import os
+
 import pygame as pg
 
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
 from inimigo_aerethor import Aerethor
-from inimigo_vorathrax import Vorathrax
-from inimigo_zylox import Zylox
 from jogador import Jogador
 from mapa import Objects
 from projetil_linear import ProjetilLinear
@@ -14,7 +14,7 @@ from projetil_linear import ProjetilLinear
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__background = pg.image.load('./sprites/background.png')
+        self.__background = pg.image.load(os.path.join('sprites', 'background.png'))
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)

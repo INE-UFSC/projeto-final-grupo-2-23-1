@@ -1,9 +1,11 @@
+import os
 from math import atan2, pi
 from random import random
 
 import pygame as pg
 
 from entidade import Entidade
+
 
 class Vorathrax(Entidade, pg.sprite.Sprite):
     '''Vorathrax e a versao mais forte do aerethor, mais resistente, maior e os seus tiros sao mais rapidos'''
@@ -13,7 +15,7 @@ class Vorathrax(Entidade, pg.sprite.Sprite):
 
         self.__angulo = 0
 
-        vorathrax_img = pg.image.load("./sprites/Vorathrax.png").convert_alpha()
+        vorathrax_img = pg.image.load(os.path.join('sprites', 'vorathrax.png')).convert_alpha()
 
         self.image = pg.transform.scale(vorathrax_img, (40, 60))
         self.image_original = self.image

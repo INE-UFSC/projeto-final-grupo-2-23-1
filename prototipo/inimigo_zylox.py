@@ -1,9 +1,11 @@
+import os
 from math import atan2, pi
 from random import random
 
 import pygame as pg
 
 from entidade import Entidade
+
 
 class Zylox(Entidade, pg.sprite.Sprite):
     '''Zylox sao os inimigos perseguidores, eles vao em direcao do jogador e so dao dano na base do contato'''
@@ -13,7 +15,7 @@ class Zylox(Entidade, pg.sprite.Sprite):
 
         self.__angulo = 0
 
-        zylox_img = pg.image.load("./sprites/Zylox.png").convert_alpha()
+        zylox_img = pg.image.load(os.path.join('sprites', 'zylox.png')).convert_alpha()
 
         self.image = pg.transform.scale(zylox_img, (40, 60))
         self.image_original = self.image

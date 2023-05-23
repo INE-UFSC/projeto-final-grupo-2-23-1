@@ -26,7 +26,7 @@ class Arma(Acessorio, pg.sprite.Sprite):
 
         # TODO: colocar tempo de recarga como um parâmetro.
         self.TEMPO_RECARGA = 0.75
-        self.tiro_temporizador = self.TEMPO_RECARGA
+        self.tiro_temporizador = self.TEMPO_RECARGA/2
 
     def atirar_projetil(self):
         if self.tiro_temporizador < self.TEMPO_RECARGA:

@@ -37,6 +37,8 @@ class ProjetilLinearConcreto(ProjetilLinear, pg.sprite.Sprite):
         )
 
         self.rect = self.image.get_rect(center = pos)
+        self.mascara = pg.mask.from_surface(self.image)
+
         self.pos = pg.math.Vector2(self.rect.center)
 
     def atualizar_trajetoria(self, dt):

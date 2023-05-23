@@ -27,6 +27,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
 
         coluna_inicial = 0.2*largura_tela*random() + 0.4*largura_tela
         self.rect = self.image.get_rect(midbottom = (coluna_inicial, 0))
+        self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
 
@@ -43,6 +44,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
 
         self.image = pg.transform.rotozoom(self.imagem_original, angulo*180/pi, 1)
         self.rect = self.image.get_rect(center = self.__pos)
+        self.mascara = pg.mask.from_surface(self.image)
 
     def morrer(self):
         self.kill()

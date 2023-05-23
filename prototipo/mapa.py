@@ -1,5 +1,5 @@
 import pygame
-import random
+
 #TODO: getters e setters e deixar modificavel
 
 # GLOBAL VARIABLES
@@ -10,11 +10,7 @@ HEIGHT = 576
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 size = (WIDTH, HEIGHT)
-screen = pygame.display.set_mode(size)
-pygame.display.set_caption("Creating Sprite")
 all_sprites_list = pygame.sprite.Group()
-exit = True
-clock = pygame.time.Clock()
   
 # Object class
 class Sprite(pygame.sprite.Sprite):
@@ -29,54 +25,33 @@ class Sprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 class Objects:
-    def draw():
-        objects = []
+    def __init__(self):
+        self.objects = []
 
-        objects.append(Sprite(RED, 1000, 15)) #Limite da esquerda
-        objects[len(objects)-1].rect.x = 0
-        objects[len(objects)-1].rect.y = 0
+        self.objects.append(Sprite(RED, 1000, 15)) #Limite da esquerda
+        self.objects[len(self.objects)-1].rect.x = 0
+        self.objects[len(self.objects)-1].rect.y = 0
 
-        objects.append(Sprite(WHITE, 1000, 3000)) #Chao
-        objects[len(objects)-1].rect.x = 15
-        objects[len(objects)-1].rect.y = 560
+        self.objects.append(Sprite(WHITE, 1000, 3000)) #Chao
+        self.objects[len(self.objects)-1].rect.x = 15
+        self.objects[len(self.objects)-1].rect.y = 560
 
-        objects.append(Sprite(RED, 900, 15)) #Limite da direita
-        objects[len(objects)-1].rect.x = 1009
-        objects[len(objects)-1].rect.y = 0
+        self.objects.append(Sprite(RED, 900, 15)) #Limite da direita
+        self.objects[len(self.objects)-1].rect.x = 1009
+        self.objects[len(self.objects)-1].rect.y = 0
 
-        objects.append(Sprite(WHITE, 550, 150)) #Bloco maior da esquerda
-        objects[len(objects)-1].rect.x = 15
-        objects[len(objects)-1].rect.y = 489
+        self.objects.append(Sprite(WHITE, 550, 150)) #Bloco maior da esquerda
+        self.objects[len(self.objects)-1].rect.x = 15
+        self.objects[len(self.objects)-1].rect.y = 489
 
-        objects.append(Sprite(WHITE, 550, 200)) #Bloco menor da esquerda
-        objects[len(objects)-1].rect.x = 150
-        objects[len(objects)-1].rect.y = 525
+        self.objects.append(Sprite(WHITE, 550, 200)) #Bloco menor da esquerda
+        self.objects[len(self.objects)-1].rect.x = 150
+        self.objects[len(self.objects)-1].rect.y = 525
 
-        objects.append(Sprite(WHITE, 550, 200)) #Bloco menor da direita
-        objects[len(objects)-1].rect.x = 625
-        objects[len(objects)-1].rect.y = 525
+        self.objects.append(Sprite(WHITE, 550, 200)) #Bloco menor da direita
+        self.objects[len(self.objects)-1].rect.x = 625
+        self.objects[len(self.objects)-1].rect.y = 525
 
-        objects.append(Sprite(WHITE, 550, 200)) #Bloco maior da direita
-        objects[len(objects)-1].rect.x = 809
-        objects[len(objects)-1].rect.y = 489
-
-        return objects
-    
-  
-''''
-pygame.init() 
-all_sprites_list.add(Objects.draw())
-all_sprites_list.update()
-screen.fill(SURFACE_COLOR)
-all_sprites_list.draw(screen)
-pygame.display.flip()
-while exit:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            exit = False
-    
-   
-    clock.tick(60)
-  
-pygame.quit()
-'''
+        self.objects.append(Sprite(WHITE, 550, 200)) #Bloco maior da direita
+        self.objects[len(self.objects)-1].rect.x = 809
+        self.objects[len(self.objects)-1].rect.y = 489

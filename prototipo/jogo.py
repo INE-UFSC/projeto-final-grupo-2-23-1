@@ -1,18 +1,20 @@
 import pygame as pg
-from inimigo_vorathrax import Vorathrax
-from inimigo_zylox import Zylox
-from inimigo_aerethor import Aerethor
+
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
+from inimigo_aerethor import Aerethor
+from inimigo_vorathrax import Vorathrax
+from inimigo_zylox import Zylox
 from jogador import Jogador
-from projetil_linear import ProjetilLinear
 from mapa import Objects
+from projetil_linear import ProjetilLinear
+
 
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__background = pg.image.load('C:/Users/Pichau/Desktop/TyskaPOO/Jogo/projeto-final-grupo-2-23-1/prototipo/sprites/background.png')
+        self.__background = pg.image.load('./sprites/background.png')
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)
@@ -21,8 +23,8 @@ class Jogo:
 
         self.hud = BarraStatus()
 
-        self.__objects = Objects.draw()
-        self.__jogador = Jogador(arma, capacete, (400, (self.__objects[1].rect.y)-2))
+        self.__objects = Objects()
+        self.__jogador = Jogador(arma, capacete, (400, (self.__objects.objects[1].rect.midtop[1])-2))
 
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
         self.__grupo_projeteis_jogador = pg.sprite.Group()
@@ -42,7 +44,6 @@ class Jogo:
         return self.__rodada_encerrada
 
     def rodar(self, dt):
-        objects = Objects.draw()
         self.__tela.blit((self.__background), (0,0))
         if not self.__rodada_encerrada:
             self.ler_entrada()
@@ -58,7 +59,10 @@ class Jogo:
         proj_colide_inimigo = pg.sprite.groupcollide(
             self.__grupo_inimigos,
             self.__grupo_projeteis_jogador,
-            False, True
+            False, True,
+            lambda a, b: b.mascara.overlap(
+                a.mascara, ((a.rect.x - b.rect.x), (a.rect.y - b.rect.y))
+            )
         )
         if proj_colide_inimigo is not None:
             for inimigo, projs in proj_colide_inimigo.items():

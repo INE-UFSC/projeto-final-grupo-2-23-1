@@ -5,6 +5,7 @@ import pygame as pg
 from entidade import Entidade
 from mapa import Objects
 
+
 class Jogador(Entidade, pg.sprite.Sprite):
     # TODO: deixar configurável.
     # Altura do pulo em pixels.
@@ -26,7 +27,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__arma = arma
         self.__capacete = capacete
 
-        jogador_img = pg.image.load("C:/Users/Pichau/Desktop/TyskaPOO/Jogo/projeto-final-grupo-2-23-1/prototipo/sprites/jogador.png").convert_alpha()
+        jogador_img = pg.image.load('./sprites/jogador.png').convert_alpha()
 
         self.image = pg.transform.scale(jogador_img, (25, 50))
         self.rect = self.image.get_rect(midbottom = pos)
@@ -37,7 +38,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
 
-        self.__objects = Objects.draw()
+        self.__objects = Objects().objects
 
     @property
     def pos(self):
@@ -47,8 +48,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__sentido = sentido
 
     def pular(self):
-        for objects in self.__objects:
-            if self.rect.colliderect(objects):
+        for objeto in self.__objects:
+            if self.rect.bottom == objeto.rect.top:
                 self.__veloc_vert = -2*self.__ALTURA_PULO/self.__TEMPO_PULO
                 
     def mover_mira(self, mira_x, mira_y):
@@ -77,20 +78,30 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         self.__pos.x += self.__sentido * self.veloc_mov * dt
 
+        self.rect.center = round(self.__pos)
+
+        for objects in self.__objects:
+            if self.rect.colliderect(objects):
+                if self.__sentido == -1:
+                    self.rect.left = objects.rect.right
+                elif self.__sentido == 1:
+                    self.rect.right = objects.rect.left
+                self.__pos.x = self.rect.centerx
+
         if self.__veloc_vert != 0:
             # Método de Verlet assumindo aceleração constante para o cálculo da posição.
             self.__pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
             self.__veloc_vert += self.__GRAVIDADE*dt
 
         self.rect.center = round(self.__pos)
-       
+
         for objects in self.__objects:
-            if self.rect.colliderect(objects):                   
-                if self.rect.bottom >= (objects.rect.y)+1: 
-                    if not(self.rect.x <= (objects.rect.left)-5) or not(self.rect.x >= (objects.rect.right)+5) :
-                        self.rect.bottom = (objects.rect.y)+1
-                        self.__pos.y = self.rect.centery
-                        self.__veloc_vert = 1
+            if self.rect.colliderect(objects):
+                if self.__veloc_vert < 0:
+                    self.rect.top = objects.rect.bottom
+                elif self.__veloc_vert > 0:
+                    self.rect.bottom = objects.rect.top
+                self.__pos.y = self.rect.centery
 
         self.__arma.rect.center = round(self.__pos) + self.ARMA_OFFSET
         self.__capacete.rect.center = round(self.__pos) + self.CAPACETE_OFFSET

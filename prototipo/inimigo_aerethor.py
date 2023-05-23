@@ -4,6 +4,7 @@ from random import random
 import pygame as pg
 
 from entidade import Entidade
+from projetil_linear import ProjetilLinear
 
 
 class Aerethor(Entidade, pg.sprite.Sprite):
@@ -30,6 +31,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
         self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
+        self.__tipo_projetil = ProjetilLinear(5, 300, 3, 1)
 
     def __rotacionar(self, pos_ref):
         angulo = 3*pi/2 - atan2(
@@ -45,6 +47,18 @@ class Aerethor(Entidade, pg.sprite.Sprite):
         self.image = pg.transform.rotozoom(self.imagem_original, angulo*180/pi, 1)
         self.rect = self.image.get_rect(center = self.__pos)
         self.mascara = pg.mask.from_surface(self.image)
+
+    def atirar(self, jog_pos):
+        angulo = pi - atan2(
+            self.__pos.y - jog_pos.y,
+            self.__pos.x - jog_pos.x
+        )
+        proj = self.__tipo_projetil.criar_projetil(
+            self.rect.center,
+            angulo
+        )
+
+        return proj
 
     def morrer(self):
         self.kill()

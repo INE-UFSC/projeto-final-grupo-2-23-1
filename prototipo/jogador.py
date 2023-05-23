@@ -37,6 +37,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__veloc_vert = 2
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
+        self.mascara = pg.mask.from_surface(self.image)
 
         self.__objects = Objects().objects
 
@@ -72,6 +73,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
     def morrer(self):
         self.kill()
+        raise SystemExit
 
     def update(self, dt):
         '''Atualiza a posição do sprite do jogador.'''

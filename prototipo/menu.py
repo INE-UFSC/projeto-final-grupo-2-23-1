@@ -1,7 +1,8 @@
 import pygame
+import os
 
 from button import Button
-
+from pygame import mixer
 
 class Menu:
     def __init__(self):

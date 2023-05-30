@@ -1,11 +1,10 @@
 import os
 from math import atan2, pi
-
+from pygame import mixer
 import pygame as pg
 
 from entidade import Entidade
 from mapa import Objects
-
 
 class Jogador(Entidade, pg.sprite.Sprite):
     # TODO: deixar configurável.
@@ -74,7 +73,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
     def atirar(self):
         proj = self.__arma.atirar_projetil()
-
+        
+ 
         return proj
 
     def morrer(self):

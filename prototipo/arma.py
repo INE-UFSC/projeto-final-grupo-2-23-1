@@ -1,6 +1,6 @@
 import os
 from math import cos, pi, sin
-
+from pygame import mixer
 import pygame as pg
 
 from acessorio import Acessorio
@@ -39,7 +39,8 @@ class Arma(Acessorio, pg.sprite.Sprite):
             self.tiro_pos,
             self.__mira_angulo
         )
-
+        tiro_som = mixer.Sound(os.path.join('musica', 'som_pistola_longa.wav'))
+        tiro_som.play()
         return proj
 
     def rotacionar(self, angulo, pivo):

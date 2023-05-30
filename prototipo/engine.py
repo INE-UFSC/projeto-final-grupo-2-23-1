@@ -1,8 +1,8 @@
 from enum import Enum
 from time import perf_counter
-
+import os
 import pygame as pg
-
+from pygame import mixer
 from jogo import Jogo
 from menu import Menu
 
@@ -19,6 +19,7 @@ class Engine:
     def __init__(self):
         pg.init()
         pg.display.set_caption('Éter Mortal')
+        mixer.init()
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
 
@@ -28,7 +29,8 @@ class Engine:
 
     def iniciar(self):
         tempo_anterior = perf_counter()
-
+        mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+        mixer.music.play(-1)
         while True:
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
@@ -42,6 +44,7 @@ class Engine:
 
             if self.__estado == Estado.MENU_PRINCIPAL:
                 self.__menu.rodar()
+                
 
                 if self.__menu.iniciar_jogo:
                     self.__estado = Estado.JOGO

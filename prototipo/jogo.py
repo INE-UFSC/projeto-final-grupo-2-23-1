@@ -1,7 +1,7 @@
 import os
 
 import pygame as pg
-
+from pygame import mixer
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete

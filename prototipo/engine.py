@@ -29,8 +29,6 @@ class Engine:
 
     def iniciar(self):
         tempo_anterior = perf_counter()
-        mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
-        mixer.music.play(-1)
         while True:
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
@@ -47,6 +45,8 @@ class Engine:
                 
 
                 if self.__menu.iniciar_jogo:
+                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+                    mixer.music.play(-1)  
                     self.__estado = Estado.JOGO
             elif self.__estado == Estado.JOGO:
                 self.__jogo.rodar(dt)

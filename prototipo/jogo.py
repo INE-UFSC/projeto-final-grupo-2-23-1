@@ -47,7 +47,7 @@ class Jogo:
         return self.__rodada_encerrada
 
     def rodar(self, dt):
-        self.__temporizador_inimigo += dt
+        self.__temporizador_inimigo += dt          
 
         if self.__temporizador_inimigo >= 1.5:
             self.__temporizador_inimigo = 0

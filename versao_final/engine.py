@@ -5,6 +5,7 @@ import pygame as pg
 from pygame import mixer
 from jogo import Jogo
 from menu import Menu
+from fim_jogo import Fim
 
 # TODO: adicionar seletor de resolução e modo tela cheia no menu.
 TELA_LARGURA = 1024
@@ -14,6 +15,7 @@ TELA_COMPRIMENTO = 576
 class Estado(Enum):
     MENU_PRINCIPAL = 0
     JOGO = 1
+    FIM = 2
 
 class Engine:
     def __init__(self):
@@ -25,6 +27,7 @@ class Engine:
 
         self.__jogo = Jogo()
         self.__menu = Menu()
+        self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
 
     def iniciar(self):
@@ -49,6 +52,12 @@ class Engine:
                     mixer.music.play(-1)  
                     self.__estado = Estado.JOGO
             elif self.__estado == Estado.JOGO:
-                self.__jogo.rodar(dt)
+                try:
+                    self.__jogo.rodar(dt)
+                except SystemError:
+                    self.__estado = Estado.FIM
+
+            elif self.__estado == Estado.FIM:
+                self.__fim.rodar()
 
             pg.display.flip()

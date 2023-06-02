@@ -79,7 +79,6 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
     def morrer(self):
         self.kill()
-        raise SystemExit
 
     def update(self, dt):
         '''Atualiza a posição do sprite do jogador.'''

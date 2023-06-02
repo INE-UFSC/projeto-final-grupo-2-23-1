@@ -50,6 +50,8 @@ class Jogo:
 
     def rodar(self, dt):
         self.__temporizador_inimigo += dt
+        if self.__jogador not in self.__grupo_jogador:
+            raise SystemError
 
         if self.__temporizador_inimigo >= 1.5:
             self.__temporizador_inimigo = 0

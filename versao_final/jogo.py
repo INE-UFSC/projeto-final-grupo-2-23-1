@@ -1,7 +1,6 @@
 import os
 from inimigo_zylox import Zylox
 import pygame as pg
-from pygame import mixer
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
@@ -9,6 +8,8 @@ from inimigo_aerethor import Aerethor
 from jogador import Jogador
 from mapa import Objects
 from projetil_linear import ProjetilLinear
+
+from math import floor
 
 
 class Jogo:
@@ -30,11 +31,12 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Aerethor(), Zylox())
+        self.__grupo_inimigos = pg.sprite.Group()
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
 
-        self.__numero_rodada = 1
+        self.__numero_rodada = 0
         self.__rodada_encerrada = False
+        self.iniciar_proxima_rodada()
 
         self.__temporizador_inimigo = 0
 
@@ -108,6 +110,9 @@ class Jogo:
             for inimigo in jogador_colide_inimigo:
                 self.__jogador.sofrer_dano(inimigo.dano)
 
+        if len(self.__grupo_inimigos) == 0:
+            self.iniciar_proxima_rodada()
+
         self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
 
     def ler_entrada(self):
@@ -135,3 +140,12 @@ class Jogo:
     def iniciar_proxima_rodada(self):
         self.__numero_rodada += 1
         self.__rodada_encerrada = False
+
+        self.num_aerethor = floor(2 + self.__numero_rodada*0.7)
+        self.num_zylox = floor(0.8 + self.__numero_rodada*0.2)
+
+        for _ in range(self.num_aerethor):
+            self.__grupo_inimigos.add(Aerethor())
+
+        for _ in range(self.num_zylox):
+            self.__grupo_inimigos.add(Zylox())

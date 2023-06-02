@@ -1,1 +1,7 @@
-Esse diretório será utilizado para a última etapa do projeto, na qual a versão final será desenvolvida.
+# Éter Mortal
+
+* Rode o jogo através de `app.py`.
+
+## Requerimentos
+
+* `pygame`: versão mais atualizada.

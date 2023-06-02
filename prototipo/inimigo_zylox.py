@@ -15,7 +15,7 @@ class Zylox(Entidade, pg.sprite.Sprite):
 
         self.__angulo = 0
 
-        zylox_img = pg.image.load(os.path.join('sprites', 'zylox.png')).convert_alpha()
+        zylox_img = pg.image.load(os.path.join('sprites', 'Zylox.png')).convert_alpha()
 
         self.image = pg.transform.scale(zylox_img, (40, 60))
         self.image_original = self.image

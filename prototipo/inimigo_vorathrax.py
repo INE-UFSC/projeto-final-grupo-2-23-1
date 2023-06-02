@@ -5,10 +5,12 @@ from random import random
 import pygame as pg
 
 from entidade import Entidade
+from projetil_linear import ProjetilLinear
 
 
 class Vorathrax(Entidade, pg.sprite.Sprite):
     '''Vorathrax e a versao mais forte do aerethor, mais resistente, maior e os seus tiros sao mais rapidos'''
+    
     def __init__(self):
         Entidade.__init__(self, 25, 1, 3)
         pg.sprite.Sprite.__init__(self)
@@ -17,17 +19,20 @@ class Vorathrax(Entidade, pg.sprite.Sprite):
 
         vorathrax_img = pg.image.load(os.path.join('sprites', 'vorathrax.png')).convert_alpha()
 
-        self.image = pg.transform.scale(vorathrax_img, (40, 60))
+        self.image = pg.transform.scale(vorathrax_img, (70, 90))
         self.image_original = self.image
 
         (largura_tela, altura_tela) = pg.display.get_window_size()
+
 
         self.__linha_mestra = 0.3*altura_tela*random() + 0.2*altura_tela
 
         coluna_inicial = 0.2*largura_tela*random() + 0.2*altura_tela
         self.rect = self.image.get_rect(midbottom = (coluna_inicial, 0))
+        self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
+        self.__tipo_projetil = ProjetilLinear(10, 300, 6, 1)
 
     def __rotacionar(self, pos_ref):
         angulo = 3*pi/2 - atan2(
@@ -37,11 +42,24 @@ class Vorathrax(Entidade, pg.sprite.Sprite):
 
         if angulo == self.__angulo:
             return
-        
+
         self.__angulo = angulo
 
         self.image = pg.transform.rotozoom(self.image_original, angulo*180/pi, 1)
         self.rect = self.image.get_rect(center = self.__pos)
+        self.mascara = pg.mask.from_surface(self.image)
+
+    def atirar(self, jog_pos):
+        angulo = pi - atan2(
+            self.__pos.y - jog_pos.y,
+            self.__pos.x - jog_pos.x
+        )
+        proj = self.__tipo_projetil.criar_projetil(
+            self.rect.center,
+            angulo
+        )
+
+        return proj
 
     def morrer(self):
         self.kill()

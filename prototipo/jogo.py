@@ -9,6 +9,7 @@ from inimigo_aerethor import Aerethor
 from jogador import Jogador
 from mapa import Objects
 from projetil_linear import ProjetilLinear
+from inimigo_vorathrax import Vorathrax
 
 
 class Jogo:
@@ -30,7 +31,7 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Aerethor(), Aerethor())
+        self.__grupo_inimigos = pg.sprite.Group(Vorathrax())
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
 
         self.__numero_rodada = 1

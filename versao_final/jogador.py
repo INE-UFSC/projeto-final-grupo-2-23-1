@@ -21,7 +21,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
     CAPACETE_OFFSET = (0, -22)
 
     def __init__(self, arma, capacete, pos):
-        Entidade.__init__(self, 30, 150, 1)
+        Entidade.__init__(self, 30, 150, 1, 1.5)
         pg.sprite.Sprite.__init__(self)
 
         self.__arma = arma
@@ -85,6 +85,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
         '''Atualiza a posição do sprite do jogador.'''
 
         self.__pos.x += self.__sentido * self.veloc_mov * dt
+
+        super().update(dt)
 
         self.rect.center = round(self.__pos)
 

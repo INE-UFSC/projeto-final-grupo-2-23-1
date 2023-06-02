@@ -12,7 +12,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
     '''Aerethor é o inimigo mais básico, ele voa e atira projéteis no jogador.'''
 
     def __init__(self):
-        Entidade.__init__(self, 15, 1, 1)
+        Entidade.__init__(self, 15, 1, 1, 0.25)
         pg.sprite.Sprite.__init__(self)
 
         self.__angulo = 0
@@ -65,6 +65,8 @@ class Aerethor(Entidade, pg.sprite.Sprite):
         self.kill()
 
     def update(self, jog_pos, dt):
+        super().update(dt)
+
         dif_jogador = jog_pos.x - self.__pos.x
         self.__pos.x += self.veloc_mov*dif_jogador*dt
 

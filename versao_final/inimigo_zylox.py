@@ -10,8 +10,10 @@ from entidade import Entidade
 class Zylox(Entidade, pg.sprite.Sprite):
     '''Zylox sao os inimigos perseguidores, eles vao em direcao do jogador e so dao dano na base do contato'''
     def __init__(self):
-        Entidade.__init__(self, 40, 0.5, 0)
+        Entidade.__init__(self, 40, 0.5, 0, 0.25)
         pg.sprite.Sprite.__init__(self)
+
+        self.dano = 8
 
         self.__angulo = 0
 
@@ -22,10 +24,9 @@ class Zylox(Entidade, pg.sprite.Sprite):
 
         (largura_tela, altura_tela) = pg.display.get_window_size()
 
-        self.__linha_mestra = 0.3*altura_tela*random() + 0.2*altura_tela
-
         coluna_inicial = 0.2*largura_tela*random() + 0.2*altura_tela
         self.rect = self.image.get_rect(midbottom = (coluna_inicial, 0))
+        self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
 
@@ -47,6 +48,8 @@ class Zylox(Entidade, pg.sprite.Sprite):
         self.kill()
 
     def update(self, jog_pos, dt):
+        super().update(dt)
+
         dif_jogador_x = jog_pos.x - self.__pos.x
         self.__pos.x += self.veloc_mov*dif_jogador_x*dt
 

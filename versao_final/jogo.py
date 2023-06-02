@@ -30,7 +30,7 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Aerethor(), Aerethor())
+        self.__grupo_inimigos = pg.sprite.Group(Aerethor(), Aerethor(), Zylox())
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
 
         self.__numero_rodada = 1
@@ -47,13 +47,14 @@ class Jogo:
         return self.__rodada_encerrada
 
     def rodar(self, dt):
-        self.__temporizador_inimigo += dt          
+        self.__temporizador_inimigo += dt
 
         if self.__temporizador_inimigo >= 1.5:
             self.__temporizador_inimigo = 0
             for inimigo in self.__grupo_inimigos:
-                proj = inimigo.atirar(self.__jogador.pos)
-                self.__grupo_projeteis_inimigo.add(proj)
+                if type(inimigo) != Zylox:
+                    proj = inimigo.atirar(self.__jogador.pos)
+                    self.__grupo_projeteis_inimigo.add(proj)
 
         self.__tela.blit((self.__background), (0,0))
         if not self.__rodada_encerrada:
@@ -93,6 +94,19 @@ class Jogo:
         if proj_inimigo_colide_jogador:
             for proj in proj_inimigo_colide_jogador:
                 self.__jogador.sofrer_dano(proj.dano)
+
+        jogador_colide_inimigo = pg.sprite.spritecollide(
+            self.__jogador,
+            self.__grupo_inimigos,
+            False,
+            lambda a, b: b.mascara.overlap(
+                a.mascara, ((a.rect.x - b.rect.x), (a.rect.y - b.rect.y))
+            )
+        )
+
+        if jogador_colide_inimigo is not None:
+            for inimigo in jogador_colide_inimigo:
+                self.__jogador.sofrer_dano(inimigo.dano)
 
         self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
 

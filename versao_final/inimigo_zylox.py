@@ -30,6 +30,14 @@ class Zylox(Entidade, pg.sprite.Sprite):
 
         self.__pos = pg.math.Vector2(self.rect.center)
 
+    @property
+    def pos(self):
+        return self.__pos
+
+    @pos.setter
+    def pos(self, pos):
+        self.__pos = pos
+
     def __rotacionar(self, pos_ref):
         angulo = 3*pi/2 - atan2(
             self.__pos.y - pos_ref.y,

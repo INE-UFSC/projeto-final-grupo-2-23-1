@@ -8,6 +8,7 @@ from inimigo_aerethor import Aerethor
 from jogador import Jogador
 from mapa import Objects
 from projetil_linear import ProjetilLinear
+from inimigo_grupo import InimigoGrupo
 
 from math import floor
 
@@ -31,7 +32,7 @@ class Jogo:
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
         # TODO: melhorar geração de inimigos.
-        self.__grupo_inimigos = pg.sprite.Group()
+        self.__grupo_inimigos = InimigoGrupo()
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
 
         self.__numero_rodada = 0
@@ -49,14 +50,16 @@ class Jogo:
         return self.__rodada_encerrada
 
     def rodar(self, dt):
-        self.__temporizador_inimigo += dt
         if self.__jogador not in self.__grupo_jogador:
             raise SystemError
 
+        self.__temporizador_inimigo += dt
+
         if self.__temporizador_inimigo >= 1.5:
             self.__temporizador_inimigo = 0
+
             for inimigo in self.__grupo_inimigos:
-                if type(inimigo) != Zylox:
+                if not isinstance(inimigo, Zylox):
                     proj = inimigo.atirar(self.__jogador.pos)
                     self.__grupo_projeteis_inimigo.add(proj)
 

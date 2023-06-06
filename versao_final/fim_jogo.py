@@ -32,5 +32,4 @@ class Fim:
 
         if self.__tente_button.clicked:
             self.iniciar_jogo = True
-        pg.display.update()
 

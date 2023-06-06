@@ -48,9 +48,10 @@ class Engine:
                 
 
                 if self.__menu.iniciar_jogo:
-                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
-                    mixer.music.play(-1)  
                     self.__estado = Estado.JOGO
+                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+                    mixer.music.play(-1)
+
             elif self.__estado == Estado.JOGO:
                 try:
                     self.__jogo.rodar(dt)
@@ -59,5 +60,10 @@ class Engine:
 
             elif self.__estado == Estado.FIM:
                 self.__fim.rodar()
+
+                if self.__fim.iniciar_jogo:
+                    self.__estado = Estado.JOGO
+                    del self.__jogo
+                    self.__jogo = Jogo()
 
             pg.display.flip()

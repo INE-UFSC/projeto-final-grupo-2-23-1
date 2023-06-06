@@ -2,7 +2,7 @@ import pygame
 
 
 class Button:
-    def __init__(self, color, x,y,width,height, text=''):
+    def __init__(self, color, x,y,width,height, text='', fontsize = 60):
         self.color = color
         self.x = x
         self.y = y
@@ -10,8 +10,9 @@ class Button:
         self.height = height
         self.text = text
         self.rect = None
+        self.fontsize = fontsize
         if self.text != '':
-            font = pygame.font.SysFont('', 60)
+            font = pygame.font.SysFont('', self.fontsize)
             self.textfont = font.render(self.text, 1, (255, 255, 255))
             self.rect = self.textfont.get_rect()
         self.clicked = False

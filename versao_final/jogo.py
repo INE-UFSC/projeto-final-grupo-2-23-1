@@ -116,7 +116,8 @@ class Jogo:
                 self.__jogador.sofrer_dano(inimigo.dano)
 
         if len(self.__grupo_inimigos) == 0:
-            self.iniciar_proxima_rodada()
+            self.__rodada_encerrada = True
+
 
         self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
 

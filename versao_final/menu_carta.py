@@ -18,8 +18,9 @@ class MenuCarta:
         self.__titulo_button = Button((0, 0, 0), 20, 20, 200, 100, "Upgrades", fontsize = 50)
         self.__upgrade_button, self.image = UB.buttons()
         self.__reroll_button = Button((0,0,255), 837, 200, 150, 200, "Rerrol", fontsize=2)
-        self.__confirm_buttom = Button((0,0,100), self.__width/2 - 100, 500, 130, 50, "CONFIRM", fontsize=40)
-    
+        self.__confirm_buttom = Button((0,0,100), self.__width/2 - 75, 500, 150, 50, "CONFIRM", fontsize=40)
+        self.__text_confirmado = Button((0,0,0), self.__width/2 - 75, 450, 150, 50, "SELECIONE UM POWER UP", fontsize=40)
+
     @property
     def pronto(self):
         return self.__pronto
@@ -30,7 +31,8 @@ class MenuCarta:
         self.__titulo_button.draw(self.__tela)
         self.__reroll_button.draw(self.__tela)
         self.__confirm_buttom.draw(self.__tela)
-        
+        self.__text_confirmado.draw(self.__tela)
+
         for i in range(4):
             self.__upgrade_button[i].draw(self.__tela)
         
@@ -44,15 +46,17 @@ class MenuCarta:
                 self.__confirm_buttom.color = (0,0,255)
                 self.__selected = self.__upgrade_button[i]
                 self.__upgrade_button[i].clicked = False
+                self.__text_confirmado.text = self.__selected.text
+       
         
         if self.__reroll_button.clicked:
             #TODO verificar moeda do jogo
-
             self.__confirm_buttom.color = (0,0,100)
             UB = UpgradeButton()
             self.__upgrade_button, self.image = UB.buttons()
             self.__reroll_button.clicked = False
-        
+            self.__text_confirmado.text = "SELECIONE UM POWER UP"
+
         if self.__confirm_buttom.clicked and (self.__selected != None):
             self.__pronto = True
             print(self.__selected.text)

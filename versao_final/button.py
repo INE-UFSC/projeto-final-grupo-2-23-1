@@ -33,3 +33,4 @@ class Button:
             if (click[0] == True):
                 # Melhorar aqui depois.
                 self.clicked = True
+                print('f')

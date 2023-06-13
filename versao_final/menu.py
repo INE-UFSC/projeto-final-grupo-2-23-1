@@ -1,6 +1,7 @@
 import pygame
 import os
-
+from arma import Arma
+from projetil_linear import ProjetilLinear
 from button import Button
 from capacete_militar import CapaceteMilitar
 from math import sin, cos, pi, radians
@@ -19,7 +20,18 @@ class Menu:
         self.__capacete_button = Button((0, 0, 0), self.__width/2 - 300 , self.__height/2 - 155, 0, 0, 'Capacete', fontsize = 40)
         self.__triangulo_D = pygame.transform.scale(pygame.image.load(os.path.join('imagens', 'triangulo.png')).convert(), (40, 40))
         self.__triangulo_E = pygame.transform.scale(pygame.image.load(os.path.join('imagens', 'triangulo.png')).convert(), (40, 40))
+        self.__button_triangulo_D_capacete = Button((0, 0, 0), 290 , 180, 0, 0, ' ', fontsize = 40)
+        self.__button_triangulo_E_capacete = Button((0, 0, 0), 100, 180, 0, 0, ' ', fontsize = 40)
+        self.__button_triangulo_D_arma = Button((0, 0, 0), 290, 400, 0, 0, ' ', fontsize = 40)
+        self.__button_triangulo_E_arma = Button((0, 0, 0), 100 , 400, 0, 0, ' ', fontsize = 40)
         self.__arma_button = Button((0, 0, 0), self.__width/2 - 300 , self.__height/2 + 80, 0, 0, 'Arma', fontsize = 40)
+        rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
+        rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
+        ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
+        ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
+        pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
+        pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
+        self.armas = [rifle, ak47, pistola]
 
         
 
@@ -36,7 +48,10 @@ class Menu:
         self.__arma_button.draw(self.__tela)
         self.__tela.blit(self.__triangulo_E, (100, 400))
         self.__tela.blit(self.__triangulo_D, (290, 400))
-
+        self.__button_triangulo_D_arma.draw(self.__tela)
+        self.__button_triangulo_E_arma.draw(self.__tela)
+        self.__button_triangulo_D_capacete.draw(self.__tela)
+        self.__button_triangulo_E_capacete.draw(self.__tela)
         if self.__quit_button.clicked:
             raise SystemExit
 

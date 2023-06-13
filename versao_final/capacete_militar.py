@@ -3,7 +3,9 @@ from capacete import Capacete
 
 
 class CapaceteMilitar(Capacete):
-    def __init__(self, velocidade, armadura):
+    def __init__(self):
         Capacete.__init__(self, 'Capacete Militar', 2, 'Mais vida, menos velocidade')
-        self.__velocidade = velocidade
-        self.__armadura = armadura
+        self.__velocidade = 1.5
+        self.__armadura = 0.8
+
+

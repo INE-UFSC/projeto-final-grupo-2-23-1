@@ -7,9 +7,9 @@ from acessorio import Acessorio
 from projetil import Projetil
 
 
-class Arma(Acessorio, pg.sprite.Sprite):
-    def __init__(self, nome, custo, descricao, tipo_projetil: Projetil):
-        Acessorio.__init__(self, nome, custo, descricao)
+class Arma(pg.sprite.Sprite):
+    def __init__(self, nome, img_arquivo, tempo_recarga, tipo_projetil: Projetil):
+        #Acessorio.__init__(self, nome, custo, descricao)
         pg.sprite.Sprite.__init__(self)
 
         self.__tipo_projetil = tipo_projetil
@@ -17,7 +17,7 @@ class Arma(Acessorio, pg.sprite.Sprite):
         self.__mira_angulo = 0
 
         # TODO: adicionar mais armas e deixar o sprite customizável.
-        arma_img = pg.image.load(os.path.join('sprites', 'pistola_longa.png')).convert_alpha()
+        arma_img = pg.image.load(os.path.join('sprites', 'armas', img_arquivo)).convert_alpha()
         self.image = pg.transform.scale(arma_img, (70, 18))
         self.rect = self.image.get_rect()
         # Esse vetor determina em qual posição o projétil é lançado.
@@ -26,7 +26,7 @@ class Arma(Acessorio, pg.sprite.Sprite):
         self.imagem_original = self.image
 
         # TODO: colocar tempo de recarga como um parâmetro.
-        self.TEMPO_RECARGA = 0.75
+        self.TEMPO_RECARGA = tempo_recarga
         self.tiro_temporizador = self.TEMPO_RECARGA/2
 
     def atirar_projetil(self):

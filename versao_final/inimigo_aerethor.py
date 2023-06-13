@@ -32,7 +32,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
         self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
-        self.__tipo_projetil = ProjetilLinear(5, 300, 3, 1)
+        self.__tipo_projetil = ProjetilLinear(5, 300, 3, (255, 46, 255), 1)
 
     @property
     def pos(self):

@@ -20,8 +20,17 @@ class Jogo:
         self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
-        proj_tipo = ProjetilLinear(5, 300, 3, 1)
-        arma = Arma('Pistola longa', 0, '', proj_tipo)
+        rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
+        rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
+
+        ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
+        ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
+
+        pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
+        pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
+
+        arma = ak47
+
         capacete = Capacete('Capacete militar', 0, '')
 
         self.hud = BarraStatus()
@@ -32,7 +41,6 @@ class Jogo:
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
         self.__grupo_projeteis_jogador = pg.sprite.Group()
 
-        # TODO: melhorar geração de inimigos.
         self.__grupo_inimigos = InimigoGrupo()
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
 

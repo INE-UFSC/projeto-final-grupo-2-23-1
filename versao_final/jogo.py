@@ -9,6 +9,7 @@ from capacete import Capacete
 from inimigo_aerethor import Aerethor
 from inimigo_grupo import InimigoGrupo
 from inimigo_zylox import Zylox
+from inimigo_vorathrax import Vorathrax
 from jogador import Jogador, MorteJogador
 from mapa import ler_bitmap
 from projetil_linear import ProjetilLinear
@@ -79,12 +80,14 @@ class Jogo:
             self.__grupo_projeteis_jogador.update(dt)
             self.__grupo_inimigos.update(self.__jogador.pos, dt)
             self.__grupo_projeteis_inimigo.update(dt)
+        
 
         self.__grupo_jogador.draw(self.__tela)
         self.__grupo_projeteis_jogador.draw(self.__tela)
         self.__grupo_inimigos.draw(self.__tela)
         self.__grupo_projeteis_inimigo.draw(self.__tela)
         self.__mapa.draw(self.__tela)
+        
 
         # TODO: realocar verificação de colisão para outro lugar.
         proj_jog_colide_inimigo = pg.sprite.groupcollide(
@@ -157,11 +160,23 @@ class Jogo:
         self.__numero_rodada += 1
         self.__rodada_encerrada = False
 
-        self.num_aerethor = floor(2 + self.__numero_rodada*0.7)
-        self.num_zylox = floor(0.8 + self.__numero_rodada*0.2)
+        if self.__grupo_projeteis_inimigo is not None:
+            self.__grupo_projeteis_inimigo.empty()
 
-        for _ in range(self.num_aerethor):
-            self.__grupo_inimigos.add(Aerethor())
+        if self.__numero_rodada < 5:
+            self.num_aerethor = floor(1 + self.__numero_rodada*1)
 
-        for _ in range(self.num_zylox):
-            self.__grupo_inimigos.add(Zylox())
+            for _ in range(self.num_aerethor):
+                self.__grupo_inimigos.add(Aerethor())
+
+        elif self.__numero_rodada > 5 and self.__numero_rodada < 10:
+            self.num_aerethor = floor(7 - self.__numero_rodada*0.3)
+            self.num_vorathrax = floor(0 + self.__numero_rodada*0.4)
+            self.num_zylox = floor(0 + self.__numero_rodada*0.15)
+            for _ in range(self.num_aerethor):
+                self.__grupo_inimigos.add(Aerethor())
+            
+            for _ in range(self.num_vorathrax):
+                self.__grupo_inimigos.add(Vorathrax())
+            for _ in range(self.num_zylox):
+                self.__grupo_inimigos.add(Zylox())

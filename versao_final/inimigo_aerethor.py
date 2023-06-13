@@ -17,7 +17,7 @@ class Aerethor(Entidade, pg.sprite.Sprite):
 
         self.__angulo = 0
 
-        aerethor_img = pg.image.load(os.path.join('sprites', 'aerethor.png')).convert_alpha()
+        aerethor_img = pg.image.load(os.path.join('sprites', 'aerethor(2).png')).convert_alpha()
 
         self.image = pg.transform.scale(aerethor_img, (30, 50))
         self.imagem_original = self.image

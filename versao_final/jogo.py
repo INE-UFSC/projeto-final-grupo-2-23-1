@@ -17,7 +17,7 @@ from projetil_linear import ProjetilLinear
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__background = pg.image.load(os.path.join('sprites', 'background_cidade.png'))
+        self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)

@@ -1,55 +1,36 @@
-import pygame
+import pygame as pg
+from PIL import Image
 
-#TODO: getters e setters e deixar modificavel
+# TODO: deve depender da resolução.
+SPRITE_TAMANHO = 25
 
-COLOR = (255, 100, 98)
-SURFACE_COLOR = (20, 23, 26)
-WIDTH = 1024
-HEIGHT = 576
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-  
-# Object class
-class Bloco(pygame.sprite.Sprite):
-    def __init__(self, color, height, width):
+
+class Bloco(pg.sprite.Sprite):
+    def __init__(self, pos):
         super().__init__()
-        
-        self.image = pygame.Surface([width, height])
-        self.image.fill(SURFACE_COLOR)
-        self.image.set_colorkey(COLOR)
-        pygame.draw.rect(self.image,color,pygame.Rect(0, 0, width, height))
-  
-        self.rect = self.image.get_rect()
+        self.image = pg.Surface((SPRITE_TAMANHO, SPRITE_TAMANHO))
+        self.image.fill('#FFE3B3')
+        self.rect = self.image.get_rect(topleft = pos)
 
-# TODO: usar tilemap ao invés de valores hardcoded.
-class Objects:
-    def __init__(self):
-        self.objects = []
+def ler_bitmap(arquivo: str):
+    img = Image.open(arquivo)
 
-        self.objects.append(Bloco(RED, 1000, 15)) #Limite da esquerda
-        self.objects[len(self.objects)-1].rect.x = 0
-        self.objects[len(self.objects)-1].rect.y = 0
+    (colunas, linhas) = img.size
+    dados = list(img.getdata())
 
-        self.objects.append(Bloco(WHITE, 1000, 3000)) #Chao
-        self.objects[len(self.objects)-1].rect.x = 15
-        self.objects[len(self.objects)-1].rect.y = 560
+    mapa = pg.sprite.Group()
+    jogador_pos = (-1, -1)
+    for i in range(linhas):
+        for j in range(colunas):
+            val = dados[colunas*i + j]
+            
+            if val == 1:
+                jogador_pos = (25*j, i*25)
+            elif val == 2:
+                mapa.add(Bloco((25*j, i*25)))
 
-        self.objects.append(Bloco(RED, 900, 15)) #Limite da direita
-        self.objects[len(self.objects)-1].rect.x = 1009
-        self.objects[len(self.objects)-1].rect.y = 0
+    # Jogador não está no mapa.
+    if jogador_pos == (-1, -1):
+        raise SystemError
 
-        self.objects.append(Bloco(WHITE, 550, 150)) #Bloco maior da esquerda
-        self.objects[len(self.objects)-1].rect.x = 15
-        self.objects[len(self.objects)-1].rect.y = 489
-
-        self.objects.append(Bloco(WHITE, 550, 200)) #Bloco menor da esquerda
-        self.objects[len(self.objects)-1].rect.x = 150
-        self.objects[len(self.objects)-1].rect.y = 525
-
-        self.objects.append(Bloco(WHITE, 550, 200)) #Bloco menor da direita
-        self.objects[len(self.objects)-1].rect.x = 625
-        self.objects[len(self.objects)-1].rect.y = 525
-
-        self.objects.append(Bloco(WHITE, 550, 200)) #Bloco maior da direita
-        self.objects[len(self.objects)-1].rect.x = 809
-        self.objects[len(self.objects)-1].rect.y = 489
+    return (mapa, jogador_pos)

@@ -1,22 +1,23 @@
 import os
-from inimigo_zylox import Zylox
+from math import floor
+
 import pygame as pg
+
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
 from inimigo_aerethor import Aerethor
-from jogador import Jogador
-from mapa import Objects
-from projetil_linear import ProjetilLinear
 from inimigo_grupo import InimigoGrupo
-
-from math import floor
+from inimigo_zylox import Zylox
+from jogador import Jogador, MorteJogador
+from mapa import ler_bitmap
+from projetil_linear import ProjetilLinear
 
 
 class Jogo:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__background = pg.image.load(os.path.join('sprites', 'background.png'))
+        self.__background = pg.image.load(os.path.join('sprites', 'background_cidade.png'))
 
         # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
         proj_tipo = ProjetilLinear(5, 300, 3, 1)
@@ -25,8 +26,8 @@ class Jogo:
 
         self.hud = BarraStatus()
 
-        self.__objects = Objects()
-        self.__jogador = Jogador(arma, capacete, (400, (self.__objects.objects[1].rect.midtop[1])-2))
+        (self.__mapa, jogador_pos) = ler_bitmap('./mapas/cidade.bmp')
+        self.__jogador = Jogador(arma, capacete, jogador_pos, self.__mapa)
 
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
         self.__grupo_projeteis_jogador = pg.sprite.Group()
@@ -51,7 +52,7 @@ class Jogo:
 
     def rodar(self, dt):
         if self.__jogador not in self.__grupo_jogador:
-            raise SystemError
+            raise MorteJogador
 
         self.__temporizador_inimigo += dt
 
@@ -75,6 +76,7 @@ class Jogo:
         self.__grupo_projeteis_jogador.draw(self.__tela)
         self.__grupo_inimigos.draw(self.__tela)
         self.__grupo_projeteis_inimigo.draw(self.__tela)
+        self.__mapa.draw(self.__tela)
 
         # TODO: realocar verificação de colisão para outro lugar.
         proj_jog_colide_inimigo = pg.sprite.groupcollide(

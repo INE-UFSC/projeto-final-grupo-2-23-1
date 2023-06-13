@@ -1,11 +1,14 @@
+import os
 from enum import Enum
 from time import perf_counter
-import os
+
 import pygame as pg
 from pygame import mixer
+
+from fim_jogo import Fim
+from jogador import MorteJogador
 from jogo import Jogo
 from menu import Menu
-from fim_jogo import Fim
 from menu_carta import MenuCarta
 
 # TODO: adicionar seletor de resolução e modo tela cheia no menu.
@@ -16,8 +19,8 @@ TELA_COMPRIMENTO = 576
 class Estado(Enum):
     MENU_PRINCIPAL = 0
     JOGO = 1
-    UPGRADE = 3
-    FIM = 2
+    UPGRADE = 2
+    FIM_DE_JOGO = 3
 
 class Engine:
     def __init__(self):
@@ -26,7 +29,7 @@ class Engine:
         mixer.init()
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
-        
+
         self.__menu_carta = MenuCarta()
         self.__jogo = Jogo()
         self.__menu = Menu()
@@ -48,7 +51,6 @@ class Engine:
 
             if self.__estado == Estado.MENU_PRINCIPAL:
                 self.__menu.rodar()
-                
 
                 if self.__menu.iniciar_jogo:
                     self.__estado = Estado.JOGO
@@ -58,20 +60,20 @@ class Engine:
             elif self.__estado == Estado.JOGO:
                 try:
                     self.__jogo.rodar(dt)
-                except SystemError:
-                    self.__estado = Estado.FIM
-                
+                except MorteJogador:
+                    self.__estado = Estado.FIM_DE_JOGO
+
                 if self.__jogo.rodada_encerrada == True and self.__jogo.numero_rodada != 0:
                     self.__estado = Estado.UPGRADE
-            
+
             elif self.__estado == Estado.UPGRADE:
                 self.__menu_carta.rodar()
 
                 if self.__menu_carta.pronto == True:
                     self.__jogo.iniciar_proxima_rodada()
                     self.__estado = Estado.JOGO
-            
-            elif self.__estado == Estado.FIM:
+
+            elif self.__estado == Estado.FIM_DE_JOGO:
                 self.__fim.rodar()
 
                 if self.__fim.iniciar_jogo:

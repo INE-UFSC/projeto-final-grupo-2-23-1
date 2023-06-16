@@ -61,6 +61,12 @@ class Menu:
         self.__tela.blit(self.__triangulo_D, (290, 180))
         self.__tela.blit(self.__triangulo_E, (100, 400))
         self.__tela.blit(self.__triangulo_D, (290, 400))
+
+        imagem_arma = self.armas[self.__imagem_arma_index].image
+        self.__tela.blit(imagem_arma, (185, 410))
+
+        imagem_capacete = self.capacetes[self.__imagem_capacete_index].image
+        self.__tela.blit(imagem_capacete, (200, 180))
         
         if self.__button_triangulo_D_arma.clicked:
             self.avancar_arma()
@@ -86,7 +92,8 @@ class Menu:
         else:
             self.__imagem_arma_index += 1
         print(self.__imagem_arma_index)
-        
+        imagem = self.armas[self.__imagem_arma_index].image
+        self.__tela.blit(imagem, (195, 400))
         
             
     def voltar_arma(self):
@@ -109,6 +116,7 @@ class Menu:
         else:
             self.__imagem_capacete_index -= 1
         print(self.__imagem_capacete_index)
+        
 
 
             

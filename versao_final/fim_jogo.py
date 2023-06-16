@@ -14,7 +14,7 @@ class Fim:
         self.__tente_button = Button((0, 0, 0), self.__width/2 + 0, self.__height/2 + 0, 200, 100, 'Tentar novamente')
         self.__quit_button = Button((0, 0, 0), self.__width/2 + 380, self.__height/2 - 300, 200, 100, "X")
         self.__fim_button = Button((0, 0, 0), self.__width/2 - 10, self.__height/2 - 100, 200, 100, "Fim de Jogo")
-        self.__image = pg.image.load(os.path.join('imagens', 'morte.png'))
+        self.__image = pg.image.load(os.path.join('imagens', 'Sprite-morte.png'))
         self.image = pg.transform.scale(self.__image, (200,300))
 
 

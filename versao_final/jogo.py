@@ -10,6 +10,7 @@ from inimigo_aerethor import Aerethor
 from inimigo_grupo import InimigoGrupo
 from inimigo_zylox import Zylox
 from inimigo_vorathrax import Vorathrax
+from inimigo_Xerthul import Xerthul
 from jogador import Jogador, MorteJogador
 from mapa import ler_bitmap
 from projetil_linear import ProjetilLinear
@@ -165,11 +166,14 @@ class Jogo:
 
         if self.__numero_rodada < 5:
             self.num_aerethor = floor(1 + self.__numero_rodada*1)
+            self.num_xerthul = floor(1 + self.__numero_rodada*1)
 
             for _ in range(self.num_aerethor):
                 self.__grupo_inimigos.add(Aerethor())
+            for _ in range(self.num_xerthul):
+                self.__grupo_inimigos.add(Xerthul())
 
-        elif self.__numero_rodada > 5 and self.__numero_rodada < 10:
+        elif self.__numero_rodada >= 5 and self.__numero_rodada < 10:
             self.num_aerethor = floor(7 - self.__numero_rodada*0.3)
             self.num_vorathrax = floor(0 + self.__numero_rodada*0.4)
             self.num_zylox = floor(0 + self.__numero_rodada*0.15)

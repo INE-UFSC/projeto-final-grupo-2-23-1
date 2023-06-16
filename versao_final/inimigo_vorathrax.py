@@ -32,7 +32,7 @@ class Vorathrax(Entidade, pg.sprite.Sprite):
         self.mascara = pg.mask.from_surface(self.image)
 
         self.__pos = pg.math.Vector2(self.rect.center)
-        self.__tipo_projetil = ProjetilLinear(8, 450, 5, 1)
+        self.__tipo_projetil = ProjetilLinear(8, 450, 5, (255,165,0), 1)
 
     @property
     def pos(self):

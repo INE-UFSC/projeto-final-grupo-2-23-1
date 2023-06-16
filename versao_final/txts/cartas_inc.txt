@@ -1,2 +1,2 @@
-morte.png
+Sprite-morte.png
 pena.png

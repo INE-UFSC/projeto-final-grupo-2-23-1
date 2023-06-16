@@ -34,7 +34,7 @@ class Button:
         self.clicked = False
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if self.timer > 1.25:
+        if self.timer > 0.3:
             self.boolswitch = True
             self.timer = 0.0
         else:

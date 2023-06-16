@@ -36,7 +36,10 @@ class Menu:
         pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
         pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
         self.armas = [rifle, ak47, pistola]
+        capacete_militar = CapaceteMilitar()
+        self.capacetes = [capacete_militar]
         self.__imagem_arma_index = 0
+        self.__imagem_capacete_index = 0
         
 
         
@@ -64,6 +67,12 @@ class Menu:
         
         if self.__button_triangulo_E_arma.clicked:
             self.voltar_arma()
+
+        if self.__button_triangulo_D_capacete.clicked:
+            self.avancar_capacete()
+
+        if self.__button_triangulo_E_capacete.clicked:
+            self.voltar_capacete()
         
         if self.__quit_button.clicked:
             raise SystemExit
@@ -77,6 +86,8 @@ class Menu:
         else:
             self.__imagem_arma_index += 1
         print(self.__imagem_arma_index)
+        
+        
             
     def voltar_arma(self):
         if self.__imagem_arma_index == 0:
@@ -84,6 +95,22 @@ class Menu:
         else:
             self.__imagem_arma_index -= 1
         print(self.__imagem_arma_index)
+
+    def avancar_capacete(self):
+        if self.__imagem_capacete_index >= len(self.capacetes) - 1:
+            self.__imagem_capacete_index = 0
+        else:
+            self.__imagem_capacete_index += 1
+        print(self.__imagem_capacete_index)
+
+    def voltar_capacete(self):
+        if self.__imagem_capacete_index == 0:
+            self.__imagem_capacete_index = len(self.capacetes) - 1
+        else:
+            self.__imagem_capacete_index -= 1
+        print(self.__imagem_capacete_index)
+
+
             
         
 

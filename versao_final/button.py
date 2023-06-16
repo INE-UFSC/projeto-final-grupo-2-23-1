@@ -1,5 +1,5 @@
 import pygame
-
+import time
 
 class Button:
     def __init__(self, color, x,y,width,height, text='', fontsize = 60):
@@ -11,8 +11,12 @@ class Button:
         self.text = text
         self.rect = None
         self.fontsize = fontsize
-        
         self.clicked = False
+
+        self.boolswitch = False
+        self.timer = 0.0
+        self.clock = time.time()
+        self.tempo = time
 
     def draw(self,win,outline=None):
         if outline:
@@ -27,10 +31,22 @@ class Button:
 
     #deixar click mais preciso
     def click(self):
+        self.clicked = False
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if (self.x + self.width > mouse[0] > self.x) and (self.y + self.height > mouse[1] > self.y):
-            if (click[0] == True):
+        if self.timer > 1.25:
+            self.boolswitch = True
+            self.timer = 0.0
+        else:
+            self.tempo = time.time()
+            self.timer += (self.tempo - self.clock)
+            self.clock = self.tempo
+
+        if self.boolswitch:
+            if (self.x + self.width > mouse[0] > self.x) and (self.y + self.height > mouse[1] > self.y):
+                if (click[0] == True):
                 # Melhorar aqui depois.
-                self.clicked = True
-                print('f')
+                    self.clicked = True
+                    self.boolswitch = False
+                    print('f')
+

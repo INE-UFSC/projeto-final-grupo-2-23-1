@@ -166,7 +166,7 @@ class Jogo:
 
         if self.__numero_rodada < 5:
             self.num_aerethor = floor(1 + self.__numero_rodada*1)
-            self.num_xerthul = floor(1 + self.__numero_rodada*1)
+            self.num_xerthul = floor(1 + self.__numero_rodada*0)
 
             for _ in range(self.num_aerethor):
                 self.__grupo_inimigos.add(Aerethor())

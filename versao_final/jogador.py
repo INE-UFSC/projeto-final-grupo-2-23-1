@@ -1,4 +1,3 @@
-import os
 from math import atan2, pi
 
 import pygame as pg
@@ -24,30 +23,18 @@ class Jogador(Entidade, pg.sprite.Sprite):
     CAPACETE_OFFSET = (0, -22)
 
     def __init__(self, arma, capacete, pos, objs_colisao):
-        Entidade.__init__(self, 30, 150, 1, 1.5)
+        Entidade.__init__(self, 'jogador.png', pos, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)
 
         self.__arma = arma
         self.__capacete = capacete
 
-        jogador_img = pg.image.load(os.path.join('sprites', 'jogador.png')).convert_alpha()
-
-        self.image = pg.transform.scale(jogador_img, (25, 50))
-        self.rect = self.image.get_rect(midbottom = pos)
-
-        self.__pos = pg.math.Vector2(self.rect.center)
-
-        self.__veloc_vert = 2
+        self.__veloc_vert = 0
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
-        self.mascara = pg.mask.from_surface(self.image)
 
         # TODO: tirar os objetos do mapa daqui.
         self.__objs_colisao = objs_colisao
-
-    @property
-    def pos(self):
-        return self.__pos
 
     def mover(self, sentido):
         self.__sentido = sentido
@@ -65,13 +52,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
         '''Move a mira e o ângulo da arma'''
 
         angulo = pi - atan2(
-            self.__pos.y + self.ARMA_OFFSET[1] - mira_y,
-            self.__pos.x + self.ARMA_OFFSET[0] - mira_x
+            self.pos.y + self.ARMA_OFFSET[1] - mira_y,
+            self.pos.x + self.ARMA_OFFSET[0] - mira_x
         )
 
         self.__arma.rotacionar(
             angulo,
-            round(self.__pos) + self.ARMA_OFFSET
+            round(self.pos) + self.ARMA_OFFSET
         )
 
     def atirar(self):
@@ -79,17 +66,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         return proj
 
-    def morrer(self):
-        self.kill()
-
     def update(self, dt):
         '''Atualiza a posição do sprite do jogador.'''
 
-        self.__pos.x += self.__sentido * self.veloc_mov * dt
-
         super().update(dt)
 
-        self.rect.center = round(self.__pos)
+        self.pos.x += self.__sentido * self.veloc_mov * dt
+        self.rect.center = round(self.pos)
 
         colide_mapa = pg.sprite.spritecollide(self, self.__objs_colisao, False)
         if colide_mapa is not None:
@@ -99,15 +82,15 @@ class Jogador(Entidade, pg.sprite.Sprite):
                 elif self.__sentido == 1:
                     self.rect.right = objs.rect.left
 
-                self.__pos.x = self.rect.centerx
+                self.pos.x = self.rect.centerx
                 break
 
         if self.__veloc_vert != 0:
             # Método de Verlet assumindo aceleração constante para o cálculo da posição.
-            self.__pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
+            self.pos.y += self.__veloc_vert*dt + self.__GRAVIDADE*dt*dt/2
         self.__veloc_vert += self.__GRAVIDADE*dt
 
-        self.rect.center = round(self.__pos)
+        self.rect.center = round(self.pos)
 
         colide_mapa = pg.sprite.spritecollide(self, self.__objs_colisao, False)
         if colide_mapa is not None:
@@ -118,8 +101,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
                     self.rect.bottom = objs.rect.top
 
                 self.__veloc_vert = 0
-                self.__pos.y = self.rect.centery
+                self.pos.y = self.rect.centery
                 break
 
-        self.__arma.rect.center = round(self.__pos) + self.ARMA_OFFSET
-        self.__capacete.rect.center = round(self.__pos) + self.CAPACETE_OFFSET
+        self.__arma.rect.center = round(self.pos) + self.ARMA_OFFSET
+        self.__capacete.rect.center = round(self.pos) + self.CAPACETE_OFFSET

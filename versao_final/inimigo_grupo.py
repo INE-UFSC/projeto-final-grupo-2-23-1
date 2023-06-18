@@ -1,32 +1,47 @@
 import pygame as pg
 
+
 # Aqui estou usando o algoritmo Boids para os inimigos não se colidirem.
 class InimigoGrupo(pg.sprite.Group):
     # Ajuste da velocidade
     COEFICIENTE_AFASTAMENTO = 0.025
     DISTANCIA_MINIMA = 35
 
-    def __init__(self):
+    def __init__(self, grupo_projeteis_inimigo):
         super().__init__()
 
-    def update(self, jog_pos, dt):
-        for inimigo_sprite in self.sprites():
-            movimento_x = 0
-            movimento_y = 0
+        self.__grupo_projeteis_inimigo = grupo_projeteis_inimigo
 
-            inimigo_sprite.update(jog_pos, dt)
+    def __atirar_projetil(self, inimigo, jog_pos):
+        if inimigo.temporizador_ataque >= inimigo.tempo_recarga:
+            inimigo.temporizador_ataque = 0
 
-            for outro_inimigo in self.sprites():
-                if inimigo_sprite == outro_inimigo:
-                    continue
+            if inimigo.tipo_projetil is not None:
+                proj = inimigo.atirar(jog_pos)
+                self.__grupo_projeteis_inimigo.add(proj)
 
-                dist = inimigo_sprite.pos.distance_to(outro_inimigo.pos)
+    def __calcular_ajuste_colisao(self, inimigo):
+        movimento_x = 0
+        movimento_y = 0
 
-                if dist < self.DISTANCIA_MINIMA:
-                    movimento_x += inimigo_sprite.pos.x - outro_inimigo.pos.x
-                    movimento_y += inimigo_sprite.pos.y - outro_inimigo.pos.y
+        for outro_inimigo in self.sprites():
+            if inimigo == outro_inimigo:
+                continue
 
-            dx = movimento_x * self.COEFICIENTE_AFASTAMENTO
-            dy = movimento_y * self.COEFICIENTE_AFASTAMENTO
+            dist = inimigo.pos.distance_to(outro_inimigo.pos)
 
-            inimigo_sprite.pos += pg.math.Vector2(dx, dy)
+            if dist < self.DISTANCIA_MINIMA:
+                movimento_x += inimigo.pos.x - outro_inimigo.pos.x
+                movimento_y += inimigo.pos.y - outro_inimigo.pos.y
+
+        dx = movimento_x * self.COEFICIENTE_AFASTAMENTO
+        dy = movimento_y * self.COEFICIENTE_AFASTAMENTO
+
+        return pg.math.Vector2(dx, dy)
+
+    def update(self, dt, jog_pos):
+        for inimigo in self.sprites():
+            inimigo.update(dt, jog_pos)
+            inimigo.pos += self.__calcular_ajuste_colisao(inimigo)
+
+            self.__atirar_projetil(inimigo, jog_pos)

@@ -6,11 +6,9 @@ import pygame as pg
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
-from inimigo_aerethor import Aerethor
+from inimigo import criar_Aerethor, criar_Vorathrax
 from inimigo_grupo import InimigoGrupo
 from inimigo_zylox import Zylox
-from inimigo_vorathrax import Vorathrax
-from inimigo_Xerthul import Xerthul
 from jogador import Jogador, MorteJogador
 from mapa import ler_bitmap
 from projetil_linear import ProjetilLinear
@@ -40,17 +38,15 @@ class Jogo:
         (self.__mapa, jogador_pos) = ler_bitmap('./mapas/cidade.bmp')
         self.__jogador = Jogador(arma, capacete, jogador_pos, self.__mapa)
 
-        self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
         self.__grupo_projeteis_jogador = pg.sprite.Group()
+        self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
 
-        self.__grupo_inimigos = InimigoGrupo()
         self.__grupo_projeteis_inimigo = pg.sprite.Group()
+        self.__grupo_inimigos = InimigoGrupo(self.__grupo_projeteis_inimigo)
 
         self.__numero_rodada = 0
         self.__rodada_encerrada = False
         self.iniciar_proxima_rodada()
-
-        self.__temporizador_inimigo = 0
 
     @property
     def numero_rodada(self):
@@ -64,31 +60,19 @@ class Jogo:
         if self.__jogador not in self.__grupo_jogador:
             raise MorteJogador
 
-        self.__temporizador_inimigo += dt
-
-        if self.__temporizador_inimigo >= 1.5:
-            self.__temporizador_inimigo = 0
-
-            for inimigo in self.__grupo_inimigos:
-                if not isinstance(inimigo, Zylox):
-                    proj = inimigo.atirar(self.__jogador.pos)
-                    self.__grupo_projeteis_inimigo.add(proj)
-
         self.__tela.blit((self.__background), (0,0))
         if not self.__rodada_encerrada:
             self.ler_entrada()
             self.__grupo_jogador.update(dt)
             self.__grupo_projeteis_jogador.update(dt)
-            self.__grupo_inimigos.update(self.__jogador.pos, dt)
+            self.__grupo_inimigos.update(dt, self.__jogador.pos)
             self.__grupo_projeteis_inimigo.update(dt)
-        
 
         self.__grupo_jogador.draw(self.__tela)
         self.__grupo_projeteis_jogador.draw(self.__tela)
         self.__grupo_inimigos.draw(self.__tela)
         self.__grupo_projeteis_inimigo.draw(self.__tela)
         self.__mapa.draw(self.__tela)
-        
 
         # TODO: realocar verificação de colisão para outro lugar.
         proj_jog_colide_inimigo = pg.sprite.groupcollide(
@@ -127,13 +111,13 @@ class Jogo:
 
         if jogador_colide_inimigo is not None:
             for inimigo in jogador_colide_inimigo:
-                self.__jogador.sofrer_dano(inimigo.dano)
+                if isinstance(inimigo, Zylox):
+                    self.__jogador.sofrer_dano(inimigo.dano)
 
         if len(self.__grupo_inimigos) == 0:
             self.__rodada_encerrada = True
 
-
-        self.hud.atualizar_tela(self.__jogador.vida, self.__jogador.vida_max, self.__numero_rodada)
+        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__numero_rodada)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()
@@ -165,22 +149,20 @@ class Jogo:
             self.__grupo_projeteis_inimigo.empty()
 
         if self.__numero_rodada < 5:
-            self.num_aerethor = floor(1 + self.__numero_rodada*1)
-            self.num_xerthul = floor(1 + self.__numero_rodada*0)
+            num_aerethor = floor(1 + self.__numero_rodada*1)
+            num_xerthul = floor(1 + self.__numero_rodada*0)
 
-            for _ in range(self.num_aerethor):
-                self.__grupo_inimigos.add(Aerethor())
-            for _ in range(self.num_xerthul):
-                self.__grupo_inimigos.add(Xerthul())
+            for _ in range(num_aerethor):
+                self.__grupo_inimigos.add(criar_Aerethor())
 
         elif self.__numero_rodada >= 5 and self.__numero_rodada < 10:
-            self.num_aerethor = floor(7 - self.__numero_rodada*0.3)
-            self.num_vorathrax = floor(0 + self.__numero_rodada*0.4)
-            self.num_zylox = floor(0 + self.__numero_rodada*0.15)
-            for _ in range(self.num_aerethor):
-                self.__grupo_inimigos.add(Aerethor())
+            num_aerethor = floor(7 - self.__numero_rodada*0.3)
+            num_vorathrax = floor(0 + self.__numero_rodada*0.4)
+            num_zylox = floor(0 + self.__numero_rodada*0.15)
+            for _ in range(num_aerethor):
+                self.__grupo_inimigos.add(criar_Aerethor())
             
-            for _ in range(self.num_vorathrax):
-                self.__grupo_inimigos.add(Vorathrax())
-            for _ in range(self.num_zylox):
-                self.__grupo_inimigos.add(Zylox())
+            for _ in range(num_vorathrax):
+                self.__grupo_inimigos.add(criar_Vorathrax())
+            #for _ in range(num_zylox):
+            #    self.__grupo_inimigos.add(Zylox())

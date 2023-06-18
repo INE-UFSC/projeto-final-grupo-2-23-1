@@ -63,13 +63,13 @@ class Engine:
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
 
-                if self.__jogo.rodada_encerrada == True and self.__jogo.numero_rodada != 0:
+                if self.__jogo.rodada_encerrada:
                     self.__estado = Estado.UPGRADE
 
             elif self.__estado == Estado.UPGRADE:
                 self.__menu_carta.rodar()
 
-                if self.__menu_carta.pronto == True:
+                if self.__menu_carta.pronto:
                     self.__jogo.iniciar_proxima_rodada()
                     self.__estado = Estado.JOGO
 

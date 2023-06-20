@@ -1,36 +1,34 @@
-import pygame
 import os
+
+import pygame
+
 from arma import Arma
-from projetil_linear import ProjetilLinear
 from button import Button
 from capacete_militar import CapaceteMilitar
-from math import sin, cos, pi, radians
-
-
-
-
+from projetil_linear import ProjetilLinear
 
 
 class Menu:
     def __init__(self):
+        background_img = pygame.image.load(os.path.join('imagens', 'background_menu.jpg'))
+        self.__background = pygame.transform.scale(background_img, (1024, 576))
+
         self.__tela = pygame.display.get_surface()
-        self.__background_color = (0, 255, 255)
         self.__width = self.__tela.get_width()
         self.__height = self.__tela.get_height()
         self.iniciar_jogo = False
-        self.__start_button = Button((0, 0, 0), self.__width/2 - 40, self.__height/2 + 150, 100, 40, 'Start')
-        self.__titulo_button = Button((0, 0, 0), self.__width/2 - 150, self.__height/2 - 270, 0, 0, "Éter Mortal", fontsize = 90)
-        self.__quit_button = Button((0,0,0), self.__width/2 + 470, self.__height/2 - 280, 50, 40, "X")
-        self.__capacete_button = Button((0, 0, 0), self.__width/2 - 360 , self.__height/2 - 155, 0, 0, 'Capacete', fontsize = 40)
+        self.__start_button = Button((0, 0, 0), self.__width/2 - 37, self.__height/2 + 100, 112, 60, ' ', 40, False)
+        self.__quit_button = Button((0,0,0), self.__width/2 + 450, self.__height/2 - 275, 50, 50, " ", 40, False)
+        self.__capacete_button = Button((0, 0, 0), self.__width/2 - 360 , self.__height/2 - 155, 0, 0, 'Capacete', 40, False)
         self.__triangulo_D = pygame.transform.scale(pygame.image.load(os.path.join('imagens', 'triangulo.png')).convert(), (40, 40))
         self.__triangulo_E = pygame.transform.scale(pygame.image.load(os.path.join('imagens', 'triangulo.png')).convert(), (40, 40))
-        self.__button_triangulo_D_capacete = Button((200, 200, 200), 290 , 180, 40, 40, ' ', fontsize = 40)
-        self.__button_triangulo_E_capacete = Button((200, 200, 200), 100, 180, 40, 40, ' ', fontsize = 40)
-        self.__button_triangulo_D_arma = Button((200, 200, 200), 290, 400, 40, 40, ' ', fontsize = 40)
-        self.__button_triangulo_E_arma = Button((200, 200, 200), 100 , 400, 40, 40, ' ', fontsize = 40)
-        self.__button_triangulo_D_mapa = Button((200, 200, 200), 920, 290, 40, 40, ' ', fontsize = 40)
-        self.__button_triangulo_E_mapa = Button((200, 200, 200), 730, 290, 40, 40, ' ', fontsize = 40)
-        self.__arma_button = Button((0, 0, 0), self.__width/2 - 330 , self.__height/2 + 70, 0, 0, 'Arma', fontsize = 40)
+        self.__button_triangulo_D_capacete = Button((200, 200, 200), 290 , 180, 40, 40, ' ', 40, False)
+        self.__button_triangulo_E_capacete = Button((200, 200, 200), 100, 180, 40, 40, ' ', 40, False)
+        self.__button_triangulo_D_arma = Button((200, 200, 200), 290, 400, 40, 40, ' ', 40, False)
+        self.__button_triangulo_E_arma = Button((200, 200, 200), 100 , 400, 40, 40, ' ', 40, False)
+        self.__button_triangulo_D_mapa = Button((200, 200, 200), 920, 290, 40, 40, ' ', 40, False)
+        self.__button_triangulo_E_mapa = Button((200, 200, 200), 730, 290, 40, 40, ' ', 40, False)
+        self.__arma_button = Button((0, 0, 0), self.__width/2 - 330 , self.__height/2 + 70, 0, 0, 'Arma', 40, False)
         rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
         rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
         ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
@@ -44,18 +42,13 @@ class Menu:
         self.__imagem_arma_index = 0
         self.__imagem_capacete_index = 0
         self.__imagem_mapa_index = 0
-        
-
-
-        
-
 
     def rodar(self):
-        self.__tela.fill(self.__background_color)
+        self.__tela.blit(self.__background, (0, 0))
+        #self.__tela.fill(self.__background_color)
         #background = pygame.image.load(os.path.join()))
         #self.__tela.blit(background, (0, 0))
         self.__start_button.draw(self.__tela)
-        self.__titulo_button.draw(self.__tela)
         self.__quit_button.draw(self.__tela)
         self.__capacete_button.draw(self.__tela)
         self.__arma_button.draw(self.__tela)
@@ -149,12 +142,3 @@ class Menu:
         else:
             self.__imagem_mapa_index -= 1
         print(self.__imagem_mapa_index)
-
-
-
-            
-        
-
-
-
-        

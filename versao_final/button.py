@@ -1,8 +1,10 @@
-import pygame
 import time
 
+import pygame
+
+
 class Button:
-    def __init__(self, color, x,y,width,height, text='', fontsize = 60):
+    def __init__(self, color, x,y,width,height, text='', fontsize = 60, is_drawable = True):
         self.color = color
         self.x = x
         self.y = y
@@ -12,6 +14,7 @@ class Button:
         self.rect = None
         self.fontsize = fontsize
         self.clicked = False
+        self.is_drawable = is_drawable
 
         self.boolswitch = False
         self.timer = 0.0
@@ -25,7 +28,8 @@ class Button:
             font = pygame.font.SysFont('', self.fontsize)
             self.textfont = font.render(self.text, 1, (255, 255, 255))
             self.rect = self.textfont.get_rect()
-        pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
+        if self.is_drawable:
+            pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
         win.blit(self.textfont, (self.x, self.y))
         self.click()
 
@@ -49,4 +53,3 @@ class Button:
                     self.clicked = True
                     self.boolswitch = False
                     print('f')
-

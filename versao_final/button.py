@@ -33,6 +33,18 @@ class Button:
         win.blit(self.textfont, (self.x, self.y))
         self.click()
 
+    def draw_text_centered(self, win, outline=None):
+        if outline:
+            pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
+        if self.text != '':
+            font = pygame.font.SysFont('', self.fontsize)
+            self.textfont = font.render(self.text, 1, (255, 255, 255))
+            self.rect = self.textfont.get_rect()
+        if self.is_drawable:
+            pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
+        win.blit(self.textfont, (self.x + (self.width/2 - self.textfont.get_width()/2), self.y + (self.height/2 - self.textfont.get_height()/2)))
+        self.click()
+
     #deixar click mais preciso
     def click(self):
         self.clicked = False

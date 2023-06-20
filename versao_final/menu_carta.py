@@ -30,8 +30,8 @@ class MenuCarta:
         self.__pronto = False
         self.__titulo_button.draw(self.__tela)
         self.__reroll_button.draw(self.__tela)
-        self.__confirm_buttom.draw(self.__tela)
-        self.__text_confirmado.draw(self.__tela)
+        self.__confirm_buttom.draw_text_centered(self.__tela)
+        self.__text_confirmado.draw_text_centered(self.__tela)
 
         for i in range(4):
             self.__upgrade_button[i].draw(self.__tela)
@@ -51,20 +51,20 @@ class MenuCarta:
         
         if self.__reroll_button.clicked:
             #TODO verificar moeda do jogo
-            self.__confirm_buttom.color = (0,0,100)
-            UB = UpgradeButton()
-            self.__upgrade_button, self.image = UB.buttons()
-            self.__reroll_button.clicked = False
-            self.__text_confirmado.text = "SELECIONE UM POWER UP"
+            self.gerar_novos()
 
         if self.__confirm_buttom.clicked and (self.__selected != None):
             self.__pronto = True
-            print(self.__selected.text)
-            self.__confirm_buttom.clicked = False
+            self.gerar_novos()
             return None #self.__selected.text    
         else:
             self.__confirm_buttom.clicked = False
         
-        
-
+    def gerar_novos(self):
+        UB = UpgradeButton()
+        self.__upgrade_button, self.image = UB.buttons()
+        self.__confirm_buttom.color = (0,0,100)
+        self.__confirm_buttom.clicked = False
+        self.__reroll_button.clicked = False
+        self.__text_confirmado.text = "SELECIONE UM POWER UP"
 

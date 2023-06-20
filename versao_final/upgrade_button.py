@@ -40,7 +40,6 @@ class UpgradeButton:
             numero_aleatorio = random.randint(0, len(palavras)-1)
             if palavras[numero_aleatorio] not in cartas:
                 cartas.append(palavras[numero_aleatorio])
-            print(cartas)
             if len(cartas) == 4:
                 break
         return cartas

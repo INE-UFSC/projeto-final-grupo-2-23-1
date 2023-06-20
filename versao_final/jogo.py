@@ -1,13 +1,12 @@
 import os
 from math import floor
-from random import random
 
 import pygame as pg
 
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
-from inimigo import criar_Aerethor, criar_Vorathrax
+from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul
 from inimigo_grupo import InimigoGrupo
 from inimigo_zylox import Zylox
 from jogador import Jogador, MorteJogador
@@ -16,7 +15,7 @@ from projetil_linear import ProjetilLinear
 
 
 class Jogo:
-    def __init__(self, eter = 0):
+    def __init__(self):
         self.__tela = pg.display.get_surface()
         self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 
@@ -47,9 +46,6 @@ class Jogo:
 
         self.__numero_rodada = 0
         self.__rodada_encerrada = False
-        self.__eter = eter
-        self.__score = 0
-        self.__score_eter = 150*random() + 150
         self.iniciar_proxima_rodada()
 
     @property
@@ -92,15 +88,6 @@ class Jogo:
                 for proj in projs:
                     inimigo.sofrer_dano(proj.dano)
 
-                    if inimigo.groups() == []:
-                        self.__score += inimigo.vida_total
-
-                        self.__score_eter -= inimigo.vida_total
-
-                        if self.__score_eter <= 0:
-                            self.__score_eter = 150*random() + 150
-                            self.__eter += 1
-
         proj_inimigo_colide_jogador = pg.sprite.spritecollide(
             self.__jogador,
             self.__grupo_projeteis_inimigo,
@@ -130,7 +117,7 @@ class Jogo:
         if len(self.__grupo_inimigos) == 0:
             self.__rodada_encerrada = True
 
-        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__eter, self.__numero_rodada)
+        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__numero_rodada)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()
@@ -167,6 +154,9 @@ class Jogo:
 
             for _ in range(num_aerethor):
                 self.__grupo_inimigos.add(criar_Aerethor())
+
+            for _ in range(num_xerthul):
+                self.__grupo_inimigos.add(criar_Xerthul())
 
         elif self.__numero_rodada >= 5 and self.__numero_rodada < 10:
             num_aerethor = floor(7 - self.__numero_rodada*0.3)

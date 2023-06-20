@@ -1,5 +1,5 @@
 from math import atan2, pi
-from random import random
+from random import random, randint
 
 import pygame as pg
 
@@ -81,6 +81,25 @@ class Inimigo(Entidade, pg.sprite.Sprite):
 
         self.rect.center = round(self.pos)
 
+class CamperComponente:
+    def __init__(self, linha_amplitude, linha_base):
+        (largura_tela, altura_tela) = pg.display.get_window_size()
+        
+        # Os inimigos movem-se sob essa linha.
+        if randint(1,2) == 1:
+            self.linha_mestra_latitude = largura_tela*0.1 + randint(1, 154)
+        else:
+            self.linha_mestra_latitude =  largura_tela*0.1 + randint(800, 970) 
+            
+        self.__linha_mestra = linha_amplitude*altura_tela*random() + linha_base*altura_tela
+    def atualizar(self, dt, obj, jog_pos):
+        dx = 0
+        dif_linha = self.__linha_mestra - obj.pos.y
+        dy = 0.75*dif_linha*dt
+
+        return pg.math.Vector2(dx, dy)
+
+
 class VoadorComponente:
     def __init__(self, linha_amplitude, linha_base, dist_jogador):
         (largura_tela, altura_tela) = pg.display.get_window_size()
@@ -112,9 +131,9 @@ def criar_Vorathrax(nivel = 1):
 
     return Inimigo(stats, VoadorComponente(0.15, 0.25, 0.4), proj, 2)
 
-# TODO: adicionar inimigo camper.
-#def criar_(nivel = 1):
-#    stats = ('.png', 35*nivel, 1.5*nivel, 0.6)
-#    proj = ProjetilLinear(12, 200, 8, (255, 24, 11), 3)
-#
-#    return Inimigo(stats, VoadorComponente(0.1, 0.1, 0.6), proj, 3.5)
+
+def criar_Xerthul(nivel = 1):
+    stats = ('Xerthul.png', 35*nivel, 1.5*nivel, 1)
+    proj = ProjetilLinear(12, 200, 8, (255, 24, 11), 3)
+
+    return Inimigo(stats, CamperComponente(0, 0.08), proj, 3.5)

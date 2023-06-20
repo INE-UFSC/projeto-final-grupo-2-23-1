@@ -1,13 +1,16 @@
+import os
+
 import pygame as pg
 
 
 class BarraStatus:
     def __init__(self):
         self.__tela = pg.display.get_surface()
-        self.__fonte = pg.font.Font(None, 28)
+        self.__fonte = pg.font.Font(None, 36)
 
-    def atualizar_tela(self, vida_atual, vida_max, rodada_atual):
+    def atualizar_tela(self, vida_atual, vida_max, eter, rodada_atual):
         self.__desenhar_numero_rodada(rodada_atual)
+        self.__desenhar_eter(eter)
         self.__desenhar_barra_vida(vida_atual, vida_max)
 
     def __desenhar_numero_rodada(self, rodada):
@@ -18,6 +21,21 @@ class BarraStatus:
         ))
 
         self.__tela.blit(rodada_texto, rodada_rect)
+
+    def __desenhar_eter(self, eter):
+        fonte_eter = pg.font.Font(None, 30)
+
+        eter_img = pg.image.load(os.path.join('sprites', 'eter.png'))
+        eter_img = pg.transform.scale(eter_img, (22, 22))
+        self.__tela.blit(eter_img, (self.__tela.get_width() - 75, 50))
+
+        eter_texto = fonte_eter.render(f'{eter}', True, 'grey')
+        eter_rect = eter_texto.get_rect(topright = (
+            self.__tela.get_width() - 80,
+            53
+        ))
+
+        self.__tela.blit(eter_texto, eter_rect)
 
     def __desenhar_barra_vida(self, vida_atual, vida_max):
         vida_prop = vida_atual/vida_max

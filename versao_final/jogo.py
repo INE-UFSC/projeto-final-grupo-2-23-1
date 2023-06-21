@@ -7,9 +7,8 @@ import pygame as pg
 from arma import Arma
 from barra_status import BarraStatus
 from capacete import Capacete
-from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul
+from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
 from inimigo_grupo import InimigoGrupo
-from inimigo_zylox import Zylox
 from jogador import Jogador, MorteJogador
 from mapa import ler_bitmap
 from projetil_linear import ProjetilLinear
@@ -124,8 +123,7 @@ class Jogo:
 
         if jogador_colide_inimigo is not None:
             for inimigo in jogador_colide_inimigo:
-                if isinstance(inimigo, Zylox):
-                    self.__jogador.sofrer_dano(inimigo.dano)
+                self.__jogador.sofrer_dano(inimigo.dano)
 
         if len(self.__grupo_inimigos) == 0:
             self.__rodada_encerrada = True
@@ -180,5 +178,5 @@ class Jogo:
             
             for _ in range(num_vorathrax):
                 self.__grupo_inimigos.add(criar_Vorathrax())
-            #for _ in range(num_zylox):
-            #    self.__grupo_inimigos.add(Zylox())
+            for _ in range(num_zylox):
+                self.__grupo_inimigos.add(criar_Zylox())

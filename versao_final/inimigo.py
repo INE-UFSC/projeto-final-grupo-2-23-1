@@ -1,5 +1,5 @@
 from math import atan2, pi
-from random import random, randint
+from random import randint, random
 
 import pygame as pg
 
@@ -8,7 +8,7 @@ from projetil_linear import ProjetilLinear
 
 
 class Inimigo(Entidade, pg.sprite.Sprite):
-    def __init__(self, stats, componente_inimigo, proj_tipo, tempo_recarga):
+    def __init__(self, stats, componente_inimigo, proj_tipo, tempo_recarga = 1, dano=0):
         (spr, vida, resistencia, veloc_mov) = stats
         (largura_tela, _) = pg.display.get_window_size()
         coluna_inicial = 0.6*largura_tela*random() + 0.2*largura_tela
@@ -17,12 +17,18 @@ class Inimigo(Entidade, pg.sprite.Sprite):
         Entidade.__init__(self, spr, pos_inicial, vida, resistencia, veloc_mov, 0.1)
         pg.sprite.Sprite.__init__(self)
 
-        self.__componente_comportamento = componente_inimigo
+        self.__dano = dano
+
+        self.__comportamento_componente = componente_inimigo
         self.__tipo_projetil = proj_tipo
 
         self.__angulo = 0
         self.__tempo_recarga = tempo_recarga
         self.__temporizador_ataque = random() * 3*self.__tempo_recarga/4
+
+    @property
+    def dano(self):
+        return self.__dano
 
     @property
     def temporizador_ataque(self):
@@ -75,7 +81,7 @@ class Inimigo(Entidade, pg.sprite.Sprite):
 
         self.__temporizador_ataque += dt
 
-        self.pos += self.__componente_comportamento.atualizar(dt, self, jog_pos)
+        self.pos += self.__comportamento_componente.atualizar(dt, self, jog_pos)
 
         self.__rotacionar(jog_pos)
 
@@ -119,6 +125,13 @@ class VoadorComponente:
 
         return pg.math.Vector2(dx, dy)
 
+
+class PerseguidorComponente:
+    def atualizar(self, dt, obj, jog_pos):
+        dif_jogador = jog_pos - obj.pos
+
+        return obj.veloc_mov*dif_jogador*dt
+
 def criar_Aerethor(nivel = 1):
     stats = ('aerethor.png', 15*nivel, nivel, 1.25)
     proj = ProjetilLinear(5, 200, 3, (255, 46, 255), 1)
@@ -131,9 +144,13 @@ def criar_Vorathrax(nivel = 1):
 
     return Inimigo(stats, VoadorComponente(0.15, 0.25, 0.4), proj, 2)
 
+def criar_Zylox(nivel = 1):
+    stats = ('zylox.png', 40*nivel, 1.5*nivel, 0.5)
+
+    return Inimigo(stats, PerseguidorComponente(), None, dano=8)
 
 def criar_Xerthul(nivel = 1):
-    stats = ('Xerthul.png', 35*nivel, 1.5*nivel, 1)
+    stats = ('xerthul.png', 35*nivel, 1.5*nivel, 1)
     proj = ProjetilLinear(12, 200, 8, (255, 24, 11), 3)
 
     return Inimigo(stats, CamperComponente(0, 0.08), proj, 3.5)

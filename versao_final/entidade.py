@@ -50,6 +50,18 @@ class Entidade(pg.sprite.Sprite):
     @property
     def veloc_mov(self):
         return self.__veloc_mov
+    
+    @veloc_mov.setter
+    def veloc_mov(self, valor):
+        self.__veloc_mov = valor
+
+    @vida_total.setter
+    def vida_total(self, valor):
+        self.__vida_total = valor
+
+    @vida_atual.setter
+    def vida_atual(self, valor):
+        self.__vida_atual = valor
 
     def sofrer_dano(self, dano: int):
         if dano <= 0:

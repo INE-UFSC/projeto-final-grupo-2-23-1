@@ -19,7 +19,7 @@ class Jogo:
         self.__tela = pg.display.get_surface()
         self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 
-        # TODO: o menu inicial deverá selecionar a arma e os equipamentos.
+        # TODO: o menu inicial deverá selecionar a arma e os equipamentos, fazer só gerar a arma utilizada talvez?.
         rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
         rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
 
@@ -58,6 +58,10 @@ class Jogo:
     @property
     def rodada_encerrada(self):
         return self.__rodada_encerrada
+    
+    @property
+    def jogador(self):
+        return self.__jogador
 
     def rodar(self, dt):
         if self.__jogador not in self.__grupo_jogador:
@@ -155,7 +159,7 @@ class Jogo:
     def iniciar_proxima_rodada(self):
         self.__numero_rodada += 1
         self.__rodada_encerrada = False
-
+        
         if self.__grupo_projeteis_inimigo is not None:
             self.__grupo_projeteis_inimigo.empty()
 

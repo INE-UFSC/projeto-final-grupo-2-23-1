@@ -1,13 +1,13 @@
 import pygame as pg
 import os
 from button import Button
-from nomes_cartas import *
-from upgrade_button import UpgradeButton
 
+from upgrade_button import UpgradeButton
+from upgrade import Upgrade
 UB = UpgradeButton()
 
 class MenuCarta:
-    def __init__(self):
+    def __init__(self, jogo):
         self.__pronto = False
         self.__selected = None
         self.__tela = pg.display.get_surface()
@@ -20,6 +20,7 @@ class MenuCarta:
         self.__reroll_button = Button((0,0,255), 837, 200, 150, 200, "Rerrol", fontsize=2)
         self.__confirm_buttom = Button((0,0,100), self.__width/2 - 75, 500, 150, 50, "CONFIRM", fontsize=40)
         self.__text_confirmado = Button((0,0,0), self.__width/2 - 75, 450, 150, 50, "SELECIONE UM POWER UP", fontsize=40)
+        self.__upgrade = Upgrade(jogo)
 
     @property
     def pronto(self):
@@ -55,13 +56,15 @@ class MenuCarta:
 
         if self.__confirm_buttom.clicked and (self.__selected != None):
             self.__pronto = True
+            self.__upgrade.aplicar_upgrade(self.__selected.text)
             self.gerar_novos()
-            return None #self.__selected.text    
+               
         else:
             self.__confirm_buttom.clicked = False
         
     def gerar_novos(self):
         UB = UpgradeButton()
+        self.__selected = None
         self.__upgrade_button, self.image = UB.buttons()
         self.__confirm_buttom.color = (0,0,100)
         self.__confirm_buttom.clicked = False

@@ -29,6 +29,10 @@ class Arma(pg.sprite.Sprite):
         self.TEMPO_RECARGA = tempo_recarga
         self.tiro_temporizador = self.TEMPO_RECARGA/2
 
+    @property
+    def tipo_projetil(self):
+        return self.__tipo_projetil
+
     def atirar_projetil(self):
         if self.tiro_temporizador < self.TEMPO_RECARGA:
             return None

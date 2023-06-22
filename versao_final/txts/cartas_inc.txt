@@ -1,2 +1,5 @@
 Sprite-morte.png
+dano adx0.8
 pena.png
+pulo adx0.1
+velocidade +10

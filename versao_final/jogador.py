@@ -9,15 +9,6 @@ class MorteJogador(Exception):
     pass
 
 class Jogador(Entidade, pg.sprite.Sprite):
-    # TODO: deixar configurável.
-    # Altura do pulo em pixels.
-    __ALTURA_PULO = 70
-    # Tempo até alcançar a altura máxima (pico) do pulo em segundos.
-    __TEMPO_PULO = 1/3
-
-    # Usado como a aceleração vertical durante o pulo.
-    __GRAVIDADE = (2*__ALTURA_PULO)/(__TEMPO_PULO**2)
-
     # Offset do sprite da arma e do capacete em relação ao sprite do jogador.
     ARMA_OFFSET = (1, 6)
     CAPACETE_OFFSET = (0, -22)
@@ -25,6 +16,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
     def __init__(self, arma, capacete, pos, objs_colisao):
         Entidade.__init__(self, 'jogador.png', pos, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)
+        
+        # Altura do pulo em pixels.
+        self.__ALTURA_PULO = 70
+        # Tempo até alcançar a altura máxima (pico) do pulo em segundos.
+        self.__TEMPO_PULO = 1/3
+        # Usado como a aceleração vertical durante o pulo.
+        self.__GRAVIDADE = (2*self.__ALTURA_PULO)/(self.__TEMPO_PULO**2)
 
         self.__arma = arma
         self.__capacete = capacete
@@ -35,6 +33,27 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         # TODO: tirar os objetos do mapa daqui.
         self.__objs_colisao = objs_colisao
+
+    @property
+    def arma(self):
+        return self.__arma
+
+    @property
+    def ALTURA_PULO(self):
+        return self.__ALTURA_PULO
+
+    @ALTURA_PULO.setter
+    def ALTURA_PULO(self, ALTURA_PULO):
+        self.__ALTURA_PULO = ALTURA_PULO
+        self.GRAVIDADE
+
+    @property
+    def GRAVIDADE(self):
+        return self.__GRAVIDADE
+
+    @GRAVIDADE.setter
+    def GRAVIDADE(self):
+        self.__GRAVIDADE = (2*self.__ALTURA_PULO)/(self.__TEMPO_PULO**2)
 
     def mover(self, sentido):
         self.__sentido = sentido

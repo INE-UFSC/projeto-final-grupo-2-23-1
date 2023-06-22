@@ -30,11 +30,12 @@ class Engine:
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
 
-        self.__menu_carta = MenuCarta()
         self.__jogo = Jogo()
+        self.__menu_carta = MenuCarta(self.__jogo)
         self.__menu = Menu()
         self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
+
 
     def iniciar(self):
         tempo_anterior = perf_counter()

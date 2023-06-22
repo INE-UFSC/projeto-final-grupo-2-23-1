@@ -13,7 +13,10 @@ class Projetil(ABC):
     @property
     def dano(self):
         return self.__dano
-    
+    @dano.setter
+    def dano(self, valor):
+        self.__dano = valor    
+
     @property
     def veloc_proj(self):
         return self.__veloc_proj

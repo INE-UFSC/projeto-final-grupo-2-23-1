@@ -32,7 +32,7 @@ class Engine:
         self.__menu = Menu()
         self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
-
+        score = 0
 
     def iniciar(self):
         tempo_anterior = perf_counter()
@@ -75,7 +75,7 @@ class Engine:
                     self.__estado = Estado.JOGO
 
             elif self.__estado == Estado.FIM_DE_JOGO:
-                self.__fim.rodar()
+                self.__fim.rodar(jogo.score)
 
                 if self.__fim.iniciar_jogo:
                     self.__estado = Estado.JOGO

@@ -43,7 +43,7 @@ class BarraStatus:
         pg.draw.rect(self.__tela, 'darkred', pg.Rect(50, 25, 250, 20), 2, 10)
         pg.draw.rect(self.__tela, 'red2', pg.Rect(55, 30, 240*vida_prop, 10), 0, 5)
 
-        vida_texto = self.__fonte.render(f'{vida_atual}/{vida_max}', True, 'white')
+        vida_texto = self.__fonte.render(f'{int(vida_atual)}/{int(vida_max)}', True, 'white')
         vida_rect = vida_texto.get_rect(midleft = (60, 35))
 
         self.__tela.blit(vida_texto, vida_rect)

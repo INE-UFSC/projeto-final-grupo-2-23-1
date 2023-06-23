@@ -19,7 +19,7 @@ class Jogo:
         self.hud = BarraStatus()
 
         (self.__mapa, jogador_pos) = ler_bitmap('./mapas/cidade.bmp')
-        self.__jogador = Jogador(arma, capacete, jogador_pos, self.__mapa)
+        self.__jogador = Jogador(arma, capacete, jogador_pos)
 
         self.__grupo_projeteis_jogador = pg.sprite.Group()
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
@@ -53,7 +53,7 @@ class Jogo:
         self.__tela.blit((self.__background), (0,0))
         if not self.__rodada_encerrada:
             self.ler_entrada()
-            self.__grupo_jogador.update(dt)
+            self.__grupo_jogador.update(dt, self.__mapa)
             self.__grupo_projeteis_jogador.update(dt)
             self.__grupo_inimigos.update(dt, self.__jogador.pos)
             self.__grupo_projeteis_inimigo.update(dt)
@@ -128,7 +128,7 @@ class Jogo:
             self.__jogador.mover(0)
 
         if teclas[pg.K_SPACE]:
-            self.__jogador.pular()
+            self.__jogador.pular(self.__mapa)
 
         clique_esquerdo = pg.mouse.get_pressed()[0]
         if clique_esquerdo:

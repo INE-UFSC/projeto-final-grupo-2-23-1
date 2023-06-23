@@ -7,9 +7,9 @@ from acessorio import Acessorio
 from projetil import Projetil
 
 
-class Arma(Acessorio, pg.sprite.Sprite):
-    def __init__(self, nome, custo, descricao, tipo_projetil: Projetil):
-        Acessorio.__init__(self, nome, custo, descricao)
+class Arma(pg.sprite.Sprite):
+    def __init__(self, nome, img_arquivo, tempo_recarga, tipo_projetil: Projetil):
+        #Acessorio.__init__(self, nome, custo, descricao)
         pg.sprite.Sprite.__init__(self)
 
         self.__tipo_projetil = tipo_projetil
@@ -17,8 +17,8 @@ class Arma(Acessorio, pg.sprite.Sprite):
         self.__mira_angulo = 0
 
         # TODO: adicionar mais armas e deixar o sprite customizável.
-        arma_img = pg.image.load(os.path.join('sprites', 'pistola_sprite.png')).convert_alpha()
-        self.image = pg.transform.scale(arma_img, (50, 28))
+        arma_img = pg.image.load(os.path.join('sprites', 'armas', img_arquivo)).convert_alpha()
+        self.image = pg.transform.scale(arma_img, (70, 18))
         self.rect = self.image.get_rect()
         # Esse vetor determina em qual posição o projétil é lançado.
         self.tiro_pos = pg.math.Vector2(self.rect.topright)
@@ -26,8 +26,12 @@ class Arma(Acessorio, pg.sprite.Sprite):
         self.imagem_original = self.image
 
         # TODO: colocar tempo de recarga como um parâmetro.
-        self.TEMPO_RECARGA = 0.75
+        self.TEMPO_RECARGA = tempo_recarga
         self.tiro_temporizador = self.TEMPO_RECARGA/2
+
+    @property
+    def tipo_projetil(self):
+        return self.__tipo_projetil
 
     def atirar_projetil(self):
         if self.tiro_temporizador < self.TEMPO_RECARGA:
@@ -39,7 +43,8 @@ class Arma(Acessorio, pg.sprite.Sprite):
             self.tiro_pos,
             self.__mira_angulo
         )
-        
+        tiro_som = mixer.Sound(os.path.join('musica', 'som_pistola_longa.wav'))
+        tiro_som.play()
         return proj
 
     def rotacionar(self, angulo, pivo):
@@ -60,7 +65,7 @@ class Arma(Acessorio, pg.sprite.Sprite):
 
         self.rect = self.image.get_rect(center = pivo)
 
-    def update(self, dt):
+    def update(self, dt, *args):
         self.tiro_temporizador += dt
 
         # Determina se a arma está apontada para a direita (-1) ou esquerda (1).

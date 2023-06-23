@@ -13,8 +13,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
     ARMA_OFFSET = (1, 6)
     CAPACETE_OFFSET = (0, -22)
 
-    def __init__(self, arma, capacete, pos, objs_colisao):
-        Entidade.__init__(self, 'jogador.png', pos, 30, 1, 150, 0.25)
+    def __init__(self, arma, capacete, pos_inicial):
+        Entidade.__init__(self, 'jogador.png', pos_inicial, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)
         
         # Altura do pulo em pixels.
@@ -30,9 +30,6 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__veloc_vert = 0
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
-
-        # TODO: tirar os objetos do mapa daqui.
-        self.__objs_colisao = objs_colisao
 
     @property
     def arma(self):
@@ -58,8 +55,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
     def mover(self, sentido):
         self.__sentido = sentido
 
-    def pular(self):
-        for objeto in self.__objs_colisao.sprites():
+    def pular(self, mapa_objetos):
+        for objeto in mapa_objetos.sprites():
             encima_horizontal = \
                 objeto.rect.left <= self.rect.left <= objeto.rect.right or \
                 objeto.rect.left <= self.rect.right <= objeto.rect.right
@@ -85,7 +82,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         return proj
 
-    def update(self, dt):
+    def update(self, dt, mapa_objetos):
         '''Atualiza a posição do sprite do jogador.'''
 
         super().update(dt)
@@ -93,7 +90,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.pos.x += self.__sentido * self.veloc_mov * dt
         self.rect.center = round(self.pos)
 
-        colide_mapa = pg.sprite.spritecollide(self, self.__objs_colisao, False)
+        colide_mapa = pg.sprite.spritecollide(self, mapa_objetos, False)
         if colide_mapa is not None:
             for objs in colide_mapa:
                 if self.__sentido == -1:
@@ -111,7 +108,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
 
         self.rect.center = round(self.pos)
 
-        colide_mapa = pg.sprite.spritecollide(self, self.__objs_colisao, False)
+        colide_mapa = pg.sprite.spritecollide(self, mapa_objetos, False)
         if colide_mapa is not None:
             for objs in colide_mapa:
                 if self.__veloc_vert < 0:

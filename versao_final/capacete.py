@@ -6,7 +6,7 @@ from acessorio import Acessorio
 
 
 class Capacete(Acessorio, pg.sprite.Sprite):
-    def __init__(self, nome, custo, descricao):
+    def __init__(self, nome, custo, descricao, *args):
         Acessorio.__init__(self, nome, custo, descricao)
         pg.sprite.Sprite.__init__(self)
 

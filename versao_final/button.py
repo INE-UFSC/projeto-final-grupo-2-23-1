@@ -1,9 +1,12 @@
-import time
+from time import perf_counter
 
 import pygame
 
 
 class Button:
+    TEMPO_MINIMO_SEGURAR = 0.75
+    TEMPO_ENTRE_CLIQUES_SEGURANDO = 0.15
+
     def __init__(self, color, x,y,width,height, text='', fontsize = 60, is_drawable = True):
         self.color = color
         self.x = x
@@ -16,10 +19,11 @@ class Button:
         self.clicked = False
         self.is_drawable = is_drawable
 
-        self.boolswitch = False
-        self.timer = 0.0
-        self.clock = time.time()
-        self.tempo = time
+        self.__estava_segurando = False
+        self.__segurar_temporizador = 0
+        self.__clique_segurando_temporizador = 0
+
+        self.__tempo_anterior = perf_counter()
 
     def draw(self,win,outline=None):
         if outline:
@@ -45,23 +49,40 @@ class Button:
         win.blit(self.textfont, (self.x + (self.width/2 - self.textfont.get_width()/2), self.y + (self.height/2 - self.textfont.get_height()/2)))
         self.click()
 
-    #deixar click mais preciso
     def click(self):
         self.clicked = False
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        if self.timer > 0.5:
-            self.boolswitch = True
-            self.timer = 0.0
-        else:
-            self.tempo = time.time()
-            self.timer += (self.tempo - self.clock)
-            self.clock = self.tempo
+        click = pygame.mouse.get_pressed()[0]
 
-        if self.boolswitch:
-            if (self.x + self.width > mouse[0] > self.x) and (self.y + self.height > mouse[1] > self.y):
-                if (click[0] == True):
-                # Melhorar aqui depois.
-                    self.clicked = True
-                    self.boolswitch = False
-                    print('f')
+        esta_segurando = self.__estava_segurando
+        self.__estava_segurando = click
+
+        if not click:
+            self.__segurar_temporizador = 0
+            self.__clique_segurando_temporizador = 0
+
+            return
+
+        mouse = pygame.mouse.get_pos()
+
+        esta_mouse_dentro_botao = (self.x + self.width > mouse[0] > self.x) and (self.y + self.height > mouse[1] > self.y)
+
+        if not esta_mouse_dentro_botao:
+            # Não permita que o tempo que o usuário está clicando fora do botão conte.
+            self.__segurar_temporizador = float('-inf')
+            return
+
+        tempo_atual = perf_counter()
+        dt = tempo_atual - self.__tempo_anterior
+
+        if esta_segurando:
+            self.__segurar_temporizador += dt
+
+        if not esta_segurando:
+            self.clicked = True
+        elif self.__segurar_temporizador > self.TEMPO_MINIMO_SEGURAR:
+            self.__clique_segurando_temporizador %= self.TEMPO_ENTRE_CLIQUES_SEGURANDO
+            self.__clique_segurando_temporizador += dt
+
+            self.clicked = self.__clique_segurando_temporizador > self.TEMPO_ENTRE_CLIQUES_SEGURANDO
+
+        self.__tempo_anterior = tempo_atual

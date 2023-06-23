@@ -30,25 +30,29 @@ class Menu:
         self.__button_triangulo_D_mapa = Button((200, 200, 200), 920, 290, 40, 40, ' ', 40, False)
         self.__button_triangulo_E_mapa = Button((200, 200, 200), 730, 290, 40, 40, ' ', 40, False)
         self.__arma_button = Button((0, 0, 0), self.__width/2 - 330 , self.__height/2 + 70, 0, 0, 'Arma', 40, False)
+
         rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
         rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
         ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
         ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
         pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
         pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
-        self.armas = [rifle, ak47, pistola]
+
+        self.armas = [pistola, rifle, ak47]
+        self.__arma_indice = 0
+        self.arma_escolhida = self.armas[self.__arma_indice]
+
         capacete_militar = CapaceteMilitar()
         self.capacetes = [capacete_militar]
+        self.__capacete_indice = 0
+        self.capacete_escolhido = self.capacetes[self.__capacete_indice]
+
         self.mapas =['background_cidade.png']
-        self.__imagem_arma_index = 0
-        self.__imagem_capacete_index = 0
         self.__imagem_mapa_index = 0
 
     def rodar(self):
         self.__tela.blit(self.__background, (0, 0))
-        #self.__tela.fill(self.__background_color)
-        #background = pygame.image.load(os.path.join()))
-        #self.__tela.blit(background, (0, 0))
+
         self.__start_button.draw(self.__tela)
         self.__quit_button.draw(self.__tela)
         self.__capacete_button.draw(self.__tela)
@@ -67,10 +71,12 @@ class Menu:
         self.__tela.blit(self.__triangulo_D, (920, 290))
         self.__tela.blit(self.__triangulo_E, (730, 290))
 
-        imagem_arma = self.armas[self.__imagem_arma_index].image
+        self.arma_escolhida = self.armas[self.__arma_indice]
+        imagem_arma = self.arma_escolhida.image
         self.__tela.blit(imagem_arma, (185, 410))
 
-        imagem_capacete = self.capacetes[self.__imagem_capacete_index].image
+        self.capacete_escolhido = self.capacetes[self.__capacete_indice]
+        imagem_capacete = self.capacete_escolhido.image
         self.__tela.blit(imagem_capacete, (200, 225))
 
         imagem_mapa = pygame.transform.scale(pygame.image.load(os.path.join('imagens', self.mapas[self.__imagem_mapa_index])).convert(), (80,50))
@@ -101,46 +107,27 @@ class Menu:
             self.iniciar_jogo = True
 
     def avancar_arma(self):
-        if self.__imagem_arma_index >= len(self.armas) - 1:
-            self.__imagem_arma_index = 0
-        else:
-            self.__imagem_arma_index += 1
-        print(self.__imagem_arma_index)
-        imagem = self.armas[self.__imagem_arma_index].image
-        self.__tela.blit(imagem, (195, 400))
-        
-            
+        self.__arma_indice = (self.__arma_indice + 1) % len(self.armas)
+
     def voltar_arma(self):
-        if self.__imagem_arma_index == 0:
-            self.__imagem_arma_index = len(self.armas) - 1
-        else:
-            self.__imagem_arma_index -= 1
-        print(self.__imagem_arma_index)
+        self.__arma_indice = (self.__arma_indice - 1) % len(self.armas)
 
     def avancar_capacete(self):
-        if self.__imagem_capacete_index >= len(self.capacetes) - 1:
-            self.__imagem_capacete_index = 0
-        else:
-            self.__imagem_capacete_index += 1
-        print(self.__imagem_capacete_index)
+        self.__capacete_indice = (self.__capacete_indice + 1) % len(self.capacetes)
 
     def voltar_capacete(self):
-        if self.__imagem_capacete_index == 0:
-            self.__imagem_capacete_index = len(self.capacetes) - 1
-        else:
-            self.__imagem_capacete_index -= 1
-        print(self.__imagem_capacete_index)
+        self.__capacete_indice = (self.__capacete_indice - 1) % len(self.capacetes)
 
     def avancar_mapa(self):
         if self.__imagem_mapa_index >= len(self.mapas) - 1:
             self.__imagem_mapa_index = 0
         else:
             self.__imagem_mapa_index += 1
-        print(self.__imagem_mapa_index)
+        #print(self.__imagem_mapa_index)
         
     def voltar_mapa(self):
         if self.__imagem_mapa_index == 0:
             self.__imagem_mapa_index = len(self.mapas) - 1
         else:
             self.__imagem_mapa_index -= 1
-        print(self.__imagem_mapa_index)
+        #print(self.__imagem_mapa_index)

@@ -11,7 +11,6 @@ from jogo import Jogo
 from menu import Menu
 from menu_carta import MenuCarta
 
-# TODO: adicionar seletor de resolução e modo tela cheia no menu.
 TELA_LARGURA = 1024
 TELA_COMPRIMENTO = 576
 
@@ -30,8 +29,6 @@ class Engine:
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
 
-        self.__jogo = Jogo()
-        self.__menu_carta = MenuCarta(self.__jogo)
         self.__menu = Menu()
         self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
@@ -55,23 +52,26 @@ class Engine:
 
                 if self.__menu.iniciar_jogo:
                     self.__estado = Estado.JOGO
+                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
+                    menu_carta = MenuCarta(jogo)
+
                     mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
                     mixer.music.play(-1)
 
             elif self.__estado == Estado.JOGO:
                 try:
-                    self.__jogo.rodar(dt)
+                    jogo.rodar(dt)
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
 
-                if self.__jogo.rodada_encerrada:
+                if jogo.rodada_encerrada:
                     self.__estado = Estado.UPGRADE
 
             elif self.__estado == Estado.UPGRADE:
-                self.__menu_carta.rodar()
+                menu_carta.rodar()
 
-                if self.__menu_carta.pronto:
-                    self.__jogo.iniciar_proxima_rodada()
+                if menu_carta.pronto:
+                    jogo.iniciar_proxima_rodada()
                     self.__estado = Estado.JOGO
 
             elif self.__estado == Estado.FIM_DE_JOGO:
@@ -79,7 +79,8 @@ class Engine:
 
                 if self.__fim.iniciar_jogo:
                     self.__estado = Estado.JOGO
-                    del self.__jogo
-                    self.__jogo = Jogo()
+                    self.__fim.iniciar_jogo = False
+                    del jogo
+                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
 
             pg.display.flip()

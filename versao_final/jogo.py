@@ -4,34 +4,17 @@ from random import random
 
 import pygame as pg
 
-from arma import Arma
 from barra_status import BarraStatus
-from capacete import Capacete
 from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
 from inimigo_grupo import InimigoGrupo
 from jogador import Jogador, MorteJogador
 from mapa import ler_bitmap
-from projetil_linear import ProjetilLinear
 
 
 class Jogo:
-    def __init__(self, eter=0):
+    def __init__(self, arma, capacete, eter=0):
         self.__tela = pg.display.get_surface()
         self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
-
-        # TODO: o menu inicial deverá selecionar a arma e os equipamentos, fazer só gerar a arma utilizada talvez?.
-        rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
-        rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
-
-        ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
-        ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
-
-        pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
-        pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
-
-        arma = ak47
-
-        capacete = Capacete('Capacete militar', 0, '')
 
         self.hud = BarraStatus()
 

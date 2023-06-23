@@ -36,7 +36,7 @@ class Menu:
         ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
         ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
         pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
-        pistola = Arma('Pistola longa', 'pistola_longa.png', 0.75, pistola_proj)
+        pistola = Arma('Pistola longa', 'pistola_sprite.png', 0.75, pistola_proj)
 
         self.armas = [pistola, rifle, ak47]
         self.__arma_indice = 0

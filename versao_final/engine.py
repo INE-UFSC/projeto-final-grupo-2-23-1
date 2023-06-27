@@ -43,6 +43,11 @@ class Engine:
                 if evento.type == pg.QUIT:
                     pg.quit()
                     raise SystemExit
+                if evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE:
+                    if self.__estado == Estado.JOGO:
+                        self.__estado = Estado.PAUSE
+                    elif self.__estado == Estado.PAUSE:
+                        self.__estado = Estado.JOGO
             # dt é usado para garantir que, independentemente do FPS, os
             # movimentos do jogo permaneçam constantes e sincronizados.
             tempo_atual = perf_counter()

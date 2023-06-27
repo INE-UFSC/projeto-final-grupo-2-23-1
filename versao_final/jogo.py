@@ -137,10 +137,6 @@ class Jogo:
         if teclas[pg.K_SPACE]:
             self.__jogador.pular(self.__mapa)
 
-        if teclas[pg.K_ESCAPE]:
-            self.__pause.pause()
-            self.pause = True
-            
         clique_esquerdo = pg.mouse.get_pressed()[0]
         if clique_esquerdo:
             proj = self.__jogador.atirar()

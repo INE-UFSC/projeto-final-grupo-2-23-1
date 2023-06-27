@@ -18,13 +18,5 @@ class Pause:
 
 
     def pause(self):
-        loop = 1
         self.__continuar_button.draw(self.__tela)
         self.__sair_button.draw(self.__tela)
-        while loop:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    loop = 0
-                
-
-            pg.display.update()

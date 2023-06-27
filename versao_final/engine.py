@@ -48,6 +48,7 @@ class Engine:
                         self.__estado = Estado.PAUSE
                     elif self.__estado == Estado.PAUSE:
                         self.__estado = Estado.JOGO
+
             # dt é usado para garantir que, independentemente do FPS, os
             # movimentos do jogo permaneçam constantes e sincronizados.
             tempo_atual = perf_counter()
@@ -95,6 +96,9 @@ class Engine:
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
 
                 if self.__fim.menu_jogo:
+                    del self.__menu
+                    self.__menu = Menu()
+
                     self.__estado = Estado.MENU_PRINCIPAL
                     self.__fim.menu_jogo = False
 
@@ -112,8 +116,5 @@ class Engine:
                 
 
 
-
-                
-                    
 
             pg.display.flip()

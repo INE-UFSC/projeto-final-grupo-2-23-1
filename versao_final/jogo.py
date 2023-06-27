@@ -8,6 +8,7 @@ from barra_status import BarraStatus
 from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
 from inimigo_grupo import InimigoGrupo
 from jogador import Jogador, MorteJogador
+from projetil_grupo import ProjetilGrupo
 from mapa import ler_bitmap
 
 
@@ -21,10 +22,10 @@ class Jogo:
         (self.__mapa, jogador_pos) = ler_bitmap('./mapas/cidade.bmp')
         self.__jogador = Jogador(arma, capacete, jogador_pos)
 
-        self.__grupo_projeteis_jogador = pg.sprite.Group()
+        self.__grupo_projeteis_jogador = ProjetilGrupo()
         self.__grupo_jogador = pg.sprite.Group(self.__jogador, capacete, arma)
 
-        self.__grupo_projeteis_inimigo = pg.sprite.Group()
+        self.__grupo_projeteis_inimigo = ProjetilGrupo()
         self.__grupo_inimigos = InimigoGrupo(self.__grupo_projeteis_inimigo)
 
         self.__numero_rodada = 0
@@ -61,9 +62,9 @@ class Jogo:
         if not self.__rodada_encerrada:
             self.ler_entrada()
             self.__grupo_jogador.update(dt, self.__mapa)
-            self.__grupo_projeteis_jogador.update(dt)
+            self.__grupo_projeteis_jogador.update(dt, self.__mapa)
             self.__grupo_inimigos.update(dt, self.__jogador.pos, self.__mapa)
-            self.__grupo_projeteis_inimigo.update(dt)
+            self.__grupo_projeteis_inimigo.update(dt, self.__mapa)
 
         self.__grupo_jogador.draw(self.__tela)
         self.__grupo_projeteis_jogador.draw(self.__tela)

@@ -3,7 +3,7 @@ from math import floor
 from random import random
 from pause import Pause
 import pygame as pg
-
+from pygame import mixer
 from barra_status import BarraStatus
 from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
 from inimigo_grupo import InimigoGrupo

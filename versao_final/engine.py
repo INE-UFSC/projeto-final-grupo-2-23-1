@@ -36,6 +36,9 @@ class Engine:
         self.__estado = Estado.MENU_PRINCIPAL
         self.__pause = Pause()
 
+        self.musica_jogo = mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+        self.som_fim_jogo = mixer.Sound(os.path.join('musica', 'som_fim_jogo.wav'))
+
     def iniciar(self):
         tempo_anterior = perf_counter()
         while True:
@@ -48,6 +51,19 @@ class Engine:
                         self.__estado = Estado.PAUSE
                     elif self.__estado == Estado.PAUSE:
                         self.__estado = Estado.JOGO
+                
+                if self.__estado == Estado.JOGO:
+                    mixer.Sound.stop(self.som_fim_jogo)
+                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+                    mixer.music.play(-1)
+
+                if self.__estado == Estado.FIM_DE_JOGO:
+                    mixer.Sound.play(self.som_fim_jogo)
+
+                if self.__estado == Estado.MENU_PRINCIPAL:
+                    mixer.Sound.stop(self.som_fim_jogo)
+
+
 
             # dt é usado para garantir que, independentemente do FPS, os
             # movimentos do jogo permaneçam constantes e sincronizados.
@@ -63,8 +79,6 @@ class Engine:
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
                     menu_carta = MenuCarta(jogo)
 
-                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
-                    mixer.music.play(-1)
                     self.__menu.iniciar_jogo = False
 
             elif self.__estado == Estado.JOGO:
@@ -75,6 +89,8 @@ class Engine:
 
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
+                    
+
 
                 if jogo.rodada_encerrada:
                     self.__estado = Estado.UPGRADE
@@ -87,13 +103,19 @@ class Engine:
                     self.__estado = Estado.JOGO
 
             elif self.__estado == Estado.FIM_DE_JOGO:
+                
+                pg.mixer.music.pause()
                 self.__fim.rodar(jogo.score)
+                
+
 
                 if self.__fim.iniciar_jogo:
                     self.__estado = Estado.JOGO
                     self.__fim.iniciar_jogo = False
                     del jogo
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
+                    #mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+                    #mixer.music.play(-1)
 
                 if self.__fim.menu_jogo:
                     del self.__menu

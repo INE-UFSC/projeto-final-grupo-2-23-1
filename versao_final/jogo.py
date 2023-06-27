@@ -33,6 +33,7 @@ class Jogo:
         self.__score = 0
         self.__score_eter = 150*random() + 150
         self.iniciar_proxima_rodada()
+        self.__pause = Pause()
 
         self.pause = False
 
@@ -135,6 +136,10 @@ class Jogo:
 
         if teclas[pg.K_SPACE]:
             self.__jogador.pular(self.__mapa)
+
+        if teclas[pg.K_ESCAPE]:
+            self.__pause.pause()
+            self.pause = True
             
         clique_esquerdo = pg.mouse.get_pressed()[0]
         if clique_esquerdo:

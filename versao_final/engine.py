@@ -100,6 +100,18 @@ class Engine:
 
             elif self.__estado == Estado.PAUSE:
                 self.__pause.pause()
+            
+                if self.__pause.continuar_jogo:
+                    self.__estado = Estado.JOGO
+                    self.__pause.continuar_jogo = False
+
+                if self.__pause.menu:
+                    self.__estado = Estado.MENU_PRINCIPAL
+                    self.__pause.menu = False
+                
+                
+
+
 
                 
                     

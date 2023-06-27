@@ -61,7 +61,7 @@ class Jogo:
             self.ler_entrada()
             self.__grupo_jogador.update(dt, self.__mapa)
             self.__grupo_projeteis_jogador.update(dt)
-            self.__grupo_inimigos.update(dt, self.__jogador.pos)
+            self.__grupo_inimigos.update(dt, self.__jogador.pos, self.__mapa)
             self.__grupo_projeteis_inimigo.update(dt)
 
         self.__grupo_jogador.draw(self.__tela)

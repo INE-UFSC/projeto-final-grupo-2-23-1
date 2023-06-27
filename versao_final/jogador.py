@@ -58,8 +58,8 @@ class Jogador(Entidade, pg.sprite.Sprite):
     def pular(self, mapa_objetos):
         for objeto in mapa_objetos.sprites():
             encima_horizontal = \
-                objeto.rect.left <= self.rect.left <= objeto.rect.right or \
-                objeto.rect.left <= self.rect.right <= objeto.rect.right
+                objeto.rect.left < self.rect.left < objeto.rect.right or \
+                objeto.rect.left < self.rect.right < objeto.rect.right
 
             if self.rect.bottom == objeto.rect.top and encima_horizontal:
                 self.__veloc_vert = -2*self.__ALTURA_PULO/self.__TEMPO_PULO

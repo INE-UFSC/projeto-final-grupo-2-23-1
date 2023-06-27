@@ -32,7 +32,7 @@ class Menu:
         self.__arma_button = Button((0, 0, 0), self.__width/2 - 330 , self.__height/2 + 70, 0, 0, 'Arma', 40, False)
 
         rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
-        rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
+        rifle = Arma('Rifle', 'rifle_novo.png', 1.2, rifle_proj)
         ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
         ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
         pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)

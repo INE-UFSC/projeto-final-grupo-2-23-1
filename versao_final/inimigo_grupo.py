@@ -39,9 +39,23 @@ class InimigoGrupo(pg.sprite.Group):
 
         return pg.math.Vector2(dx, dy)
 
-    def update(self, dt, jog_pos):
+    def __colide_mapa(self, inimigo, mapa_objetos):
+        colisao_objs = pg.sprite.spritecollide(inimigo, mapa_objetos, False)
+        if colisao_objs is not None:
+            for objs in colisao_objs:
+                if objs.rect.x < inimigo.rect.x:
+                    inimigo.rect.left = objs.rect.right
+                else:
+                    inimigo.rect.right = objs.rect.left
+
+                inimigo.pos.x = inimigo.rect.centerx
+                break
+
+    def update(self, dt, jog_pos, mapa_objetos):
         for inimigo in self.sprites():
             inimigo.update(dt, jog_pos)
             inimigo.pos += self.__calcular_ajuste_colisao(inimigo)
 
             self.__atirar_projetil(inimigo, jog_pos)
+            if (inimigo.dano == 0):
+                self.__colide_mapa(inimigo, mapa_objetos)

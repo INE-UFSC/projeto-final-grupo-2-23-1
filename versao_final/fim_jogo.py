@@ -15,7 +15,7 @@ class Fim:
         self.__quit_button = Button((0, 0, 0), self.__width/2 + 450, self.__height/2 - 270, 40, 40, "X")
         self.__fim_button = Button((0, 0, 0), self.__width/2 - 320, self.__height/2 - 200, 00, 00, "Fim de Jogo")
         self.__score_button = Button((0, 0, 0), self.__width/2 + 90, self.__height/2 - 150, 0, 0, "Score:")
-        self.__menu_button = Button((0, 0, 0), self.__width/2 + 0, self.__height/2 + 55, 370, 40, 'Menu')
+        self.__menu_button = Button((0, 0, 0), self.__width/2 + 120, self.__height/2 + 55, 120, 40, 'Menu')
         self.__image = pg.image.load(os.path.join('imagens', 'Sprite-morte.png'))
         self.image = pg.transform.scale(self.__image, (200, 300))
 
@@ -37,4 +37,9 @@ class Fim:
 
         if self.__tente_button.clicked:
             self.iniciar_jogo = True
+
+        self.menu_jogo = False
+        if self.__menu_button.clicked:
+            self.menu_jogo = True
+
 

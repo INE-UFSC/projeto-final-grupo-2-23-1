@@ -10,6 +10,7 @@ from jogador import MorteJogador
 from jogo import Jogo
 from menu import Menu
 from menu_carta import MenuCarta
+from pause import Pause
 
 TELA_LARGURA = 1024
 TELA_COMPRIMENTO = 576
@@ -20,6 +21,7 @@ class Estado(Enum):
     JOGO = 1
     UPGRADE = 2
     FIM_DE_JOGO = 3
+    PAUSE = 4
 
 class Engine:
     def __init__(self):
@@ -32,7 +34,7 @@ class Engine:
         self.__menu = Menu()
         self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
-        score = 0
+        self.__pause = Pause()
 
     def iniciar(self):
         tempo_anterior = perf_counter()
@@ -57,10 +59,14 @@ class Engine:
 
                     mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
                     mixer.music.play(-1)
+                    self.__menu.iniciar_jogo = False
 
             elif self.__estado == Estado.JOGO:
                 try:
                     jogo.rodar(dt)
+                    if jogo.pause == True:
+                        self.__estado == Estado.PAUSE
+
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
 
@@ -82,5 +88,15 @@ class Engine:
                     self.__fim.iniciar_jogo = False
                     del jogo
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
+
+                if self.__fim.menu_jogo:
+                    self.__estado = Estado.MENU_PRINCIPAL
+                    self.__fim.menu_jogo = False
+
+            elif self.__estado == Estado.PAUSE:
+                self.__pause.pause()
+
+                
+                    
 
             pg.display.flip()

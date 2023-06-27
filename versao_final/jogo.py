@@ -1,7 +1,7 @@
 import os
 from math import floor
 from random import random
-
+from pause import Pause
 import pygame as pg
 
 from barra_status import BarraStatus
@@ -33,6 +33,8 @@ class Jogo:
         self.__score = 0
         self.__score_eter = 150*random() + 150
         self.iniciar_proxima_rodada()
+
+        self.pause = False
 
     @property
     def numero_rodada(self):
@@ -133,7 +135,7 @@ class Jogo:
 
         if teclas[pg.K_SPACE]:
             self.__jogador.pular(self.__mapa)
-
+            
         clique_esquerdo = pg.mouse.get_pressed()[0]
         if clique_esquerdo:
             proj = self.__jogador.atirar()

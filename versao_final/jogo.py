@@ -33,9 +33,11 @@ class Jogo:
         self.__eter = eter
         self.__score = 0
         self.__score_eter = 150*random() + 150
+        self.__upgrades = []
+
+
         self.iniciar_proxima_rodada()
         self.__pause = Pause()
-
         self.pause = False
 
     @property
@@ -53,6 +55,14 @@ class Jogo:
     @property
     def jogador(self):
         return self.__jogador
+
+    @property
+    def upgrades(self):
+        return self.__upgrades
+    
+    @upgrades.setter
+    def upgrades(self, upgrade):
+        self.__upgrades.append(upgrade)
 
     def rodar(self, dt):
         if self.__jogador not in self.__grupo_jogador:
@@ -123,7 +133,7 @@ class Jogo:
         if len(self.__grupo_inimigos) == 0:
             self.__rodada_encerrada = True
 
-        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__eter, self.__numero_rodada)
+        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__eter, self.__numero_rodada, self.__upgrades)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()
@@ -150,7 +160,7 @@ class Jogo:
     def iniciar_proxima_rodada(self):
         self.__numero_rodada += 1
         self.__rodada_encerrada = False
-        
+    
         if self.__grupo_projeteis_inimigo is not None:
             self.__grupo_projeteis_inimigo.empty()
 
@@ -175,3 +185,4 @@ class Jogo:
                 self.__grupo_inimigos.add(criar_Vorathrax())
             for _ in range(num_zylox):
                 self.__grupo_inimigos.add(criar_Zylox())
+

@@ -3,6 +3,7 @@ dano adx0.4
 velocidadeatk adx0.1
 explosion.png
 dano adx0.3
+vida adx0.9
 world.png
 vida adx0.20
 rerrol.png

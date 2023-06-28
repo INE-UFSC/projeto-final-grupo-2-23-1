@@ -6,6 +6,8 @@ from arma import Arma
 from button import Button
 from capacete_militar import CapaceteMilitar
 from projetil_linear import ProjetilLinear
+from capacete_tyska import CapaceteTyska
+from capacete_bob import CapaceteBob
 
 
 class Menu:
@@ -43,6 +45,8 @@ class Menu:
         self.arma_escolhida = self.armas[self.__arma_indice]
 
         capacete_militar = CapaceteMilitar()
+        self.__capacete_tyska = CapaceteTyska()
+        self.__capacete_bob = CapaceteBob()
         self.capacetes = [capacete_militar]
         self.__capacete_indice = 0
         self.capacete_escolhido = self.capacetes[self.__capacete_indice]
@@ -50,6 +54,8 @@ class Menu:
         self.mapas =['background_cidade.png']
         self.__imagem_mapa_index = 0
 
+        self.__contadorb = self.__contadort = 0
+        self.__firstb = False
     def rodar(self):
         self.__tela.blit(self.__background, (0, 0))
 
@@ -81,6 +87,28 @@ class Menu:
 
         imagem_mapa = pygame.transform.scale(pygame.image.load(os.path.join('imagens', self.mapas[self.__imagem_mapa_index])).convert(), (80,50))
         self.__tela.blit(imagem_mapa, (808, 280))
+        
+        teclas = pygame.key.get_pressed()
+        
+        if teclas[pygame.K_t]:
+            self.__contadort = 1
+        elif self.__contadort == 1 and teclas[pygame.K_y]:
+            self.__contadort = 2
+        elif self.__contadort == 2 and teclas[pygame.K_s]:
+            self.__contadort = 3
+        elif self.__contadort == 3 and teclas[pygame.K_k]:
+            self.__contadort = 4
+        elif self.__contadort == 4 and teclas[pygame.K_a]:
+            self.capacetes.append(self.__capacete_tyska)
+
+        if not self.__firstb and teclas[pygame.K_b]:
+            self.__contadorb = 1
+            self.__firstb = True
+        elif self.__contadorb == 1 and teclas[pygame.K_o]:
+            self.__contadorb = 2
+        elif self.__contadorb == 2 and teclas[pygame.K_b]:
+            self.capacetes.append(self.__capacete_bob)
+
         
         if self.__button_triangulo_D_arma.clicked:
             self.avancar_arma()

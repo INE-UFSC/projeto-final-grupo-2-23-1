@@ -3,7 +3,8 @@ from math import atan2, pi
 import pygame as pg
 
 from entidade import Entidade
-
+from capacete_tyska import CapaceteTyska
+from capacete_bob import CapaceteBob
 
 class MorteJogador(Exception):
     pass
@@ -14,7 +15,14 @@ class Jogador(Entidade, pg.sprite.Sprite):
     CAPACETE_OFFSET = (0, -22)
 
     def __init__(self, arma, capacete, pos_inicial):
-        Entidade.__init__(self, 'jogador.png', pos_inicial, 30, 1, 150, 0.25)
+        if isinstance(capacete, CapaceteTyska):
+            pngjogador = 'corpotyska.png'
+        elif isinstance(capacete, CapaceteBob):
+            pngjogador = 'corpobob.png'
+        else:
+            pngjogador = 'jogador.png'
+
+        Entidade.__init__(self, pngjogador, pos_inicial, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)
         
         # Altura do pulo em pixels.

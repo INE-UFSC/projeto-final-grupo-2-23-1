@@ -13,14 +13,13 @@ class Upgrade:
             if 'dano' in chaves:
                 self.dano(chave[i]['dano'])
             elif 'vida' in chaves:
-                print(chave[i]['vida'])
                 self.vida(chave[i]['vida'])
             elif 'pulo' in chaves:
                 self.pulo(chave[i]['pulo'])
             elif 'velocidade' in chaves:
                 self.velocidade(chave[i]['velocidade'])
             elif 'velocidadeatk' in chaves:
-                self.velocidadeatk(chaves[i]['velocidadeatk'])
+                self.velocidadeatk(chave[i]['velocidadeatk'])
     
     def ler_upgrade(self):
         palavras = []
@@ -29,7 +28,7 @@ class Upgrade:
         
         listanomes.append(ler.ler('cartas.txt'))
         listanomes.append(ler.ler('cartas_inc.txt'))
-        
+    
         for i in range(2):
             for frase in listanomes[i]:
                 palavras.extend(frase.split())
@@ -67,42 +66,40 @@ class Upgrade:
         if valor[0] == 'a':
             self.__jogo.jogador.vida_total += int(self.__jogo.jogador.vida_total  * float(valor[3:]))
         elif valor[0] == 's':
-            self.__jogo.jogador.vida_total -= 20#'int(self.__jogo.jogador.vida_total  * float(valor[4:]))'
-            print(self.__jogo.jogador.vida_total)
+            self.__jogo.jogador.vida_total -= int(self.__jogo.jogador.vida_total  * float(valor[4:]))
         elif valor[0] == '+':
             self.__jogo.jogador.vida_total += int(float(valor[1:]))
         elif valor[0] == '-':
             self.__jogo.jogador.vida_total -= int(float(valor[1:]))
 
         self.__jogo.jogador.vida_atual = self.__jogo.jogador.vida_total
-        print(self.__jogo.jogador.vida_atual)
 
     def pulo(self, valor):
         if valor[0] == 'a':
-            self.__jogador.ALTURA_PULO += int(self.__jogador.ALTURA_PULO  * float(valor[3:]))
+            self.__jogo.jogador.ALTURA_PULO += int(self.__jogo.jogador.ALTURA_PULO  * float(valor[3:]))
         elif valor[0] == 's':
-            self.__jogador.ALTURA_PULO -= int(self.__jogador.ALTURA_PULO  * float(valor[4:]))
+            self.__jogo.jogador.ALTURA_PULO -= int(self.__jogo.jogador.ALTURA_PULO  * float(valor[4:]))
         elif valor[0] == '+':
-            self.__jogador.ALTURA_PULO += int(float(valor[1:]))
+            self.__jogo.jogador.ALTURA_PULO += int(float(valor[1:]))
         elif valor[0] == '-':
-            self.__jogador.ALTURA_PULO -= int(float(valor[1:]))
+            self.__jogo.jogador.ALTURA_PULO -= int(float(valor[1:]))
 
     def velocidade(self,valor):
         if valor[0] == 'a':
-            self.__jogador.veloc_mov += int(self.__jogador.veloc_mov  * float(valor[3:]))
+            self.__jogo.jogador.veloc_mov += int(self.__jogo.jogador.veloc_mov  * float(valor[3:]))
         elif valor[0] == 's':
-            self.__jogador.veloc_mov -= int(self.__jogador.veloc_mov  * float(valor[4:]))
+            self.__jogo.jogador.veloc_mov -= int(self.__jogo.jogador.veloc_mov  * float(valor[4:]))
         elif valor[0] == '+':
-            self.__jogador.veloc_mov += int(float(valor[1:]))
+            self.__jogo.jogador.veloc_mov += int(float(valor[1:]))
         elif valor[0] == '-':
-            self.__jogador.veloc_mov -= int(float(valor[1:]))
+            self.__jogo.jogador.veloc_mov -= int(float(valor[1:]))
 
     def velocidadeatk(self,valor):
         if valor[0] == 'a':
-            self.__jogador.arma.TEMPO_RECARGA += int(self.__jogador.arma.TEMPO_RECARGA  * float(valor[3:]))
+            self.__jogo.jogador.arma.TEMPO_RECARGA += int(self.__jogo.jogador.arma.TEMPO_RECARGA  * float(valor[3:]))
         elif valor[0] == 's':
-            self.__jogador.arma.TEMPO_RECARGA -= int(self.__jogador.arma.TEMPO_RECARGA  * float(valor[4:]))
+            self.__jogo.jogador.arma.TEMPO_RECARGA -= int(self.__jogo.jogador.arma.TEMPO_RECARGA  * float(valor[4:]))
         elif valor[0] == '+':
-            self.__jogador.arma.TEMPO_RECARGA += int(float(valor[1:]))
+            self.__jogo.jogador.arma.TEMPO_RECARGA += int(float(valor[1:]))
         elif valor[0] == '-':
-            self.__jogador.arma.TEMPO_RECARGA -= int(float(valor[1:]))
+            self.__jogo.jogador.arma.TEMPO_RECARGA -= int(float(valor[1:]))

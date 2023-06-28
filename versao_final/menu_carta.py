@@ -8,6 +8,7 @@ UB = UpgradeButton()
 
 class MenuCarta:
     def __init__(self, jogo):
+        self.__jogo = jogo
         self.__pronto = False
         self.__selected = None
         self.__tela = pg.display.get_surface()
@@ -57,6 +58,8 @@ class MenuCarta:
         if self.__confirm_buttom.clicked and (self.__selected != None):
             self.__pronto = True
             self.__upgrade.aplicar_upgrade(self.__selected.text)
+            self.__jogo.upgrades.append(self.__selected.text)
+
             self.gerar_novos()
                
         else:

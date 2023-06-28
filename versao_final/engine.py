@@ -36,7 +36,6 @@ class Engine:
         self.__estado = Estado.MENU_PRINCIPAL
         self.__pause = Pause()
 
-        self.musica_jogo = mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
         self.som_fim_jogo = mixer.Sound(os.path.join('musica', 'som_fim_jogo.wav'))
 
     def iniciar(self):
@@ -54,8 +53,6 @@ class Engine:
                 
                 if self.__estado == Estado.JOGO:
                     mixer.Sound.stop(self.som_fim_jogo)
-                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
-                    mixer.music.play(-1)
 
                 if self.__estado == Estado.FIM_DE_JOGO:
                     mixer.Sound.play(self.som_fim_jogo)
@@ -84,6 +81,7 @@ class Engine:
             elif self.__estado == Estado.JOGO:
                 try:
                     jogo.rodar(dt)
+
                     if jogo.pause == True:
                         self.__estado == Estado.PAUSE
 
@@ -114,8 +112,8 @@ class Engine:
                     self.__fim.iniciar_jogo = False
                     del jogo
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
-                    #mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
-                    #mixer.music.play(-1)
+                    mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+                    mixer.music.play(-1)
 
                 if self.__fim.menu_jogo:
                     del self.__menu

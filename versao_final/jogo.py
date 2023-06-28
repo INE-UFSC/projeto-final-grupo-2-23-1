@@ -14,6 +14,8 @@ from mapa import ler_bitmap
 
 class Jogo:
     def __init__(self, arma, capacete, eter=0):
+        mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
+        mixer.music.play(-1)
         self.__tela = pg.display.get_surface()
         self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 

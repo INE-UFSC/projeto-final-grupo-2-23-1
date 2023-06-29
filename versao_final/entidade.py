@@ -24,6 +24,7 @@ class Entidade(pg.sprite.Sprite):
         colorImage.fill('red')
         self.__imagem_dano = pg.transform.scale(img, (altura_img/10, largura_img/10))
         self.__imagem_dano.blit(colorImage, (0,0), special_flags = pg.BLEND_RGBA_MULT)
+        self.__esta_com_dano = False
 
         self.__vida_total = vida
         self.__vida_atual = vida
@@ -85,5 +86,7 @@ class Entidade(pg.sprite.Sprite):
 
         if self.__invulnerabilidade_temporizador < self.__invulnerabilidade_periodo:
             self.imagem_original = self.image = self.__imagem_dano
-        else:
+            self.__esta_com_dano = True
+        elif self.__esta_com_dano:
             self.imagem_original = self.image = self.__imagem_sem_dano
+            self.__esta_com_dano = False

@@ -22,7 +22,6 @@ class Inimigo(Entidade, pg.sprite.Sprite):
         self.__comportamento_componente = componente_inimigo
         self.__tipo_projetil = proj_tipo
 
-        self.__angulo = 0
         self.__tempo_recarga = tempo_recarga
         self.__temporizador_ataque = random() * 3*self.__tempo_recarga/4
 
@@ -66,11 +65,6 @@ class Inimigo(Entidade, pg.sprite.Sprite):
             self.pos.y - pos_ref.y,
             self.pos.x - pos_ref.x
         )
-
-        if angulo == self.__angulo:
-            return
-
-        self.__angulo = angulo
 
         self.image = pg.transform.rotozoom(self.imagem_original, angulo*180/pi, 1)
         self.rect = self.image.get_rect(center = self.pos)

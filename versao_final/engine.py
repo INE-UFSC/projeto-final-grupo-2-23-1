@@ -73,7 +73,7 @@ class Engine:
 
                 if self.__menu.iniciar_jogo:
                     self.__estado = Estado.JOGO
-                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
+                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido, self.__menu.mapa_escolhido)
                     menu_carta = MenuCarta(jogo)
 
                     self.__menu.iniciar_jogo = False
@@ -81,9 +81,6 @@ class Engine:
             elif self.__estado == Estado.JOGO:
                 try:
                     jogo.rodar(dt)
-
-                    if jogo.pause == True:
-                        self.__estado == Estado.PAUSE
 
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
@@ -111,7 +108,7 @@ class Engine:
                     self.__estado = Estado.JOGO
                     self.__fim.iniciar_jogo = False
                     del jogo
-                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido)
+                    jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido, self.__menu.mapa_escolhido)
                     mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
                     mixer.music.play(-1)
 

@@ -4,10 +4,10 @@ import pygame
 
 from arma import Arma
 from button import Button
-from capacete_militar import CapaceteMilitar
-from projetil_linear import ProjetilLinear
-from capacete_tyska import CapaceteTyska
 from capacete_bob import CapaceteBob
+from capacete_militar import CapaceteMilitar
+from capacete_tyska import CapaceteTyska
+from projetil_linear import ProjetilLinear
 
 
 class Menu:
@@ -51,8 +51,9 @@ class Menu:
         self.__capacete_indice = 0
         self.capacete_escolhido = self.capacetes[self.__capacete_indice]
 
-        self.mapas =['background_cidade.png']
-        self.__imagem_mapa_index = 0
+        self.mapas = ['cidade', 'trincheira', 'arena']
+        self.__mapa_indice = 0
+        self.mapa_escolhido = self.mapas[self.__mapa_indice]
 
         self.__contadorb = self.__contadort = 0
         self.__firstb = False
@@ -85,9 +86,10 @@ class Menu:
         imagem_capacete = self.capacete_escolhido.image
         self.__tela.blit(imagem_capacete, (200, 225))
 
-        imagem_mapa = pygame.transform.scale(pygame.image.load(os.path.join('imagens', self.mapas[self.__imagem_mapa_index])).convert(), (80,50))
-        self.__tela.blit(imagem_mapa, (808, 280))
-        
+        self.mapa_escolhido = self.mapas[self.__mapa_indice]
+        imagem_mapa = pygame.transform.scale(pygame.image.load(os.path.join('imagens', f'img_{self.mapa_escolhido}.png')).convert(), (171, 96))
+        self.__tela.blit(imagem_mapa, (760, 265))
+
         teclas = pygame.key.get_pressed()
         
         if teclas[pygame.K_t]:
@@ -109,7 +111,6 @@ class Menu:
         elif self.__contadorb == 2 and teclas[pygame.K_b]:
             self.capacetes.append(self.__capacete_bob)
 
-        
         if self.__button_triangulo_D_arma.clicked:
             self.avancar_arma()
         
@@ -147,15 +148,7 @@ class Menu:
         self.__capacete_indice = (self.__capacete_indice - 1) % len(self.capacetes)
 
     def avancar_mapa(self):
-        if self.__imagem_mapa_index >= len(self.mapas) - 1:
-            self.__imagem_mapa_index = 0
-        else:
-            self.__imagem_mapa_index += 1
-        #print(self.__imagem_mapa_index)
-        
+        self.__mapa_indice = (self.__mapa_indice + 1) % len(self.mapas)
+
     def voltar_mapa(self):
-        if self.__imagem_mapa_index == 0:
-            self.__imagem_mapa_index = len(self.mapas) - 1
-        else:
-            self.__imagem_mapa_index -= 1
-        #print(self.__imagem_mapa_index)
+        self.__mapa_indice = (self.__mapa_indice - 1) % len(self.mapas)

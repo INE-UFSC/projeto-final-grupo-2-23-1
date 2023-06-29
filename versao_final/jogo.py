@@ -1,27 +1,28 @@
 import os
 from math import floor
 from random import random
-from pause import Pause
+
 import pygame as pg
 from pygame import mixer
+
 from barra_status import BarraStatus
 from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
 from inimigo_grupo import InimigoGrupo
 from jogador import Jogador, MorteJogador
+from mapa import Mapa
 from projetil_grupo import ProjetilGrupo
-from mapa import ler_bitmap
 
 
 class Jogo:
-    def __init__(self, arma, capacete, eter=0):
+    def __init__(self, arma, capacete, mapa, eter=0):
         mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
         mixer.music.play(-1)
         self.__tela = pg.display.get_surface()
-        self.__background = pg.image.load(os.path.join('imagens', 'background_cidade.png'))
 
         self.hud = BarraStatus()
 
-        (self.__mapa, jogador_pos) = ler_bitmap('./mapas/cidade.bmp')
+        self.__mapa = Mapa(mapa)
+        jogador_pos = self.__mapa.jog_pos_inicial
         self.__jogador = Jogador(arma, capacete, jogador_pos)
 
         self.__grupo_projeteis_jogador = ProjetilGrupo()
@@ -37,10 +38,7 @@ class Jogo:
         self.__score_eter = 150*random() + 150
         self.__upgrades = []
 
-
         self.iniciar_proxima_rodada()
-        self.__pause = Pause()
-        self.pause = False
 
     @property
     def numero_rodada(self):
@@ -70,19 +68,19 @@ class Jogo:
         if self.__jogador not in self.__grupo_jogador:
             raise MorteJogador
 
-        self.__tela.blit((self.__background), (0,0))
+        self.__tela.blit(self.__mapa.background, (0,0))
         if not self.__rodada_encerrada:
             self.ler_entrada()
-            self.__grupo_jogador.update(dt, self.__mapa)
-            self.__grupo_projeteis_jogador.update(dt, self.__mapa)
-            self.__grupo_inimigos.update(dt, self.__jogador.pos, self.__mapa)
-            self.__grupo_projeteis_inimigo.update(dt, self.__mapa)
+            self.__grupo_jogador.update(dt, self.__mapa.blocos)
+            self.__grupo_projeteis_jogador.update(dt, self.__mapa.blocos)
+            self.__grupo_inimigos.update(dt, self.__jogador.pos, self.__mapa.blocos)
+            self.__grupo_projeteis_inimigo.update(dt, self.__mapa.blocos)
 
         self.__grupo_jogador.draw(self.__tela)
         self.__grupo_projeteis_jogador.draw(self.__tela)
         self.__grupo_inimigos.draw(self.__tela)
         self.__grupo_projeteis_inimigo.draw(self.__tela)
-        self.__mapa.draw(self.__tela)
+        self.__mapa.blocos.draw(self.__tela)
 
         # TODO: realocar verificação de colisão para outro lugar.
         proj_jog_colide_inimigo = pg.sprite.groupcollide(
@@ -148,7 +146,7 @@ class Jogo:
             self.__jogador.mover(0)
 
         if teclas[pg.K_SPACE]:
-            self.__jogador.pular(self.__mapa)
+            self.__jogador.pular(self.__mapa.blocos)
 
         clique_esquerdo = pg.mouse.get_pressed()[0]
         if clique_esquerdo:
@@ -163,8 +161,8 @@ class Jogo:
         self.__numero_rodada += 1
         self.__rodada_encerrada = False
     
-        if self.__grupo_projeteis_inimigo is not None:
-            self.__grupo_projeteis_inimigo.empty()
+        self.__grupo_projeteis_inimigo.empty()
+        self.__grupo_projeteis_jogador.empty()
 
         if self.__numero_rodada < 5:
             num_aerethor = floor(1 + self.__numero_rodada*1)
@@ -187,4 +185,3 @@ class Jogo:
                 self.__grupo_inimigos.add(criar_Vorathrax())
             for _ in range(num_zylox):
                 self.__grupo_inimigos.add(criar_Zylox())
-

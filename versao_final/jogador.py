@@ -20,7 +20,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         elif isinstance(capacete, CapaceteBob):
             pngjogador = 'corpobob.png'
         else:
-            pngjogador = 'jogador.png'
+            pngjogador = 'soldado_pixel_teste.png'
 
         Entidade.__init__(self, pngjogador, pos_inicial, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)

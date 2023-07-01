@@ -66,7 +66,8 @@ class Inimigo(Entidade, pg.sprite.Sprite):
             self.pos.x - pos_ref.x
         )
 
-        self.image = pg.transform.rotozoom(self.imagem_original, angulo*180/pi, 1)
+        img_atual = self.imagem_sem_dano if not self.esta_com_dano else self.imagem_dano
+        self.image = pg.transform.rotozoom(img_atual, angulo*180/pi, 1)
         self.rect = self.image.get_rect(center = self.pos)
         self.mascara = pg.mask.from_surface(self.image)
 
@@ -84,13 +85,13 @@ class Inimigo(Entidade, pg.sprite.Sprite):
 class CamperComponente:
     def __init__(self, linha_amplitude, linha_base):
         (largura_tela, altura_tela) = pg.display.get_window_size()
-        
+
         # Os inimigos movem-se sob essa linha.
         if randint(1,2) == 1:
             self.linha_mestra_latitude = largura_tela*0.1 + randint(1, 154)
         else:
             self.linha_mestra_latitude =  largura_tela*0.1 + randint(800, 970) 
-            
+
         self.__linha_mestra = linha_amplitude*altura_tela*random() + linha_base*altura_tela
     def atualizar(self, dt, obj, jog_pos):
         dx = 0

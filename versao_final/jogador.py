@@ -2,17 +2,18 @@ from math import atan2, pi
 
 import pygame as pg
 
-from entidade import Entidade
-from capacete_tyska import CapaceteTyska
 from capacete_bob import CapaceteBob
+from capacete_tyska import CapaceteTyska
+from entidade import Entidade
+
 
 class MorteJogador(Exception):
     pass
 
 class Jogador(Entidade, pg.sprite.Sprite):
     # Offset do sprite da arma e do capacete em relação ao sprite do jogador.
-    ARMA_OFFSET = (1, 6)
-    CAPACETE_OFFSET = (0, -22)
+    ARMA_OFFSET = (2, 6)
+    CAPACETE_OFFSET = (0, -18)
 
     def __init__(self, arma, capacete, pos_inicial):
         if isinstance(capacete, CapaceteTyska):
@@ -20,11 +21,11 @@ class Jogador(Entidade, pg.sprite.Sprite):
         elif isinstance(capacete, CapaceteBob):
             pngjogador = 'corpobob.png'
         else:
-            pngjogador = 'soldado_pixel_teste.png'
+            pngjogador = 'soldado.png'
 
         Entidade.__init__(self, pngjogador, pos_inicial, 30, 1, 150, 0.25)
         pg.sprite.Sprite.__init__(self)
-        
+
         # Altura do pulo em pixels.
         self.__ALTURA_PULO = 70
         # Tempo até alcançar a altura máxima (pico) do pulo em segundos.
@@ -38,6 +39,7 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__veloc_vert = 0
         # Sentido horizontal que o jogador está andando.
         self.__sentido = 0
+        self.__virado_para_esquerda = False
 
     @property
     def arma(self):
@@ -61,6 +63,16 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__GRAVIDADE = (2*self.__ALTURA_PULO)/(self.__TEMPO_PULO**2)
 
     def mover(self, sentido):
+        if (self.__virado_para_esquerda and sentido == 1) or \
+        (not self.__virado_para_esquerda and sentido == -1):
+            self.__virado_para_esquerda ^= True
+
+            self.__capacete.image = pg.transform.flip(self.__capacete.image, True, False)
+            self.imagem_dano = pg.transform.flip(self.imagem_dano, True, False)
+            self.imagem_sem_dano = pg.transform.flip(self.imagem_sem_dano, True, False)
+
+        self.image = self.imagem_sem_dano if not self.esta_com_dano else self.imagem_dano
+
         self.__sentido = sentido
 
     def pular(self, mapa_objetos):

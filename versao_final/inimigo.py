@@ -145,7 +145,18 @@ def criar_Zylox(nivel = 1):
     return Inimigo(stats, PerseguidorComponente(), None, dano=8)
 
 def criar_Xerthul(nivel = 1):
-    stats = ('xerthul.png', 35*nivel, 1.5*nivel, 1)
-    proj = ProjetilLinear(12, 200, 8, (255, 24, 11))
+    stats = ('xerthul.png', 70*nivel, 1.5*nivel, 1)
+    proj = ProjetilLinear(28, 270, 8, (255, 24, 11))
 
     return Inimigo(stats, CamperComponente(0, 0.08), proj, 3.5)
+
+def criar_Zorblax(nivel = 1):
+    stats = ('zorblax.png', 35*nivel, 1.5*nivel, 1)
+    proj = ProjetilLinear(12, 200, 6, (255, 24, 11))
+
+    return Inimigo(stats, CamperComponente(0, 0.08), proj, 3.5)
+
+def criar_Xandria(nivel = 1):
+    stats = ('xandria.png', 80*nivel, 1.5*nivel, 0.5)
+
+    return Inimigo(stats, PerseguidorComponente(), None, dano=16)

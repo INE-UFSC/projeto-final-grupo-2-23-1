@@ -6,7 +6,7 @@ import pygame as pg
 from pygame import mixer
 
 from barra_status import BarraStatus
-from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox
+from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox, criar_Xandria, criar_Zorblax
 from inimigo_grupo import InimigoGrupo
 from jogador import Jogador, MorteJogador
 from mapa import Mapa
@@ -164,11 +164,15 @@ class Jogo:
         self.__grupo_projeteis_inimigo.empty()
         self.__grupo_projeteis_jogador.empty()
 
-        num_aerethor = num_vorathrax = num_zylox = num_xerthul = 0
+        num_aerethor = num_vorathrax = num_zylox = num_xerthul = num_xandria = num_zorblax = 0
+
+        #if self.__numero_rodada < 5:
+        #   num_aerethor = floor(1 + self.__numero_rodada*1)
+        #    num_xerthul = floor(1 + self.__numero_rodada*0)
 
         if self.__numero_rodada < 5:
-            num_aerethor = floor(1 + self.__numero_rodada*1)
-            num_xerthul = floor(1 + self.__numero_rodada*0)
+            num_xandria = floor(1 + self.__numero_rodada*0)
+            num_zorblax = floor(1 + self.__numero_rodada*0)
 
         elif self.__numero_rodada >= 5 and self.__numero_rodada < 10:
             num_aerethor = floor(7 - self.__numero_rodada*0.3)
@@ -189,3 +193,7 @@ class Jogo:
             self.__grupo_inimigos.add(criar_Zylox())
         for _ in range(num_xerthul):
             self.__grupo_inimigos.add(criar_Xerthul())
+        for _ in range(num_zorblax):
+            self.__grupo_inimigos.add(criar_Zorblax())
+        for _ in range(num_xandria):
+            self.__grupo_inimigos.add(criar_Xandria())

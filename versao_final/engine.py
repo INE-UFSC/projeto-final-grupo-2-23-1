@@ -71,6 +71,7 @@ class Engine:
 
             if self.__estado == Estado.MENU_PRINCIPAL:
                 self.__menu.rodar()
+                mixer.music.stop()
 
                 if self.__menu.iniciar_jogo:
                     self.__estado = Estado.JOGO

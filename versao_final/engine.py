@@ -31,10 +31,12 @@ class Engine:
 
         pg.display.set_mode((TELA_LARGURA, TELA_COMPRIMENTO))
 
+        icone = pg.image.load(os.path.join('imagens', 'icone.png'))
+        pg.display.set_icon(icone)
+
         self.__menu = Menu()
         self.__fim = Fim()
         self.__estado = Estado.MENU_PRINCIPAL
-        self.__pause = Pause()
 
         self.som_fim_jogo = mixer.Sound(os.path.join('musica', 'som_fim_jogo.wav'))
 
@@ -48,9 +50,10 @@ class Engine:
                 if evento.type == pg.KEYDOWN and evento.key == pg.K_ESCAPE:
                     if self.__estado == Estado.JOGO:
                         self.__estado = Estado.PAUSE
+                        self.__pause = Pause()
                     elif self.__estado == Estado.PAUSE:
                         self.__estado = Estado.JOGO
-                
+
                 if self.__estado == Estado.JOGO:
                     mixer.Sound.stop(self.som_fim_jogo)
 
@@ -59,8 +62,6 @@ class Engine:
 
                 if self.__estado == Estado.MENU_PRINCIPAL:
                     mixer.Sound.stop(self.som_fim_jogo)
-
-
 
             # dt é usado para garantir que, independentemente do FPS, os
             # movimentos do jogo permaneçam constantes e sincronizados.
@@ -81,11 +82,8 @@ class Engine:
             elif self.__estado == Estado.JOGO:
                 try:
                     jogo.rodar(dt)
-
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
-                    
-
 
                 if jogo.rodada_encerrada:
                     self.__estado = Estado.UPGRADE
@@ -98,11 +96,9 @@ class Engine:
                     self.__estado = Estado.JOGO
 
             elif self.__estado == Estado.FIM_DE_JOGO:
-                
+
                 pg.mixer.music.pause()
                 self.__fim.rodar(jogo.score)
-                
-
 
                 if self.__fim.iniciar_jogo:
                     self.__estado = Estado.JOGO
@@ -121,17 +117,12 @@ class Engine:
 
             elif self.__estado == Estado.PAUSE:
                 self.__pause.pause()
-            
+
                 if self.__pause.continuar_jogo:
+                    del self.__pause
                     self.__estado = Estado.JOGO
-                    self.__pause.continuar_jogo = False
-
-                if self.__pause.menu:
+                elif self.__pause.menu:
+                    del self.__pause
                     self.__estado = Estado.MENU_PRINCIPAL
-                    self.__pause.menu = False
-                
-                
-
-
 
             pg.display.flip()

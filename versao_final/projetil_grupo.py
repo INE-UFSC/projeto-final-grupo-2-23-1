@@ -2,13 +2,10 @@ import pygame as pg
 
 
 class ProjetilGrupo(pg.sprite.Group):
-    def __init__(self):
-        super().__init__()
-
-    def update(self, dt, mapa_objetos):
+    def update(self, dt, mapa_blocos):
         pg.sprite.groupcollide(
             self,
-            mapa_objetos,
+            mapa_blocos,
             True, False
         )
 

@@ -33,12 +33,12 @@ class Menu:
         self.__button_triangulo_E_mapa = Button((200, 200, 200), 730, 290, 40, 40, ' ', 40, False)
         self.__arma_button = Button((0, 0, 0), self.__width/2 - 330 , self.__height/2 + 70, 0, 0, 'Arma', 40, False)
 
-        rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0), 1)
-        rifle = Arma('Rifle', 'rifle_novo.png', 1.2, rifle_proj)
-        ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46), 1)
+        rifle_proj = ProjetilLinear(15, 600, 2, (26, 255, 0))
+        rifle = Arma('Rifle', 'rifle.png', 1.2, rifle_proj)
+        ak_proj = ProjetilLinear(6, 450, 3, (252, 255, 46))
         ak47 = Arma('AK-47', 'ak47.png', 0.5, ak_proj)
-        pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255), 1)
-        pistola = Arma('Pistola longa', 'pistola_sprite.png', 0.75, pistola_proj)
+        pistola_proj = ProjetilLinear(5, 300, 3, (0, 255, 255))
+        pistola = Arma('Pistola', 'pistola.png', 0.75, pistola_proj)
 
         self.armas = [pistola, rifle, ak47]
         self.__arma_indice = 0
@@ -91,7 +91,7 @@ class Menu:
         self.__tela.blit(imagem_mapa, (760, 265))
 
         teclas = pygame.key.get_pressed()
-        
+
         if teclas[pygame.K_t]:
             self.__contadort = 1
         elif self.__contadort == 1 and teclas[pygame.K_y]:
@@ -113,7 +113,7 @@ class Menu:
 
         if self.__button_triangulo_D_arma.clicked:
             self.avancar_arma()
-        
+
         if self.__button_triangulo_E_arma.clicked:
             self.voltar_arma()
 
@@ -122,7 +122,7 @@ class Menu:
 
         if self.__button_triangulo_E_capacete.clicked:
             self.voltar_capacete()
-        
+
         if self.__button_triangulo_D_mapa.clicked:
             self.avancar_mapa()
 

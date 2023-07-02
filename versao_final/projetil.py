@@ -1,26 +1,27 @@
 from abc import ABC
+
 import pygame as pg
 from pygame import gfxdraw
 
+
 class Projetil(ABC):
-    def __init__(self, dano: int, veloc_proj: float, tamanho: float, cor, perfuracao: int):
+    def __init__(self, dano: int, veloc_proj: float, tamanho: float, cor):
         self.__dano = dano
         self.__veloc_proj = veloc_proj
         self.__tamanho = tamanho
         self.__cor = cor
-        self.__perfuracao = perfuracao
 
     @property
     def dano(self):
         return self.__dano
     @dano.setter
     def dano(self, valor):
-        self.__dano = valor    
+        self.__dano = valor
 
     @property
     def veloc_proj(self):
         return self.__veloc_proj
-    
+
     @property
     def tamanho(self):
         return self.__tamanho
@@ -28,14 +29,10 @@ class Projetil(ABC):
     @property
     def cor(self):
         return self.__cor
-    
-    @property
-    def perfuracao(self):
-        return self.__perfuracao
 
 class ProjetilConcreto(Projetil, pg.sprite.Sprite):
-    def __init__(self, dano, veloc_proj, tamanho, cor, perfuracao, trajetoria, pos, angulo):
-        Projetil.__init__(self, dano, veloc_proj, tamanho, cor, perfuracao)
+    def __init__(self, dano, veloc_proj, tamanho, cor, trajetoria, pos, angulo):
+        Projetil.__init__(self, dano, veloc_proj, tamanho, cor)
         pg.sprite.Sprite.__init__(self)
 
         self.__angulo = angulo

@@ -129,13 +129,13 @@ class PerseguidorComponente:
 
 def criar_Aerethor(nivel = 1):
     stats = ('aerethor.png', 15*nivel, nivel, 1.25)
-    proj = ProjetilLinear(5, 200, 3, (255, 46, 255), 1)
+    proj = ProjetilLinear(5, 200, 3, (255, 46, 255))
 
     return Inimigo(stats, VoadorComponente(0.2, 0.2, 0.4), proj, 1.5)
 
 def criar_Vorathrax(nivel = 1):
     stats = ('vorathrax.png', 35*nivel, 1.5*nivel, 0.6)
-    proj = ProjetilLinear(10, 185, 5, (212, 243, 33), 2)
+    proj = ProjetilLinear(10, 185, 5, (212, 243, 33))
 
     return Inimigo(stats, VoadorComponente(0.15, 0.25, 0.4), proj, 2)
 
@@ -146,6 +146,6 @@ def criar_Zylox(nivel = 1):
 
 def criar_Xerthul(nivel = 1):
     stats = ('xerthul.png', 35*nivel, 1.5*nivel, 1)
-    proj = ProjetilLinear(12, 200, 8, (255, 24, 11), 3)
+    proj = ProjetilLinear(12, 200, 8, (255, 24, 11))
 
     return Inimigo(stats, CamperComponente(0, 0.08), proj, 3.5)

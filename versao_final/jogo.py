@@ -6,7 +6,8 @@ import pygame as pg
 from pygame import mixer
 
 from barra_status import BarraStatus
-from inimigo import criar_Aerethor, criar_Vorathrax, criar_Xerthul, criar_Zylox, criar_Xandria, criar_Zorblax
+from inimigo import (criar_Aerethor, criar_Vorathrax, criar_Xandria,
+                     criar_Xerthul, criar_Zorblax, criar_Zylox)
 from inimigo_grupo import InimigoGrupo
 from jogador import Jogador, MorteJogador
 from mapa import Mapa
@@ -141,7 +142,7 @@ class Jogo:
         if len(self.__grupo_inimigos) == 0:
             self.__rodada_encerrada = True
 
-        self.hud.atualizar_tela(self.__jogador.vida_atual, self.__jogador.vida_total, self.__eter, self.__numero_rodada, self.__upgrades)
+        self.hud.atualizar_barra(self.__jogador.vida_atual, self.__jogador.vida_total, self.__eter, self.__numero_rodada, self.__upgrades)
 
     def ler_entrada(self):
         teclas = pg.key.get_pressed()

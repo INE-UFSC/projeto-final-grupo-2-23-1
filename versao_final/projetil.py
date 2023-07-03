@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 import pygame as pg
 from pygame import gfxdraw
@@ -30,23 +30,31 @@ class Projetil(ABC):
     def cor(self):
         return self.__cor
 
-class ProjetilConcreto(Projetil, pg.sprite.Sprite):
+    @abstractmethod
+    def criar_projetil(self, pos, angulo):
+        pass
+
+class ProjetilConcreto(pg.sprite.Sprite):
     def __init__(self, dano, veloc_proj, tamanho, cor, trajetoria, pos, angulo):
-        Projetil.__init__(self, dano, veloc_proj, tamanho, cor)
-        pg.sprite.Sprite.__init__(self)
+        super().__init__()
+
+        self.__dano = dano
+        self.__veloc_proj = veloc_proj
+        self.__tamanho = tamanho
+        self.__cor = cor
 
         self.__angulo = angulo
 
-        self.image = pg.Surface((2*self.tamanho + 1, 2*self.tamanho + 1), pg.SRCALPHA)
+        self.image = pg.Surface((2*self.__tamanho + 1, 2*self.__tamanho + 1), pg.SRCALPHA)
         gfxdraw.aacircle(
             self.image,
-            self.tamanho, self.tamanho, self.tamanho,
-            self.cor
+            self.__tamanho, self.__tamanho, self.__tamanho,
+            self.__cor
         )
         gfxdraw.filled_circle(
             self.image,
-            self.tamanho, self.tamanho, self.tamanho,
-            self.cor
+            self.__tamanho, self.__tamanho, self.__tamanho,
+            self.__cor
         )
 
         self.atualizar_trajetoria = trajetoria
@@ -55,6 +63,10 @@ class ProjetilConcreto(Projetil, pg.sprite.Sprite):
         self.mascara = pg.mask.from_surface(self.image)
 
         self.pos = pg.math.Vector2(self.rect.center)
+
+    @property
+    def dano(self):
+        return self.__dano
 
     def esta_fora_tela(self):
         (largura_tela, altura_tela) = pg.display.get_window_size()
@@ -65,7 +77,7 @@ class ProjetilConcreto(Projetil, pg.sprite.Sprite):
         return fora_largura or fora_altura
 
     def update(self, dt):
-        self.pos += self.atualizar_trajetoria(dt, self.__angulo, self.veloc_proj)
+        self.pos += self.atualizar_trajetoria(dt, self.__angulo, self.__veloc_proj)
         self.rect.center = self.pos
 
         if self.esta_fora_tela():

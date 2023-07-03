@@ -11,11 +11,11 @@ class BarraStatus:
         self.__upgrade_img = []
         self.__upgrades = {}
 
-    def atualizar_tela(self, vida_atual, vida_max, eter, rodada_atual, upgrade):
+    def atualizar_barra(self, vida_atual, vida_max, eter, rodada_atual, upgrades):
         self.__desenhar_numero_rodada(rodada_atual)
         self.__desenhar_eter(eter)
         self.__desenhar_barra_vida(vida_atual, vida_max)
-        self.__desenhar_upgrades(upgrade)
+        self.__desenhar_upgrades(upgrades)
 
     def __desenhar_numero_rodada(self, rodada):
         rodada_texto = self.__fonte.render(f'{rodada}', True, 'white')
@@ -55,26 +55,26 @@ class BarraStatus:
     def __desenhar_upgrades(self, upgrade):
         fonte_up = pg.font.Font(None, 25)
         upgrades = upgrade
-        printed = []     
-        z = 0 
+        printed = []
+        z = 0
 
-        for i in range(len(upgrades)):
-            num_upgrade = upgrades.count(upgrades[i])
-            if upgrades[i] not in self.__mostrados:
-                self.__mostrados.append(upgrades[i])
-                upgrade_image = pg.image.load(os.path.join('imagens', upgrades[i]+'.png'))
+        for upgrade in upgrades:
+            num_upgrade = upgrades.count(upgrade)
+            if upgrade not in self.__mostrados:
+                self.__mostrados.append(upgrade)
+                upgrade_image = pg.image.load(os.path.join('imagens', upgrade+'.png'))
                 self.__upgrade_img.append(pg.transform.scale(upgrade_image, (30, 40)))
-                self.__upgrades[upgrades[i]] = [num_upgrade, self.__upgrade_img[-1]]
-           
-            if num_upgrade > 1:
-                self.__upgrades[upgrades[i]][0] = num_upgrade
+                self.__upgrades[upgrade] = [num_upgrade, self.__upgrade_img[-1]]
 
-        for i in range(len(upgrades)):    
-            if upgrades[i] not in printed:
-                printed.append(upgrades[i])
-                self.__tela.blit(self.__upgrades[upgrades[i]][1], (10 + z*35, 500))
-                
-                up_texto = fonte_up.render(f'{self.__upgrades[upgrades[i]][0]}', True, 'black')
+            if num_upgrade > 1:
+                self.__upgrades[upgrade][0] = num_upgrade
+
+        for upgrade in upgrades:
+            if upgrade not in printed:
+                printed.append(upgrade)
+                self.__tela.blit(self.__upgrades[upgrade][1], (10 + z*35, 500))
+
+                up_texto = fonte_up.render(f'{self.__upgrades[upgrade][0]}', True, 'black')
                 up_rect = up_texto.get_rect(bottomleft = (36+z*35, 541))
                 self.__tela.blit(up_texto, up_rect)
                 z += 1

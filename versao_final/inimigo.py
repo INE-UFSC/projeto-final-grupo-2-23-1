@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from math import atan2, pi
 from random import randint, random
 
@@ -76,32 +77,32 @@ class Inimigo(Entidade, pg.sprite.Sprite):
 
         self.__temporizador_ataque += dt
 
-        self.pos += self.__comportamento_componente.atualizar(dt, self, jog_pos)
+        self.pos += self.__comportamento_componente.atualizar(dt, self.veloc_mov, self.pos, jog_pos)
 
         self.__rotacionar(jog_pos)
 
         self.rect.center = round(self.pos)
 
-class CamperComponente:
-    def __init__(self, linha_amplitude, linha_base):
-        (largura_tela, altura_tela) = pg.display.get_window_size()
+class InimigoComponente(ABC):
+    @abstractmethod
+    def atualizar(self, dt, veloc, pos, jog_pos):
+        pass
 
-        # Os inimigos movem-se sob essa linha.
-        if randint(1,2) == 1:
-            self.linha_mestra_latitude = largura_tela*0.1 + randint(1, 154)
-        else:
-            self.linha_mestra_latitude =  largura_tela*0.1 + randint(800, 970) 
+class CamperComponente(InimigoComponente):
+    def __init__(self, linha_amplitude, linha_base):
+        (_, altura_tela) = pg.display.get_window_size()
 
         self.__linha_mestra = linha_amplitude*altura_tela*random() + linha_base*altura_tela
-    def atualizar(self, dt, obj, jog_pos):
+
+    def atualizar(self, dt, veloc, pos, jog_pos):
         dx = 0
-        dif_linha = self.__linha_mestra - obj.pos.y
-        dy = 0.75*dif_linha*dt
+        dif_linha = self.__linha_mestra - pos.y
+        dy = 0.75*5*veloc*dif_linha*dt
 
         return pg.math.Vector2(dx, dy)
 
 
-class VoadorComponente:
+class VoadorComponente(InimigoComponente):
     def __init__(self, linha_amplitude, linha_base, dist_jogador):
         (largura_tela, altura_tela) = pg.display.get_window_size()
 
@@ -109,23 +110,23 @@ class VoadorComponente:
         self.__linha_mestra = linha_amplitude*altura_tela*random() + linha_base*altura_tela
         self.__dist_jogador = dist_jogador*largura_tela*random() - dist_jogador*largura_tela/2
 
-    def atualizar(self, dt, obj, jog_pos):
-        dif_jogador = jog_pos.x - self.__dist_jogador - obj.pos.x
+    def atualizar(self, dt, veloc, pos, jog_pos):
+        dif_jogador = jog_pos.x - self.__dist_jogador - pos.x
         dx = 0
         if abs(dif_jogador) > 0:
-            dx = obj.veloc_mov*dif_jogador*dt
+            dx = veloc*dif_jogador*dt
 
-        dif_linha = self.__linha_mestra - obj.pos.y
+        dif_linha = self.__linha_mestra - pos.y
         dy = 0.75*dif_linha*dt
 
         return pg.math.Vector2(dx, dy)
 
 
-class PerseguidorComponente:
-    def atualizar(self, dt, obj, jog_pos):
-        dif_jogador = jog_pos - obj.pos
+class PerseguidorComponente(InimigoComponente):
+    def atualizar(self, dt, veloc, pos, jog_pos):
+        dif_jogador = jog_pos - pos
 
-        return obj.veloc_mov*dif_jogador*dt
+        return veloc*dif_jogador*dt
 
 def criar_Aerethor(nivel = 1):
     stats = ('aerethor.png', 15*nivel, nivel, 1.25)

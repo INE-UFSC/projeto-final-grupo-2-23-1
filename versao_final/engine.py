@@ -81,13 +81,13 @@ class Engine:
                     self.__menu.iniciar_jogo = False
 
             elif self.__estado == Estado.JOGO:
+                if jogo.rodada_encerrada:
+                    self.__estado = Estado.UPGRADE
+
                 try:
                     jogo.rodar(dt)
                 except MorteJogador:
                     self.__estado = Estado.FIM_DE_JOGO
-
-                if jogo.rodada_encerrada:
-                    self.__estado = Estado.UPGRADE
 
             elif self.__estado == Estado.UPGRADE:
                 menu_carta.rodar()
@@ -104,8 +104,10 @@ class Engine:
                 if self.__fim.iniciar_jogo:
                     self.__estado = Estado.JOGO
                     self.__fim.iniciar_jogo = False
+
                     del jogo
                     jogo = Jogo(self.__menu.arma_escolhida, self.__menu.capacete_escolhido, self.__menu.mapa_escolhido)
+
                     mixer.music.load(os.path.join('musica', 'trilha_jogo.wav'))
                     mixer.music.play(-1)
 
@@ -121,9 +123,13 @@ class Engine:
 
                 if self.__pause.continuar_jogo:
                     del self.__pause
+
                     self.__estado = Estado.JOGO
                 elif self.__pause.menu:
                     del self.__pause
+                    del self.__menu
+                    self.__menu = Menu()
+
                     self.__estado = Estado.MENU_PRINCIPAL
 
             pg.display.flip()

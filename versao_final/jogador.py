@@ -2,8 +2,7 @@ from math import atan2, pi
 
 import pygame as pg
 
-from capacete_bob import CapaceteBob
-from capacete_tyska import CapaceteTyska
+from capacetes_tipos import CapaceteBob, CapaceteTyska
 from entidade import Entidade
 
 
@@ -23,7 +22,13 @@ class Jogador(Entidade, pg.sprite.Sprite):
         else:
             pngjogador = 'soldado.png'
 
-        Entidade.__init__(self, pngjogador, pos_inicial, 30, 1, 150, 0.25)
+        self.__arma = arma
+        self.__capacete = capacete
+
+        Entidade.__init__(
+            self, pngjogador, pos_inicial,
+            30, self.__capacete.armadura, 150*self.__capacete.velocidade, 0.25
+        )
         pg.sprite.Sprite.__init__(self)
 
         # Altura do pulo em pixels.
@@ -32,9 +37,6 @@ class Jogador(Entidade, pg.sprite.Sprite):
         self.__TEMPO_PULO = 1/3
         # Usado como a aceleração vertical durante o pulo.
         self.__GRAVIDADE = (2*self.__ALTURA_PULO)/(self.__TEMPO_PULO**2)
-
-        self.__arma = arma
-        self.__capacete = capacete
 
         self.__veloc_vert = 0
         # Sentido horizontal que o jogador está andando.

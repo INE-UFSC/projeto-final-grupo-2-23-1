@@ -4,9 +4,8 @@ import pygame
 
 from arma import Arma
 from button import Button
-from capacete_bob import CapaceteBob
-from capacete_militar import CapaceteMilitar
-from capacete_tyska import CapaceteTyska
+from capacetes_tipos import (CapaceteBob, CapaceteMilitar, CapaceteNinja,
+                             CapaceteTyska)
 from projetil_linear import ProjetilLinear
 
 
@@ -44,10 +43,7 @@ class Menu:
         self.__arma_indice = 0
         self.arma_escolhida = self.armas[self.__arma_indice]
 
-        capacete_militar = CapaceteMilitar()
-        self.__capacete_tyska = CapaceteTyska()
-        self.__capacete_bob = CapaceteBob()
-        self.capacetes = [capacete_militar]
+        self.capacetes = [CapaceteMilitar(), CapaceteNinja()]
         self.__capacete_indice = 0
         self.capacete_escolhido = self.capacetes[self.__capacete_indice]
 
@@ -101,7 +97,8 @@ class Menu:
         elif self.__contadort == 3 and teclas[pygame.K_k]:
             self.__contadort = 4
         elif self.__contadort == 4 and teclas[pygame.K_a]:
-            self.capacetes.append(self.__capacete_tyska)
+            self.capacetes.append(CapaceteTyska())
+            self.__contadort = -1
 
         if not self.__firstb and teclas[pygame.K_b]:
             self.__contadorb = 1
@@ -109,7 +106,8 @@ class Menu:
         elif self.__contadorb == 1 and teclas[pygame.K_o]:
             self.__contadorb = 2
         elif self.__contadorb == 2 and teclas[pygame.K_b]:
-            self.capacetes.append(self.__capacete_bob)
+            self.capacetes.append(CapaceteBob())
+            self.__contadorb = -1
 
         if self.__button_triangulo_D_arma.clicked:
             self.avancar_arma()

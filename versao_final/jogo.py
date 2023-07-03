@@ -41,6 +41,14 @@ class Jogo:
         self.iniciar_proxima_rodada()
 
     @property
+    def eter(self):
+        return self.__eter
+    
+    @eter.setter
+    def eter(self, eter):
+        self.__eter = eter
+
+    @property
     def numero_rodada(self):
         return self.__numero_rodada
     

@@ -1,10 +1,10 @@
-arma.png
+Ataque.png
 dano adx0.4
 velocidadeatk adx0.1
-explosion.png
+Explosion.png
 dano adx0.3
 vida adx0.9
-coracao.png
+Vida.png
 vida adx0.20
-rerrol.png
+Joker.png
 vida subx0.20

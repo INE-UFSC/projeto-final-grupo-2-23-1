@@ -16,7 +16,8 @@ class MenuCarta:
         self.__width = self.__tela.get_width()
         self.__height = self.__tela.get_height()
         self.iniciar_jogo = False
-        self.__titulo_button = Button((0, 0, 0), 20, 20, 200, 100, "Upgrades", fontsize = 50)
+        self.__eter = Button((0, 0, 0), 20, 20, 200, 100, "UPGRADE", fontsize = 50)
+        self.__titulo_button = Button((0, 0, 0), 20, 20, 200, 100, "UPGRADE", fontsize = 50)
         self.__upgrade_button, self.image = UB.buttons()
         self.__reroll_button = Button((0,0,255), 837, 200, 150, 200, "Rerrol", fontsize=2)
         self.__confirm_buttom = Button((0,0,100), self.__width/2 - 75, 500, 150, 50, "CONFIRM", fontsize=40)
@@ -52,8 +53,9 @@ class MenuCarta:
        
         
         if self.__reroll_button.clicked:
-            #TODO verificar moeda do jogo
-            self.gerar_novos()
+            if self.__jogo.eter > 0:
+                self.__jogo.eter -= 1
+                self.gerar_novos()
 
         if self.__confirm_buttom.clicked and (self.__selected != None):
             self.__pronto = True
@@ -65,6 +67,22 @@ class MenuCarta:
         else:
             self.__confirm_buttom.clicked = False
         
+        fonte_eter = pg.font.Font(None, 30)
+
+        eter_img = pg.image.load(os.path.join('sprites', 'eter.png'))
+        eter_img = pg.transform.scale(eter_img, (22, 22))
+        self.__tela.blit(eter_img, (self.__tela.get_width() - 75, 50))
+
+        eter_texto = fonte_eter.render(f'{self.__jogo.eter}', True, 'grey')
+        eter_rect = eter_texto.get_rect(topright = (
+            self.__tela.get_width() - 80,
+            53
+        ))
+
+        self.__tela.blit(eter_texto, eter_rect)
+
+
+
     def gerar_novos(self):
         UB = UpgradeButton()
         self.__selected = None

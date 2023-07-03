@@ -15,7 +15,7 @@ class UpgradeButton:
     def buttons(self):
         for i in range(4):
             self.__image = pg.image.load(os.path.join('imagens', self.__cartas[i]))
-            self.__upgrade_button[i] = Button((0,0,255), 37 + (i*200), 200, 150, 200, self.__cartas[i][:-4], fontsize=2)
+            self.__upgrade_button[i] = Button((0,0,0), 37 + (i*200), 200, 150, 220, self.__cartas[i][:-4], fontsize=2)
             self.image[i] = pg.transform.scale(self.__image, (150,200))
         self.__image = pg.image.load(os.path.join('imagens', 'rerrol.png'))
         self.image.append(pg.transform.scale(self.__image, (150,200)))

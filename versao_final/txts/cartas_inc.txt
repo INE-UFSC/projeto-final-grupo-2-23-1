@@ -1,5 +1,5 @@
-Sprite-morte.png
+Ceifador.png
 dano adx0.8
-jordan.png
+Jordan.png
 pulo adx0.1
 velocidade +10

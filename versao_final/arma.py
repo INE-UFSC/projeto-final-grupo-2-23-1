@@ -3,7 +3,7 @@ from math import cos, pi, sin
 from pygame import mixer
 import pygame as pg
 
-from acessorio import Acessorio
+#from acessorio import Acessorio
 from projetil import Projetil
 
 

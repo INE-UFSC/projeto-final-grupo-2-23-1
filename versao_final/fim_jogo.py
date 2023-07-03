@@ -16,7 +16,7 @@ class Fim:
         self.__fim_button = Button((0, 0, 0), self.__width/2 - 320, self.__height/2 - 200, 00, 00, "Fim de Jogo")
         self.__score_button = Button((0, 0, 0), self.__width/2 + 90, self.__height/2 - 150, 0, 0, "Score:")
         self.__menu_button = Button((0, 0, 0), self.__width/2 + 120, self.__height/2 + 55, 120, 40, 'Menu')
-        self.__image = pg.image.load(os.path.join('imagens', 'Sprite-morte.png'))
+        self.__image = pg.image.load(os.path.join('imagens', 'Ceifador.png'))
         self.image = pg.transform.scale(self.__image, (200, 300))
 
 

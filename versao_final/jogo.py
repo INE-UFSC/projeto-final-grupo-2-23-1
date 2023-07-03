@@ -166,24 +166,108 @@ class Jogo:
 
         num_aerethor = num_vorathrax = num_zylox = num_xerthul = num_xandria = num_zorblax = 0
 
-        #if self.__numero_rodada < 5:
-        #   num_aerethor = floor(1 + self.__numero_rodada*1)
-        #    num_xerthul = floor(1 + self.__numero_rodada*0)
-
-        if self.__numero_rodada < 5:
-            num_xandria = floor(1 + self.__numero_rodada*0)
-            num_zorblax = floor(1 + self.__numero_rodada*0)
-
-        elif self.__numero_rodada >= 5 and self.__numero_rodada < 10:
-            num_aerethor = floor(7 - self.__numero_rodada*0.3)
-            num_vorathrax = floor(0 + self.__numero_rodada*0.4)
-            num_xerthul = 2
-            num_zylox = floor(0 + self.__numero_rodada*0.15)
+        if self.__numero_rodada == 1:
+            num_aerethor = floor(3)
+        elif self.__numero_rodada == 2:
+            num_aerethor = floor(4)
+        elif self.__numero_rodada == 3:
+            num_aerethor = floor(5)
+        elif self.__numero_rodada == 4:
+            num_aerethor = floor(6)
+        elif self.__numero_rodada == 5:
+            num_aerethor = floor(7)
+        elif self.__numero_rodada == 6:
+            num_aerethor = floor(6)
+            num_vorathrax = floor(2)
+        elif self.__numero_rodada == 7:
+            num_aerethor = floor(6)
+            num_vorathrax = floor(3)
+        elif self.__numero_rodada == 8:
+            num_aerethor = floor(5)
+            num_vorathrax = floor(4)
+        elif self.__numero_rodada == 9:
+            num_aerethor = floor(5)
+            num_vorathrax = floor(5)
+        elif self.__numero_rodada == 10:
+            num_vorathrax = floor(5)
+            num_zorblax = floor(2)
+        elif self.__numero_rodada == 11:
+            num_vorathrax = floor(6)
+            num_zorblax = floor(3)
+        elif self.__numero_rodada == 12:
+            num_vorathrax = floor(7)
+            num_zorblax = floor(4)
+        elif self.__numero_rodada == 13:
+            num_vorathrax = floor(6)
+            num_zorblax = floor(5)
+        elif self.__numero_rodada == 14:
+            num_vorathrax = floor(6)
+            num_zorblax = floor(6)
+        elif self.__numero_rodada == 15:
+            num_zorblax = floor(6)
+            num_zylox = floor(2)
+            num_vorathrax = floor(4)
+        elif self.__numero_rodada == 16:
+            num_zorblax = floor(6)
+            num_zylox = floor(3)
+            num_vorathrax = floor(4)
+        elif self.__numero_rodada == 17:
+            num_zorblax = floor(7)
+            num_zylox = floor(3)
+            num_vorathrax = floor(3)
+        elif self.__numero_rodada == 18:
+            num_zorblax = floor(8)
+            num_zylox = floor(4)
+            num_vorathrax = floor(2)
+        elif self.__numero_rodada == 19:
+            num_zorblax = floor(10)
+            num_zylox = floor(4)
+            num_vorathrax = floor(2)
+        elif self.__numero_rodada == 20:
+            num_xerthul = floor(2)
+            num_zorblax = floor(4)
+            num_zylox = floor(4)
+        elif self.__numero_rodada == 21:
+            num_xerthul = floor(4)
+            num_zorblax = floor(2)
+            num_zylox = floor(4)
+        elif self.__numero_rodada == 22:
+            num_xerthul = floor(5)
+            num_zorblax = floor(2)
+            num_zylox = floor(5)
+        elif self.__numero_rodada == 23:
+            num_xerthul = floor(5)
+            num_zorblax = floor(1)
+            num_zylox = floor(5)
+        elif self.__numero_rodada == 24:
+            num_xerthul = floor(6)
+            num_zylox = floor(6)
+        elif self.__numero_rodada == 25:
+            num_xerthul = floor(6)
+            num_zylox = floor(2)
+            num_xandria = floor(2)
+        elif self.__numero_rodada == 26:
+            num_xerthul = floor(6)
+            num_zylox = floor(1)
+            num_xandria = floor(3)
+        elif self.__numero_rodada == 27:
+            num_xerthul = floor(7)
+            num_zylox = floor(1)
+            num_xandria = floor(3)
+        elif self.__numero_rodada == 28:
+            num_xerthul = floor(8)
+            num_zylox = floor(1)
+            num_xandria = floor(4)
+        elif self.__numero_rodada == 29:
+            num_xerthul = floor(10)
+            num_xandria = floor(5)
         else:
             num_aerethor = floor(0.15*self.__numero_rodada + 0.01*self.__numero_rodada**2 + 2)
             num_vorathrax = floor(0.15*self.__numero_rodada + 0.015*self.__numero_rodada**2)
             num_xerthul = floor(2 + 0.03*self.__numero_rodada + 0.001*self.__numero_rodada**2)
             num_zylox = floor(0.1*self.__numero_rodada + 0.001*self.__numero_rodada**2)
+            num_zorblax = floor(self.__numero_rodada*0.1 + 1)
+            num_xandria = floor(self.__numero_rodada*0.1)
 
         for _ in range(num_aerethor):
             self.__grupo_inimigos.add(criar_Aerethor())

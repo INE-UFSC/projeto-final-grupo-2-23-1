@@ -4,7 +4,7 @@ velocidadeatk adx0.1
 explosion.png
 dano adx0.3
 vida adx0.9
-world.png
+coracao.png
 vida adx0.20
 rerrol.png
 vida subx0.20
